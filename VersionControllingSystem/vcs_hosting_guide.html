@@ -125,92 +125,788 @@
         </div>
 
         <div class="section">
-            <h2>VCS Hosting का उपयोग कैसे करें? (विस्तृत गाइड)</h2>
+            <h2>VCS Hosting का काम करने का तरीका (विस्तृत)</h2>
             
-            <h3>1. अकाउंट सेटअप</h3>
+            <h3>1. कोड स्टोरेज और मैनेजमेंट</h3>
             <div class="example">
-                <p><strong>उदाहरण:</strong> GitHub पर अकाउंट बनाना</p>
+                <h4>कैसे काम करता है?</h4>
                 <ol>
-                    <li>github.com पर जाएं</li>
-                    <li>"Sign Up" बटन पर क्लिक करें</li>
-                    <li>अपना ईमेल, यूजरनेम और पासवर्ड डालें</li>
-                    <li>वेरिफिकेशन कंप्लीट करें</li>
-                </ol>
-            </div>
-
-            <h3>2. Git इंस्टॉलेशन</h3>
-            <div class="example">
-                <p><strong>उदाहरण:</strong> Windows पर Git इंस्टॉल करना</p>
-                <ol>
-                    <li>git-scm.com से Git डाउनलोड करें</li>
-                    <li>इंस्टॉलर रन करें</li>
-                    <li>डिफॉल्ट सेटिंग्स के साथ इंस्टॉल करें</li>
-                    <li>कमांड प्रॉम्प्ट में निम्न कमांड चलाकर वेरिफाई करें:
-                        <pre>git --version</pre>
+                    <li><strong>रिपॉजिटरी क्रिएशन:</strong>
+                        <ul>
+                            <li>प्रोजेक्ट शुरू करते समय एक नई रिपॉजिटरी बनाई जाती है</li>
+                            <li>यह रिपॉजिटरी क्लाउड पर स्टोर होती है</li>
+                            <li>सभी फाइल्स और उनका इतिहास यहाँ सुरक्षित रहता है</li>
+                        </ul>
                     </li>
-                </ol>
-            </div>
-
-            <h3>3. रिपॉजिटरी सेटअप</h3>
-            <div class="example">
-                <p><strong>उदाहरण:</strong> नई रिपॉजिटरी बनाना</p>
-                <ol>
-                    <li>GitHub पर "New Repository" बटन पर क्लिक करें</li>
-                    <li>रिपॉजिटरी का नाम डालें (जैसे: my-project)</li>
-                    <li>डिस्क्रिप्शन लिखें</li>
-                    <li>पब्लिक या प्राइवेट सेलेक्ट करें</li>
-                    <li>"Create Repository" पर क्लिक करें</li>
-                </ol>
-            </div>
-
-            <h3>4. लोकल प्रोजेक्ट सेटअप</h3>
-            <div class="example">
-                <p><strong>उदाहरण:</strong> नए प्रोजेक्ट को Git से कनेक्ट करना</p>
-                <ol>
-                    <li>प्रोजेक्ट फोल्डर में जाएं:
-                        <pre>cd path/to/your/project</pre>
+                    <li><strong>कोड वर्जनिंग:</strong>
+                        <ul>
+                            <li>हर बदलाव का एक अलग वर्जन बनता है</li>
+                            <li>पुराने वर्जन में वापस जा सकते हैं</li>
+                            <li>किसने कब क्या बदलाव किया, यह ट्रैक किया जा सकता है</li>
+                        </ul>
                     </li>
-                    <li>Git इनिशियलाइज करें:
-                        <pre>git init</pre>
-                    </li>
-                    <li>रिमोट रिपॉजिटरी जोड़ें:
-                        <pre>git remote add origin https://github.com/your-username/your-repo.git</pre>
+                    <li><strong>बैकअप और रिकवरी:</strong>
+                        <ul>
+                            <li>ऑटोमैटिक बैकअप बनता है</li>
+                            <li>कंप्यूटर क्रैश होने पर भी कोड सुरक्षित रहता है</li>
+                            <li>किसी भी समय पुराने वर्जन को रिस्टोर कर सकते हैं</li>
+                        </ul>
                     </li>
                 </ol>
             </div>
 
-            <h3>5. कोड कमिट और पुश</h3>
+            <h3>2. टीम कॉलैबोरेशन</h3>
             <div class="example">
-                <p><strong>उदाहरण:</strong> कोड में बदलाव करना और अपलोड करना</p>
+                <h4>कैसे काम करता है?</h4>
                 <ol>
-                    <li>फाइल्स में बदलाव करें</li>
-                    <li>बदलावों को स्टेज करें:
-                        <pre>git add .</pre>
+                    <li><strong>ब्रांचिंग सिस्टम:</strong>
+                        <ul>
+                            <li>हर डेवलपर अपनी अलग ब्रांच पर काम करता है</li>
+                            <li>मुख्य कोड (main branch) सुरक्षित रहता है</li>
+                            <li>नई फीचर्स को अलग ब्रांच में डेवलप किया जाता है</li>
+                        </ul>
                     </li>
-                    <li>कमिट करें:
-                        <pre>git commit -m "Added new feature"</pre>
+                    <li><strong>कोड रिव्यू प्रोसेस:</strong>
+                        <ul>
+                            <li>पुल रिक्वेस्ट के जरिए कोड रिव्यू होता है</li>
+                            <li>टीम मेंबर्स कमेंट्स और सजेशन्स दे सकते हैं</li>
+                            <li>कोड क्वालिटी और स्टैंडर्ड्स मेनटेन होते हैं</li>
+                        </ul>
                     </li>
-                    <li>रिमोट रिपॉजिटरी में पुश करें:
-                        <pre>git push origin main</pre>
+                    <li><strong>कॉन्फ्लिक्ट रिजॉल्यूशन:</strong>
+                        <ul>
+                            <li>ऑटोमैटिक कॉन्फ्लिक्ट डिटेक्शन</li>
+                            <li>टीम के साथ कॉन्फ्लिक्ट रिजॉल्व करने की सुविधा</li>
+                            <li>मर्ज कॉन्फ्लिक्ट्स को मैनेज करने के टूल्स</li>
+                        </ul>
                     </li>
                 </ol>
             </div>
 
-            <h3>6. ब्रांचिंग और मर्जिंग</h3>
+            <h3>3. CI/CD (Continuous Integration/Continuous Deployment)</h3>
             <div class="example">
-                <p><strong>उदाहरण:</strong> नई फीचर ब्रांच बनाना और मर्ज करना</p>
+                <h4>CI/CD क्या है?</h4>
+                <p>CI/CD एक ऑटोमैटिक प्रोसेस है जो कोड में हुए बदलावों को टेस्ट करता है और उन्हें प्रोडक्शन में डिप्लॉय करता है।</p>
+                
+                <h4>CI (Continuous Integration) कैसे काम करता है?</h4>
                 <ol>
-                    <li>नई ब्रांच बनाएं:
-                        <pre>git checkout -b new-feature</pre>
+                    <li><strong>ऑटोमैटिक बिल्ड:</strong>
+                        <ul>
+                            <li>जब भी कोई नया कोड पुश होता है</li>
+                            <li>सर्वर पर ऑटोमैटिक बिल्ड शुरू होता है</li>
+                            <li>कंपाइलेशन एरर्स चेक होते हैं</li>
+                        </ul>
                     </li>
-                    <li>कोड में बदलाव करें और कमिट करें</li>
-                    <li>मेन ब्रांच पर स्विच करें:
-                        <pre>git checkout main</pre>
+                    <li><strong>ऑटोमैटिक टेस्टिंग:</strong>
+                        <ul>
+                            <li>यूनिट टेस्ट्स रन होते हैं</li>
+                            <li>इंटीग्रेशन टेस्ट्स चलते हैं</li>
+                            <li>कोड क्वालिटी चेक्स होते हैं</li>
+                        </ul>
                     </li>
-                    <li>नई ब्रांच को मर्ज करें:
-                        <pre>git merge new-feature</pre>
+                    <li><strong>फीडबैक सिस्टम:</strong>
+                        <ul>
+                            <li>टेस्ट रिजल्ट्स तुरंत मिलते हैं</li>
+                            <li>एरर्स और वॉर्निंग्स की नोटिफिकेशन</li>
+                            <li>टीम को तुरंत फीडबैक मिलता है</li>
+                        </ul>
                     </li>
                 </ol>
+
+                <h4>CD (Continuous Deployment) कैसे काम करता है?</h4>
+                <ol>
+                    <li><strong>ऑटोमैटिक डिप्लॉयमेंट:</strong>
+                        <ul>
+                            <li>सभी टेस्ट्स पास होने के बाद</li>
+                            <li>कोड ऑटोमैटिकली स्टेजिंग एनवायरनमेंट में डिप्लॉय होता है</li>
+                            <li>फाइनल टेस्टिंग के बाद प्रोडक्शन में जाता है</li>
+                        </ul>
+                    </li>
+                    <li><strong>रोलबैक सिस्टम:</strong>
+                        <ul>
+                            <li>किसी भी समस्या आने पर</li>
+                            <li>पिछले स्टेबल वर्जन में वापस जा सकते हैं</li>
+                            <li>सिस्टम ऑटोमैटिक रोलबैक कर सकता है</li>
+                        </ul>
+                    </li>
+                    <li><strong>मॉनिटरिंग और लॉगिंग:</strong>
+                        <ul>
+                            <li>ऑटोमैटिक परफॉरमेंस मॉनिटरिंग</li>
+                            <li>एरर्स और एक्सेप्शन्स का लॉगिंग</li>
+                            <li>रियल-टाइम अलर्ट्स सिस्टम</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>CI/CD के फायदे:</h4>
+                <ul>
+                    <li>फास्टर डेवलपमेंट साइकल</li>
+                    <li>कम एरर्स और बग्स</li>
+                    <li>बेहतर कोड क्वालिटी</li>
+                    <li>ऑटोमैटिक प्रोसेसिंग</li>
+                    <li>टीम प्रोडक्टिविटी में वृद्धि</li>
+                </ul>
+            </div>
+
+            <h3>4. प्रैक्टिकल उदाहरण</h3>
+            <div class="example">
+                <h4>एक वेब एप्लिकेशन का डेवलपमेंट साइकल:</h4>
+                <ol>
+                    <li><strong>फीचर डेवलपमेंट:</strong>
+                        <div class="command-box">
+                            # नई फीचर ब्रांच बनाएं<br>
+                            git checkout -b feature/user-authentication<br>
+                            <br>
+                            # कोड में बदलाव करें<br>
+                            # टेस्ट्स लिखें<br>
+                            # कमिट करें<br>
+                            git add .<br>
+                            git commit -m "Add user authentication feature"<br>
+                            <br>
+                            # रिमोट में पुश करें<br>
+                            git push origin feature/user-authentication
+                        </div>
+                    </li>
+                    <li><strong>CI प्रोसेस:</strong>
+                        <ul>
+                            <li>पुश होते ही CI सर्वर एक्टिवेट होता है</li>
+                            <li>कोड बिल्ड होता है</li>
+                            <li>टेस्ट्स रन होते हैं</li>
+                            <li>रिपोर्ट जनरेट होती है</li>
+                        </ul>
+                    </li>
+                    <li><strong>कोड रिव्यू:</strong>
+                        <ul>
+                            <li>टीम मेंबर्स कोड रिव्यू करते हैं</li>
+                            <li>कमेंट्स और सजेशन्स देते हैं</li>
+                            <li>चेंजेस को अपडेट किया जाता है</li>
+                        </ul>
+                    </li>
+                    <li><strong>CD प्रोसेस:</strong>
+                        <ul>
+                            <li>सभी टेस्ट्स पास होने के बाद</li>
+                            <li>कोड स्टेजिंग में डिप्लॉय होता है</li>
+                            <li>फाइनल टेस्टिंग के बाद प्रोडक्शन में जाता है</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>CI/CD का उपयोग और आवश्यकताएं (विस्तृत गाइड)</h2>
+
+            <h3>1. CI/CD कब और क्यों उपयोग किया जाता है?</h3>
+            <div class="example">
+                <h4>उपयोग के मुख्य परिदृश्य:</h4>
+                <ol>
+                    <li><strong>बड़े प्रोजेक्ट्स में:</strong>
+                        <ul>
+                            <li>जब कई डेवलपर्स एक साथ काम कर रहे हों</li>
+                            <li>जब प्रोजेक्ट कॉम्प्लेक्स हो</li>
+                            <li>जब बार-बार कोड अपडेट होता हो</li>
+                        </ul>
+                    </li>
+                    <li><strong>क्वालिटी कंट्रोल के लिए:</strong>
+                        <ul>
+                            <li>कोड क्वालिटी मेनटेन करने के लिए</li>
+                            <li>बग्स को जल्दी पकड़ने के लिए</li>
+                            <li>स्टैंडर्ड्स को फॉलो करने के लिए</li>
+                        </ul>
+                    </li>
+                    <li><strong>फास्ट डिलीवरी के लिए:</strong>
+                        <ul>
+                            <li>जब जल्दी-जल्दी रिलीज करना हो</li>
+                            <li>जब कस्टमर फीडबैक जल्दी चाहिए</li>
+                            <li>जब मार्केट में कॉम्पिटिशन हो</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>CI/CD ना उपयोग करने पर समस्याएं:</h4>
+                <ol>
+                    <li><strong>मैनुअल प्रोसेस की समस्याएं:</strong>
+                        <ul>
+                            <li>टाइम कंज्यूमिंग</li>
+                            <li>एरर्स की संभावना अधिक</li>
+                            <li>कंसिस्टेंसी की कमी</li>
+                        </ul>
+                    </li>
+                    <li><strong>क्वालिटी इश्यूज:</strong>
+                        <ul>
+                            <li>बग्स देर से पकड़ में आते हैं</li>
+                            <li>टेस्टिंग अपूर्ण हो सकती है</li>
+                            <li>कोड क्वालिटी कम हो सकती है</li>
+                        </ul>
+                    </li>
+                    <li><strong>डिलीवरी डिलेज:</strong>
+                        <ul>
+                            <li>रिलीज प्रोसेस स्लो होता है</li>
+                            <li>फीडबैक साइकल लंबा होता है</li>
+                            <li>मार्केट रिस्पॉन्स टाइमिंग प्रभावित होती है</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>2. CI/CD से पहले क्या उपयोग होता था?</h3>
+            <div class="example">
+                <h4>पारंपरिक डेवलपमेंट प्रोसेस:</h4>
+                <ol>
+                    <li><strong>मैनुअल बिल्ड प्रोसेस:</strong>
+                        <ul>
+                            <li>डेवलपर्स कोड लिखते थे</li>
+                            <li>मैनुअली कंपाइल करते थे</li>
+                            <li>एरर्स को मैनुअली चेक करते थे</li>
+                        </ul>
+                    </li>
+                    <li><strong>मैनुअल टेस्टिंग:</strong>
+                        <ul>
+                            <li>टेस्टर्स कोड को मैनुअली टेस्ट करते थे</li>
+                            <li>बग रिपोर्ट्स मैनुअली बनाते थे</li>
+                            <li>फिक्सेस को मैनुअली वेरिफाई करते थे</li>
+                        </ul>
+                    </li>
+                    <li><strong>मैनुअल डिप्लॉयमेंट:</strong>
+                        <ul>
+                            <li>सर्वर पर मैनुअली कोड अपलोड करते थे</li>
+                            <li>कॉन्फिगरेशन मैनुअली सेट करते थे</li>
+                            <li>रोलबैक मैनुअली करते थे</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>3. CI/CD इम्प्लीमेंटेशन के लिए आवश्यकताएं</h3>
+            <div class="example">
+                <h4>टेक्निकल आवश्यकताएं:</h4>
+                <ol>
+                    <li><strong>वर्जन कंट्रोल सिस्टम:</strong>
+                        <ul>
+                            <li>Git (सबसे लोकप्रिय)</li>
+                            <li>SVN</li>
+                            <li>Mercurial</li>
+                        </ul>
+                    </li>
+                    <li><strong>CI/CD टूल्स:</strong>
+                        <ul>
+                            <li>Jenkins (सबसे लोकप्रिय)</li>
+                            <li>GitLab CI/CD</li>
+                            <li>GitHub Actions</li>
+                            <li>CircleCI</li>
+                            <li>Travis CI</li>
+                        </ul>
+                    </li>
+                    <li><strong>टेस्टिंग फ्रेमवर्क्स:</strong>
+                        <ul>
+                            <li>JUnit (Java)</li>
+                            <li>Mocha (JavaScript)</li>
+                            <li>Pytest (Python)</li>
+                            <li>Selenium (UI टेस्टिंग)</li>
+                        </ul>
+                    </li>
+                    <li><strong>डिप्लॉयमेंट टूल्स:</strong>
+                        <ul>
+                            <li>Docker (कंटेनराइजेशन)</li>
+                            <li>Kubernetes (ऑर्केस्ट्रेशन)</li>
+                            <li>Ansible (कॉन्फिगरेशन मैनेजमेंट)</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>इन्फ्रास्ट्रक्चर आवश्यकताएं:</h4>
+                <ol>
+                    <li><strong>सर्वर रिक्वायरमेंट्स:</strong>
+                        <ul>
+                            <li>CI सर्वर (बिल्ड और टेस्ट के लिए)</li>
+                            <li>स्टेजिंग सर्वर (प्री-प्रोडक्शन टेस्टिंग)</li>
+                            <li>प्रोडक्शन सर्वर</li>
+                        </ul>
+                    </li>
+                    <li><strong>नेटवर्क रिक्वायरमेंट्स:</strong>
+                        <ul>
+                            <li>स्टेबल इंटरनेट कनेक्शन</li>
+                            <li>सिक्योर नेटवर्क</li>
+                            <li>फायरवॉल कॉन्फिगरेशन</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>4. CI/CD इम्प्लीमेंटेशन स्टेप्स</h3>
+            <div class="example">
+                <h4>सेटअप प्रोसेस:</h4>
+                <ol>
+                    <li><strong>वर्जन कंट्रोल सेटअप:</strong>
+                        <div class="command-box">
+                            # Git रिपॉजिटरी इनिशियलाइज करें<br>
+                            git init<br>
+                            <br>
+                            # रिमोट रिपॉजिटरी जोड़ें<br>
+                            git remote add origin https://github.com/your-org/your-repo.git
+                        </div>
+                    </li>
+                    <li><strong>CI/CD पाइपलाइन कॉन्फिगरेशन:</strong>
+                        <div class="command-box">
+                            # .gitlab-ci.yml उदाहरण<br>
+                            stages:<br>
+                              - build<br>
+                              - test<br>
+                              - deploy<br>
+                            <br>
+                            build:<br>
+                              stage: build<br>
+                              script:<br>
+                                - npm install<br>
+                                - npm run build<br>
+                            <br>
+                            test:<br>
+                              stage: test<br>
+                              script:<br>
+                                - npm test<br>
+                            <br>
+                            deploy:<br>
+                              stage: deploy<br>
+                              script:<br>
+                                - npm run deploy
+                        </div>
+                    </li>
+                    <li><strong>टेस्टिंग सेटअप:</strong>
+                        <div class="command-box">
+                            # Jest टेस्ट कॉन्फिगरेशन उदाहरण<br>
+                            module.exports = {<br>
+                              testEnvironment: 'node',<br>
+                              testMatch: ['**/*.test.js'],<br>
+                              coverageDirectory: 'coverage'<br>
+                            }
+                        </div>
+                    </li>
+                </ol>
+
+                <h4>मॉनिटरिंग और मैंटेनेंस:</h4>
+                <ol>
+                    <li><strong>पाइपलाइन मॉनिटरिंग:</strong>
+                        <ul>
+                            <li>बिल्ड स्टेटस चेक करना</li>
+                            <li>टेस्ट रिजल्ट्स रिव्यू करना</li>
+                            <li>डिप्लॉयमेंट लॉग्स मॉनिटर करना</li>
+                        </ul>
+                    </li>
+                    <li><strong>परफॉरमेंस ऑप्टिमाइजेशन:</strong>
+                        <ul>
+                            <li>बिल्ड टाइम कम करना</li>
+                            <li>टेस्ट कवरेज बढ़ाना</li>
+                            <li>डिप्लॉयमेंट स्पीड बढ़ाना</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>5. CI/CD का उपयोग कब करें?</h3>
+            <div class="example">
+                <h4>उपयोग के लिए आदर्श परिस्थितियां:</h4>
+                <ol>
+                    <li><strong>प्रोजेक्ट स्केल:</strong>
+                        <ul>
+                            <li>जब प्रोजेक्ट मीडियम से लार्ज स्केल का हो</li>
+                            <li>जब टीम साइज 5+ डेवलपर्स की हो</li>
+                            <li>जब प्रोजेक्ट कॉम्प्लेक्स हो</li>
+                        </ul>
+                    </li>
+                    <li><strong>डेवलपमेंट फ्रीक्वेंसी:</strong>
+                        <ul>
+                            <li>जब बार-बार कोड अपडेट होता हो</li>
+                            <li>जब मल्टीपल फीचर्स एक साथ डेवलप हो रहे हों</li>
+                            <li>जब रैपिड डेवलपमेंट की जरूरत हो</li>
+                        </ul>
+                    </li>
+                    <li><strong>क्वालिटी रिक्वायरमेंट्स:</strong>
+                        <ul>
+                            <li>जब हाई क्वालिटी स्टैंडर्ड्स की जरूरत हो</li>
+                            <li>जब कम बग्स की जरूरत हो</li>
+                            <li>जब स्टेबल रिलीज की जरूरत हो</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>CI/CD कॉन्फिगरेशन फाइल्स (विस्तृत गाइड)</h2>
+
+            <h3>1. कॉन्फिगरेशन फाइल्स क्या हैं?</h3>
+            <div class="example">
+                <h4>YML/YAML फाइल्स:</h4>
+                <ul>
+                    <li><strong>परिभाषा:</strong> YAML (YAML Ain't Markup Language) एक डेटा सीरियलाइजेशन लैंग्वेज है</li>
+                    <li><strong>उपयोग:</strong> कॉन्फिगरेशन और सेटिंग्स को स्टोर करने के लिए</li>
+                    <li><strong>विशेषताएं:</strong>
+                        <ul>
+                            <li>ह्यूमन-रीडेबल फॉर्मेट</li>
+                            <li>इंडेंटेशन-बेस्ड स्ट्रक्चर</li>
+                            <li>की-वैल्यू पेयर्स का उपयोग</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>2. वर्जन कंट्रोल सेटअप</h3>
+            <div class="example">
+                <h4>Git कॉन्फिगरेशन:</h4>
+                <div class="command-box">
+                    # Git रिपॉजिटरी इनिशियलाइज करें<br>
+                    git init<br>
+                    <br>
+                    # रिमोट रिपॉजिटरी जोड़ें<br>
+                    git remote add origin https://github.com/your-org/your-repo.git
+                </div>
+                <h4>व्याख्या:</h4>
+                <ol>
+                    <li><strong>git init:</strong>
+                        <ul>
+                            <li>नई Git रिपॉजिटरी बनाता है</li>
+                            <li>`.git` फोल्डर क्रिएट करता है</li>
+                            <li>वर्जन कंट्रोल शुरू करता है</li>
+                        </ul>
+                    </li>
+                    <li><strong>git remote add:</strong>
+                        <ul>
+                            <li>रिमोट रिपॉजिटरी को जोड़ता है</li>
+                            <li>`origin` रिमोट का नाम है</li>
+                            <li>URL रिपॉजिटरी का एड्रेस है</li>
+                        </ul>
+                    </li>
+                </ol>
+                <h4>उपयोग का समय:</h4>
+                <ul>
+                    <li>नया प्रोजेक्ट शुरू करते समय</li>
+                    <li>मौजूदा प्रोजेक्ट को Git में कन्वर्ट करते समय</li>
+                    <li>रिमोट रिपॉजिटरी को कनेक्ट करते समय</li>
+                </ul>
+            </div>
+
+            <h3>3. CI/CD पाइपलाइन कॉन्फिगरेशन</h3>
+            <div class="example">
+                <h4>.gitlab-ci.yml उदाहरण:</h4>
+                <div class="command-box">
+                    stages:<br>
+                      - build<br>
+                      - test<br>
+                      - deploy<br>
+                    <br>
+                    build:<br>
+                      stage: build<br>
+                      script:<br>
+                        - npm install<br>
+                        - npm run build<br>
+                    <br>
+                    test:<br>
+                      stage: test<br>
+                      script:<br>
+                        - npm test<br>
+                    <br>
+                    deploy:<br>
+                      stage: deploy<br>
+                      script:<br>
+                        - npm run deploy
+                </div>
+                <h4>व्याख्या:</h4>
+                <ol>
+                    <li><strong>stages:</strong>
+                        <ul>
+                            <li>पाइपलाइन के सभी स्टेजेज को डिफाइन करता है</li>
+                            <li>स्टेजेज क्रम में एक्सीक्यूट होते हैं</li>
+                            <li>एक स्टेज फेल होने पर अगला स्टेज नहीं चलता</li>
+                        </ul>
+                    </li>
+                    <li><strong>build स्टेज:</strong>
+                        <ul>
+                            <li>डिपेंडेंसीज इंस्टॉल करता है</li>
+                            <li>कोड को कंपाइल करता है</li>
+                            <li>बिल्ड आर्टिफैक्ट्स जनरेट करता है</li>
+                        </ul>
+                    </li>
+                    <li><strong>test स्टेज:</strong>
+                        <ul>
+                            <li>यूनिट टेस्ट्स रन करता है</li>
+                            <li>इंटीग्रेशन टेस्ट्स चलाता है</li>
+                            <li>टेस्ट रिजल्ट्स जनरेट करता है</li>
+                        </ul>
+                    </li>
+                    <li><strong>deploy स्टेज:</strong>
+                        <ul>
+                            <li>एप्लिकेशन को डिप्लॉय करता है</li>
+                            <li>सर्वर पर कोड अपलोड करता है</li>
+                            <li>कॉन्फिगरेशन अपडेट करता है</li>
+                        </ul>
+                    </li>
+                </ol>
+                <h4>उपयोग का समय:</h4>
+                <ul>
+                    <li>जब कोई नया कोड पुश होता है</li>
+                    <li>जब मर्ज रिक्वेस्ट बनती है</li>
+                    <li>जब मैनुअली ट्रिगर किया जाता है</li>
+                </ul>
+            </div>
+
+            <h3>4. टेस्टिंग कॉन्फिगरेशन</h3>
+            <div class="example">
+                <h4>Jest कॉन्फिगरेशन:</h4>
+                <div class="command-box">
+                    module.exports = {<br>
+                      testEnvironment: 'node',<br>
+                      testMatch: ['**/*.test.js'],<br>
+                      coverageDirectory: 'coverage'<br>
+                    }
+                </div>
+                <h4>व्याख्या:</h4>
+                <ol>
+                    <li><strong>testEnvironment:</strong>
+                        <ul>
+                            <li>टेस्ट एनवायरनमेंट सेट करता है</li>
+                            <li>`node` Node.js एनवायरनमेंट के लिए</li>
+                            <li>`jsdom` ब्राउज़र एनवायरनमेंट के लिए</li>
+                        </ul>
+                    </li>
+                    <li><strong>testMatch:</strong>
+                        <ul>
+                            <li>टेस्ट फाइल्स को पहचानता है</li>
+                            <li>`**/*.test.js` सभी `.test.js` फाइल्स को टारगेट करता है</li>
+                            <li>ग्लोब पैटर्न का उपयोग करता है</li>
+                        </ul>
+                    </li>
+                    <li><strong>coverageDirectory:</strong>
+                        <ul>
+                            <li>टेस्ट कवरेज रिपोर्ट्स का लोकेशन</li>
+                            <li>`coverage` फोल्डर में रिपोर्ट्स सेव होती हैं</li>
+                            <li>HTML और JSON फॉर्मेट में रिपोर्ट्स</li>
+                        </ul>
+                    </li>
+                </ol>
+                <h4>उपयोग का समय:</h4>
+                <ul>
+                    <li>टेस्टिंग फ्रेमवर्क सेटअप करते समय</li>
+                    <li>टेस्ट एनवायरनमेंट कॉन्फिगर करते समय</li>
+                    <li>टेस्ट कवरेज सेटअप करते समय</li>
+                </ul>
+            </div>
+
+            <h3>5. प्रैक्टिकल उदाहरण</h3>
+            <div class="example">
+                <h4>एक Node.js प्रोजेक्ट का सेटअप:</h4>
+                <ol>
+                    <li><strong>प्रोजेक्ट इनिशियलाइजेशन:</strong>
+                        <div class="command-box">
+                            # नई डायरेक्टरी बनाएं<br>
+                            mkdir my-project<br>
+                            cd my-project<br>
+                            <br>
+                            # npm प्रोजेक्ट इनिशियलाइज करें<br>
+                            npm init -y<br>
+                            <br>
+                            # Git सेटअप<br>
+                            git init<br>
+                            git remote add origin https://github.com/your-org/my-project.git
+                        </div>
+                    </li>
+                    <li><strong>CI/CD सेटअप:</strong>
+                        <div class="command-box">
+                            # .gitlab-ci.yml फाइल बनाएं<br>
+                            touch .gitlab-ci.yml<br>
+                            <br>
+                            # फाइल में कॉन्फिगरेशन लिखें<br>
+                            # (ऊपर दिया गया कॉन्फिगरेशन)
+                        </div>
+                    </li>
+                    <li><strong>टेस्टिंग सेटअप:</strong>
+                        <div class="command-box">
+                            # Jest इंस्टॉल करें<br>
+                            npm install --save-dev jest<br>
+                            <br>
+                            # Jest कॉन्फिगरेशन फाइल बनाएं<br>
+                            touch jest.config.js<br>
+                            <br>
+                            # फाइल में कॉन्फिगरेशन लिखें<br>
+                            # (ऊपर दिया गया कॉन्फिगरेशन)
+                        </div>
+                    </li>
+                </ol>
+                <h4>फाइल स्ट्रक्चर:</h4>
+                <pre>
+my-project/
+├── .git/
+├── .gitlab-ci.yml
+├── jest.config.js
+├── package.json
+├── src/
+│   └── index.js
+└── tests/
+    └── index.test.js
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>VCS के महत्वपूर्ण कॉन्सेप्ट्स (अतिरिक्त जानकारी)</h2>
+
+            <h3>1. Git Workflow मॉडल्स</h3>
+            <div class="example">
+                <h4>Git Flow:</h4>
+                <ul>
+                    <li><strong>मुख्य ब्रांचेज:</strong>
+                        <ul>
+                            <li>master/main - प्रोडक्शन कोड</li>
+                            <li>develop - डेवलपमेंट कोड</li>
+                        </ul>
+                    </li>
+                    <li><strong>सपोर्टिंग ब्रांचेज:</strong>
+                        <ul>
+                            <li>feature/* - नई फीचर्स के लिए</li>
+                            <li>release/* - रिलीज तैयारी के लिए</li>
+                            <li>hotfix/* - प्रोडक्शन बग फिक्स के लिए</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Trunk-Based Development:</h4>
+                <ul>
+                    <li><strong>मुख्य विशेषताएं:</strong>
+                        <ul>
+                            <li>सिंगल मास्टर ब्रांच</li>
+                            <li>शॉर्ट-लिव्ड फीचर ब्रांचेज</li>
+                            <li>फ्रीक्वेंट कमिट्स</li>
+                        </ul>
+                    </li>
+                    <li><strong>फायदे:</strong>
+                        <ul>
+                            <li>कम कॉन्फ्लिक्ट्स</li>
+                            <li>फास्टर इंटीग्रेशन</li>
+                            <li>सिंपलर वर्कफ्लो</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>2. Git Hooks</h3>
+            <div class="example">
+                <h4>क्या हैं Git Hooks?</h4>
+                <p>Git Hooks स्क्रिप्ट्स हैं जो Git कमांड्स के निष्पादन से पहले या बाद में ऑटोमैटिकली चलती हैं।</p>
+
+                <h4>महत्वपूर्ण Hooks:</h4>
+                <ul>
+                    <li><strong>pre-commit:</strong>
+                        <ul>
+                            <li>कमिट से पहले चलता है</li>
+                            <li>कोड फॉर्मेटिंग चेक कर सकता है</li>
+                            <li>टेस्ट्स रन कर सकता है</li>
+                        </ul>
+                    </li>
+                    <li><strong>pre-push:</strong>
+                        <ul>
+                            <li>पुश से पहले चलता है</li>
+                            <li>टेस्ट कवरेज चेक कर सकता है</li>
+                            <li>कोड क्वालिटी चेक कर सकता है</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>उपयोग का उदाहरण:</h4>
+                <div class="command-box">
+                    # pre-commit hook उदाहरण<br>
+                    #!/bin/sh<br>
+                    npm run lint<br>
+                    npm test
+                </div>
+            </div>
+
+            <h3>3. Git Submodules और Subtrees</h3>
+            <div class="example">
+                <h4>Git Submodules:</h4>
+                <ul>
+                    <li><strong>परिभाषा:</strong> एक Git रिपॉजिटरी के अंदर दूसरी Git रिपॉजिटरी</li>
+                    <li><strong>उपयोग:</strong>
+                        <ul>
+                            <li>बड़े प्रोजेक्ट्स को मॉड्यूलर बनाने के लिए</li>
+                            <li>थर्ड-पार्टी लाइब्रेरीज को मैनेज करने के लिए</li>
+                        </ul>
+                    </li>
+                    <li><strong>कमांड्स:</strong>
+                        <div class="command-box">
+                            # सबमॉड्यूल जोड़ें<br>
+                            git submodule add https://github.com/user/repo.git<br>
+                            <br>
+                            # सबमॉड्यूल अपडेट करें<br>
+                            git submodule update --remote
+                        </div>
+                    </li>
+                </ul>
+
+                <h4>Git Subtrees:</h4>
+                <ul>
+                    <li><strong>परिभाषा:</strong> एक रिपॉजिटरी को दूसरी रिपॉजिटरी के सबफोल्डर में मर्ज करना</li>
+                    <li><strong>फायदे:</strong>
+                        <ul>
+                            <li>सिंपलर वर्कफ्लो</li>
+                            <li>बेहतर परफॉरमेंस</li>
+                            <li>आसान मैनेजमेंट</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>4. Git LFS (Large File Storage)</h3>
+            <div class="example">
+                <h4>क्या है Git LFS?</h4>
+                <p>Git LFS बड़ी फाइल्स को मैनेज करने के लिए एक एक्सटेंशन है।</p>
+
+                <h4>महत्वपूर्ण विशेषताएं:</h4>
+                <ul>
+                    <li><strong>बड़ी फाइल्स का स्टोरेज:</strong>
+                        <ul>
+                            <li>बाइनरी फाइल्स</li>
+                            <li>वीडियो और ऑडियो फाइल्स</li>
+                            <li>डेटाबेस फाइल्स</li>
+                        </ul>
+                    </li>
+                    <li><strong>कमांड्स:</strong>
+                        <div class="command-box">
+                            # Git LFS इंस्टॉल करें<br>
+                            git lfs install<br>
+                            <br>
+                            # फाइल टाइप ट्रैक करें<br>
+                            git lfs track "*.psd"<br>
+                            git lfs track "*.mp4"
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3>5. Git Security बेस्ट प्रैक्टिसेज</h3>
+            <div class="example">
+                <h4>सुरक्षा के लिए महत्वपूर्ण बिंदु:</h4>
+                <ul>
+                    <li><strong>क्रेडेंशियल्स मैनेजमेंट:</strong>
+                        <ul>
+                            <li>SSH कीज का उपयोग</li>
+                            <li>पासवर्ड मैनेजर्स का उपयोग</li>
+                            <li>टू-फैक्टर ऑथेंटिकेशन</li>
+                        </ul>
+                    </li>
+                    <li><strong>रिपॉजिटरी सुरक्षा:</strong>
+                        <ul>
+                            <li>ब्रांच प्रोटेक्शन</li>
+                            <li>कोड साइनिंग</li>
+                            <li>सिक्योर कम्युनिकेशन</li>
+                        </ul>
+                    </li>
+                    <li><strong>सेंसिटिव डेटा:</strong>
+                        <ul>
+                            <li>.gitignore का उचित उपयोग</li>
+                            <li>एनवायरनमेंट वेरिएबल्स का उपयोग</li>
+                            <li>सिक्रेट्स मैनेजमेंट</li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
 

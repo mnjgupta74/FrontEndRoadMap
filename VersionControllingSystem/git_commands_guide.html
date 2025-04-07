@@ -815,5 +815,155 @@
         <h3>याद रखें:</h3>
         <p>ये बेस्ट प्रैक्टिसेज आपके और आपकी टीम के काम को सुरक्षित और व्यवस्थित रखने में मदद करेंगे। इन्हें नियमित रूप से फॉलो करें और टीम के साथ शेयर करें।</p>
     </div>
+
+    <h2>14. Git कॉन्फिगरेशन फाइल्स (विस्तृत गाइड)</h2>
+    
+    <div class="note">
+        <p>यह सेक्शन Git की महत्वपूर्ण कॉन्फिगरेशन फाइल्स के बारे में विस्तृत जानकारी प्रदान करता है।</p>
+    </div>
+
+    <h3>14.1 .gitignore फाइल</h3>
+    <div class="example">
+        <h4>क्या है .gitignore?</h4>
+        <p>.gitignore एक टेक्स्ट फाइल है जो Git को बताती है कि किन फाइल्स और फोल्डर्स को इग्नोर करना है।</p>
+        
+        <h4>महत्वपूर्ण उपयोग:</h4>
+        <ul>
+            <li><strong>सिस्टम फाइल्स:</strong>
+                <div class="command-box">
+                    # macOS सिस्टम फाइल्स<br>
+                    .DS_Store<br>
+                    <br>
+                    # Windows सिस्टम फाइल्स<br>
+                    Thumbs.db
+                </div>
+            </li>
+            <li><strong>डिपेंडेंसी फोल्डर्स:</strong>
+                <div class="command-box">
+                    # Node.js<br>
+                    node_modules/<br>
+                    <br>
+                    # Python<br>
+                    __pycache__/<br>
+                    venv/
+                </div>
+            </li>
+            <li><strong>एनवायरनमेंट फाइल्स:</strong>
+                <div class="command-box">
+                    # एनवायरनमेंट वेरिएबल्स<br>
+                    .env<br>
+                    .env.local<br>
+                    <br>
+                    # कॉन्फिगरेशन फाइल्स<br>
+                    config.json
+                </div>
+            </li>
+        </ul>
+
+        <h4>ग्लोबल .gitignore:</h4>
+        <div class="command-box">
+            # ग्लोबल .gitignore सेट करें<br>
+            git config --global core.excludesfile ~/.gitignore_global
+        </div>
+    </div>
+
+    <h3>14.2 .gitattributes फाइल</h3>
+    <div class="example">
+        <h4>क्या है .gitattributes?</h4>
+        <p>.gitattributes फाइल Git को बताती है कि विभिन्न फाइल टाइप्स के साथ कैसे व्यवहार करना है।</p>
+        
+        <h4>महत्वपूर्ण उपयोग:</h4>
+        <div class="command-box">
+            # लाइन एंडिंग्स को नॉर्मलाइज करें<br>
+            * text=auto<br>
+            <br>
+            # बाइनरी फाइल्स को मार्क करें<br>
+            *.png binary<br>
+            *.jpg binary<br>
+            <br>
+            # प्रोग्रामिंग लैंग्वेज स्पेसिफिक सेटिंग्स<br>
+            *.js text eol=lf<br>
+            *.py text eol=lf
+        </div>
+    </div>
+
+    <h3>14.3 .gitconfig फाइल</h3>
+    <div class="example">
+        <h4>क्या है .gitconfig?</h4>
+        <p>.gitconfig फाइल Git के लिए यूजर-स्पेसिफिक कॉन्फिगरेशन सेटिंग्स स्टोर करती है।</p>
+        
+        <h4>महत्वपूर्ण सेटिंग्स:</h4>
+        <div class="command-box">
+            [user]<br>
+            name = Your Name<br>
+            email = your.email@example.com<br>
+            <br>
+            [core]<br>
+            editor = code --wait<br>
+            autocrlf = true<br>
+            <br>
+            [alias]<br>
+            st = status<br>
+            co = checkout<br>
+            br = branch
+        </div>
+    </div>
+
+    <h3>14.4 .gitkeep फाइल</h3>
+    <div class="example">
+        <h4>क्या है .gitkeep?</h4>
+        <p>.gitkeep एक कन्वेंशन है जिसका उपयोग खाली फोल्डर्स को Git में ट्रैक करने के लिए किया जाता है।</p>
+        
+        <h4>उपयोग:</h4>
+        <div class="command-box">
+            # एक खाली फोल्डर बनाएं<br>
+            mkdir logs<br>
+            <br>
+            # .gitkeep फाइल बनाएं<br>
+            touch logs/.gitkeep
+        </div>
+    </div>
+
+    <h3>14.5 .gitmodules फाइल</h3>
+    <div class="example">
+        <h4>क्या है .gitmodules?</h4>
+        <p>.gitmodules फाइल सबमॉड्यूल्स की कॉन्फिगरेशन इनफॉर्मेशन स्टोर करती है।</p>
+        
+        <h4>उदाहरण:</h4>
+        <div class="command-box">
+            [submodule "libs/awesome-lib"]<br>
+            path = libs/awesome-lib<br>
+            url = https://github.com/user/awesome-lib.git<br>
+            branch = main
+        </div>
+    </div>
+
+    <h3>14.6 .git/hooks फोल्डर</h3>
+    <div class="example">
+        <h4>क्या हैं Git Hooks?</h4>
+        <p>Git Hooks स्क्रिप्ट्स हैं जो Git कमांड्स के निष्पादन से पहले या बाद में ऑटोमैटिकली चलती हैं।</p>
+        
+        <h4>महत्वपूर्ण Hooks:</h4>
+        <ul>
+            <li><strong>pre-commit:</strong> कमिट से पहले चलता है</li>
+            <li><strong>pre-push:</strong> पुश से पहले चलता है</li>
+            <li><strong>post-merge:</strong> मर्ज के बाद चलता है</li>
+        </ul>
+        
+        <h4>उदाहरण (pre-commit):</h4>
+        <div class="command-box">
+            #!/bin/sh<br>
+            # लिंटिंग चेक<br>
+            npm run lint<br>
+            <br>
+            # टेस्ट्स रन करें<br>
+            npm test
+        </div>
+    </div>
+
+    <div class="note">
+        <h3>याद रखें:</h3>
+        <p>ये कॉन्फिगरेशन फाइल्स आपके Git वर्कफ्लो को सुचारू और व्यवस्थित बनाने में मदद करती हैं। इन्हें प्रोजेक्ट की शुरुआत में ही सेटअप करें।</p>
+    </div>
 </body>
 </html> 
