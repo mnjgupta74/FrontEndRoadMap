@@ -328,5 +328,136 @@
             <li>कमिट मैसेज में क्या चेंज किया है वो स्पष्ट लिखें</li>
         </ul>
     </div>
+
+    <h2>11. Git Cherry-Pick (विस्तृत गाइड)</h2>
+    
+    <div class="note">
+        <p>Git cherry-pick एक शक्तिशाली कमांड है जो आपको किसी एक कमिट को एक ब्रांच से दूसरी ब्रांच में ले जाने की अनुमति देता है।</p>
+    </div>
+
+    <h3>11.1 Cherry-Pick क्या है?</h3>
+    <div class="example">
+        <p>Cherry-pick का मतलब है किसी एक कमिट को चुनकर उसे दूसरी ब्रांच में ले जाना। यह तब उपयोगी होता है जब:</p>
+        <ul>
+            <li>आप किसी एक फीचर को एक ब्रांच से दूसरी ब्रांच में ले जाना चाहते हैं</li>
+            <li>किसी बग फिक्स को एक ब्रांच से दूसरी ब्रांच में ले जाना चाहते हैं</li>
+            <li>किसी एक कमिट को मर्ज करना चाहते हैं, पूरी ब्रांच को नहीं</li>
+        </ul>
+    </div>
+
+    <h3>11.2 Cherry-Pick का उपयोग कैसे करें?</h3>
+    <div class="example">
+        <h4>बेसिक सिंटैक्स:</h4>
+        <div class="command-box">
+            git cherry-pick &lt;commit-hash&gt;
+        </div>
+        
+        <h4>उदाहरण:</h4>
+        <p>मान लीजिए आपके पास दो ब्रांच हैं:</p>
+        <ul>
+            <li>main (मुख्य ब्रांच)</li>
+            <li>feature/login (लॉगिन फीचर ब्रांच)</li>
+        </ul>
+        
+        <p>आप feature/login ब्रांच में एक बग फिक्स किया है और उसे main ब्रांच में ले जाना चाहते हैं:</p>
+        <div class="command-box">
+            # पहले feature/login ब्रांच में जाएं<br>
+            git checkout feature/login<br>
+            <br>
+            # कमिट हिस्ट्री देखें<br>
+            git log --oneline<br>
+            <br>
+            # मान लीजिए बग फिक्स का कमिट हैश है: abc1234<br>
+            # main ब्रांच पर स्विच करें<br>
+            git checkout main<br>
+            <br>
+            # कमिट को cherry-pick करें<br>
+            git cherry-pick abc1234
+        </div>
+    </div>
+
+    <h3>11.3 Cherry-Pick के विकल्प</h3>
+    <div class="example">
+        <h4>1. कमिट को एडिट करके cherry-pick करना:</h4>
+        <div class="command-box">
+            git cherry-pick -e abc1234
+        </div>
+        
+        <h4>2. कमिट मैसेज को बदले बिना cherry-pick करना:</h4>
+        <div class="command-box">
+            git cherry-pick -x abc1234
+        </div>
+        
+        <h4>3. कई कमिट्स को एक साथ cherry-pick करना:</h4>
+        <div class="command-box">
+            git cherry-pick abc1234 def5678
+        </div>
+    </div>
+
+    <h3>11.4 Cherry-Pick केस स्टडी</h3>
+    <div class="example">
+        <p><strong>सीनारियो:</strong> आपके पास एक वेबसाइट प्रोजेक्ट है जिसमें दो ब्रांच हैं:</p>
+        <ul>
+            <li>main (प्रोडक्शन कोड)</li>
+            <li>staging (टेस्टिंग के लिए)</li>
+        </ul>
+        
+        <p><strong>समस्या:</strong> staging ब्रांच में एक सुरक्षा फिक्स किया गया है जिसे तुरंत main ब्रांच में ले जाना है।</p>
+        
+        <p><strong>समाधान:</strong></p>
+        <div class="command-box">
+            # staging ब्रांच में जाएं<br>
+            git checkout staging<br>
+            <br>
+            # कमिट हिस्ट्री देखें<br>
+            git log --oneline<br>
+            <br>
+            # सुरक्षा फिक्स का कमिट हैश है: 789xyz<br>
+            # main ब्रांच पर स्विच करें<br>
+            git checkout main<br>
+            <br>
+            # कमिट को cherry-pick करें<br>
+            git cherry-pick 789xyz<br>
+            <br>
+            # चेंजेस को रिमोट में पुश करें<br>
+            git push origin main
+        </div>
+    </div>
+
+    <h3>11.5 Cherry-Pick के फायदे</h3>
+    <div class="note">
+        <ul>
+            <li>स्पेसिफिक चेंजेस को टारगेट कर सकते हैं</li>
+            <li>पूरी ब्रांच को मर्ज किए बिना एक कमिट ले सकते हैं</li>
+            <li>क्विक फिक्स को एक ब्रांच से दूसरी ब्रांच में ले जा सकते हैं</li>
+            <li>फ्लेक्सिबल वर्कफ्लो बनाता है</li>
+        </ul>
+    </div>
+
+    <h3>11.6 Cherry-Pick के नुकसान</h3>
+    <div class="warning">
+        <ul>
+            <li>कॉन्फ्लिक्ट्स हो सकते हैं</li>
+            <li>कमिट हिस्ट्री कॉम्प्लेक्स हो सकती है</li>
+            <li>डिपेंडेंसी इश्यूज हो सकते हैं</li>
+            <li>टेस्टिंग जरूरी है</li>
+        </ul>
+    </div>
+
+    <h3>11.7 बेस्ट प्रैक्टिसेज</h3>
+    <div class="note">
+        <ul>
+            <li>हमेशा पहले टेस्ट करें</li>
+            <li>कॉन्फ्लिक्ट्स को तुरंत रिजॉल्व करें</li>
+            <li>क्लियर कमिट मैसेज रखें</li>
+            <li>डिपेंडेंसीज को ध्यान में रखें</li>
+            <li>डॉक्युमेंटेशन अपडेट करें</li>
+        </ul>
+    </div>
+
+    <div class="note">
+        <h3>Remember:</h3>
+        <p>Git is a powerful tool that helps teams work together efficiently. Take time to understand these commands and practice them regularly. When in doubt, always check the status of your repository before making changes.</p>
+    </div>
 </body>
 </html> 
