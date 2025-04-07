@@ -459,5 +459,361 @@
         <h3>Remember:</h3>
         <p>Git is a powerful tool that helps teams work together efficiently. Take time to understand these commands and practice them regularly. When in doubt, always check the status of your repository before making changes.</p>
     </div>
+
+    <h2>12. महत्वपूर्ण Git कमांड्स (Important Git Commands)</h2>
+    
+    <div class="note">
+        <p>यह सेक्शन डेवलपर्स द्वारा सबसे ज्यादा उपयोग किए जाने वाले Git कमांड्स को विस्तार से समझाता है।</p>
+    </div>
+
+    <h3>12.1 Git Merge</h3>
+    <div class="example">
+        <h4>क्या है Git Merge?</h4>
+        <p>Git merge दो ब्रांचों को एक साथ जोड़ने का काम करता है। यह एक ब्रांच के सभी कमिट्स को दूसरी ब्रांच में ले आता है।</p>
+        
+        <h4>बेसिक सिंटैक्स:</h4>
+        <div class="command-box">
+            git merge &lt;branch-name&gt;
+        </div>
+        
+        <h4>उदाहरण:</h4>
+        <div class="command-box">
+            # मान लीजिए आप feature/login ब्रांच को main में मर्ज करना चाहते हैं<br>
+            git checkout main<br>
+            git merge feature/login
+        </div>
+        
+        <h4>महत्वपूर्ण विकल्प:</h4>
+        <div class="command-box">
+            # नो-फास्ट-फॉरवर्ड मर्ज (हमेशा नया कमिट बनाता है)<br>
+            git merge --no-ff feature/login<br>
+            <br>
+            # मर्ज कैंसल करना<br>
+            git merge --abort
+        </div>
+    </div>
+
+    <h3>12.2 Git Pull</h3>
+    <div class="example">
+        <h4>क्या है Git Pull?</h4>
+        <p>Git pull रिमोट रिपॉजिटरी से लेटेस्ट चेंजेस को लोकल रिपॉजिटरी में लाता है। यह git fetch और git merge का कॉम्बिनेशन है।</p>
+        
+        <h4>बेसिक सिंटैक्स:</h4>
+        <div class="command-box">
+            git pull &lt;remote&gt; &lt;branch&gt;
+        </div>
+        
+        <h4>उदाहरण:</h4>
+        <div class="command-box">
+            # मेन ब्रांच से लेटेस्ट चेंजेस लाना<br>
+            git pull origin main<br>
+            <br>
+            # स्पेसिफिक ब्रांच से चेंजेस लाना<br>
+            git pull origin feature/login
+        </div>
+        
+        <h4>महत्वपूर्ण विकल्प:</h4>
+        <div class="command-box">
+            # रिबेस के साथ पुल करना<br>
+            git pull --rebase origin main<br>
+            <br>
+            # फोर्स पुल (सावधानी से उपयोग करें)<br>
+            git pull --force origin main
+        </div>
+    </div>
+
+    <h3>12.3 Git Push</h3>
+    <div class="example">
+        <h4>क्या है Git Push?</h4>
+        <p>Git push लोकल कमिट्स को रिमोट रिपॉजिटरी में अपलोड करता है।</p>
+        
+        <h4>बेसिक सिंटैक्स:</h4>
+        <div class="command-box">
+            git push &lt;remote&gt; &lt;branch&gt;
+        </div>
+        
+        <h4>उदाहरण:</h4>
+        <div class="command-box">
+            # मेन ब्रांच में चेंजेस पुश करना<br>
+            git push origin main<br>
+            <br>
+            # नई ब्रांच पुश करना<br>
+            git push -u origin feature/login
+        </div>
+        
+        <h4>महत्वपूर्ण विकल्प:</h4>
+        <div class="command-box">
+            # फोर्स पुश (सावधानी से उपयोग करें)<br>
+            git push --force origin main<br>
+            <br>
+            # टैग्स पुश करना<br>
+            git push origin --tags
+        </div>
+    </div>
+
+    <h3>12.4 Git Stash</h3>
+    <div class="example">
+        <h4>क्या है Git Stash?</h4>
+        <p>Git stash अस्थायी रूप से आपके बदलावों को स्टोर करता है ताकि आप बिना कमिट किए दूसरी ब्रांच पर स्विच कर सकें।</p>
+        
+        <h4>बेसिक सिंटैक्स:</h4>
+        <div class="command-box">
+            # बदलावों को स्टैश करना<br>
+            git stash<br>
+            <br>
+            # स्टैश किए गए बदलावों को वापस लाना<br>
+            git stash pop<br>
+            <br>
+            # स्टैश लिस्ट देखना<br>
+            git stash list
+        </div>
+        
+        <h4>उदाहरण:</h4>
+        <div class="command-box">
+            # मान लीजिए आप feature/login पर काम कर रहे हैं<br>
+            # और तुरंत main ब्रांच पर एक बग फिक्स करना है<br>
+            <br>
+            # पहले करंट चेंजेस को स्टैश करें<br>
+            git stash<br>
+            <br>
+            # main ब्रांच पर स्विच करें<br>
+            git checkout main<br>
+            <br>
+            # बग फिक्स करें और कमिट करें<br>
+            git add .<br>
+            git commit -m "Fixed critical bug"<br>
+            <br>
+            # वापस feature/login पर जाएं<br>
+            git checkout feature/login<br>
+            <br>
+            # स्टैश किए गए चेंजेस को वापस लाएं<br>
+            git stash pop
+        </div>
+        
+        <h4>महत्वपूर्ण विकल्प:</h4>
+        <div class="command-box">
+            # स्टैश को नाम देना<br>
+            git stash save "login-page-changes"<br>
+            <br>
+            # स्पेसिफिक स्टैश को एप्लाई करना<br>
+            git stash apply stash@{2}<br>
+            <br>
+            # स्टैश को डिलीट करना<br>
+            git stash drop stash@{0}
+        </div>
+    </div>
+
+    <h3>12.5 अन्य महत्वपूर्ण कमांड्स</h3>
+    <div class="example">
+        <h4>1. Git Reset</h4>
+        <div class="command-box">
+            # लास्ट कमिट को अनडू करना<br>
+            git reset --soft HEAD~1<br>
+            <br>
+            # स्टेजिंग एरिया को क्लियर करना<br>
+            git reset HEAD<br>
+            <br>
+            # वर्किंग डायरेक्टरी को क्लियर करना<br>
+            git reset --hard HEAD
+        </div>
+
+        <h4>2. Git Revert</h4>
+        <div class="command-box">
+            # किसी कमिट को रिवर्ट करना<br>
+            git revert &lt;commit-hash&gt;
+        </div>
+
+        <h4>3. Git Rebase</h4>
+        <div class="command-box">
+            # इंटरैक्टिव रीबेस<br>
+            git rebase -i HEAD~3
+        </div>
+
+        <h4>4. Git Log</h4>
+        <div class="command-box">
+            # ग्राफिकल लॉग<br>
+            git log --graph --oneline --all<br>
+            <br>
+            # स्पेसिफिक फाइल का हिस्ट्री<br>
+            git log -p filename
+        </div>
+    </div>
+
+    <h3>12.6 बेस्ट प्रैक्टिसेज</h3>
+    <div class="note">
+        <ul>
+            <li>हमेशा पुल करने से पहले स्टैश करें</li>
+            <li>फोर्स पुश/पुल का उपयोग सावधानी से करें</li>
+            <li>क्लियर कमिट मैसेज लिखें</li>
+            <li>रेगुलर बैकअप लें</li>
+            <li>कॉन्फ्लिक्ट्स को तुरंत रिजॉल्व करें</li>
+        </ul>
+    </div>
+
+    <div class="note">
+        <h3>Remember:</h3>
+        <p>Git is a powerful tool that helps teams work together efficiently. Take time to understand these commands and practice them regularly. When in doubt, always check the status of your repository before making changes.</p>
+    </div>
+
+    <h2>13. Git बेस्ट प्रैक्टिसेज (विस्तृत गाइड)</h2>
+    
+    <div class="note">
+        <p>यह सेक्शन Git के सबसे महत्वपूर्ण बेस्ट प्रैक्टिसेज को विस्तार से समझाता है।</p>
+    </div>
+
+    <h3>13.1 पुल करने से पहले स्टैश करें</h3>
+    <div class="example">
+        <h4>क्यों जरूरी है?</h4>
+        <p>जब आप किसी ब्रांच पर काम कर रहे होते हैं और दूसरी ब्रांच से चेंजेस लाना चाहते हैं, तो आपके बिना कमिट किए गए चेंजेस कॉन्फ्लिक्ट कर सकते हैं।</p>
+        
+        <h4>कैसे करें?</h4>
+        <div class="command-box">
+            # पहले अपने चेंजेस को स्टैश करें<br>
+            git stash<br>
+            <br>
+            # अब सुरक्षित रूप से पुल करें<br>
+            git pull origin main<br>
+            <br>
+            # स्टैश किए गए चेंजेस को वापस लाएं<br>
+            git stash pop
+        </div>
+        
+        <h4>उदाहरण:</h4>
+        <div class="example">
+            <p>मान लीजिए आप feature/login ब्रांच पर काम कर रहे हैं और main ब्रांच से नए चेंजेस लाने हैं:</p>
+            <div class="command-box">
+                # पहले चेंजेस को स्टैश करें<br>
+                git stash save "login-page-changes"<br>
+                <br>
+                # मेन ब्रांच से चेंजेस लाएं<br>
+                git pull origin main<br>
+                <br>
+                # स्टैश किए गए चेंजेस को वापस लाएं<br>
+                git stash pop
+            </div>
+        </div>
+    </div>
+
+    <h3>13.2 फोर्स पुश/पुल का सावधानी से उपयोग</h3>
+    <div class="warning">
+        <h4>क्या है फोर्स पुश/पुल?</h4>
+        <p>फोर्स पुश/पुल Git हिस्ट्री को ओवरराइड कर देता है, जो खतरनाक हो सकता है।</p>
+        
+        <h4>कब उपयोग करें?</h4>
+        <ul>
+            <li>जब आप पूरी तरह से सुनिश्चित हों कि आपका कोड सही है</li>
+            <li>जब आपको पता हो कि इससे किसी और का काम प्रभावित नहीं होगा</li>
+            <li>जब आपके पास कोई और विकल्प न हो</li>
+        </ul>
+        
+        <h4>सुरक्षित तरीका:</h4>
+        <div class="command-box">
+            # पहले बैकअप बनाएं<br>
+            git branch backup-branch<br>
+            <br>
+            # फिर फोर्स पुश करें<br>
+            git push --force origin main
+        </div>
+    </div>
+
+    <h3>13.3 क्लियर कमिट मैसेज लिखें</h3>
+    <div class="example">
+        <h4>अच्छे कमिट मैसेज की विशेषताएं:</h4>
+        <ul>
+            <li>संक्षिप्त और स्पष्ट</li>
+            <li>क्या बदलाव किया है, यह बताता हो</li>
+            <li>क्यों बदलाव किया है, यह बताता हो</li>
+            <li>टाइपो-फ्री हो</li>
+        </ul>
+        
+        <h4>उदाहरण:</h4>
+        <div class="command-box">
+            # बुरा उदाहरण<br>
+            git commit -m "fixed bug"<br>
+            <br>
+            # अच्छा उदाहरण<br>
+            git commit -m "Fix: Login form validation not working on mobile devices"<br>
+            <br>
+            # बेहतर उदाहरण<br>
+            git commit -m "Fix: Login form validation not working on mobile devices\n\n- Added mobile-specific validation rules\n- Fixed touch event handling\n- Updated error messages for mobile users"
+        </div>
+    </div>
+
+    <h3>13.4 रेगुलर बैकअप लें</h3>
+    <div class="example">
+        <h4>बैकअप के तरीके:</h4>
+        <ol>
+            <li><strong>ब्रांच बैकअप:</strong>
+                <div class="command-box">
+                    # नई बैकअप ब्रांच बनाएं<br>
+                    git branch backup-2024-04-07<br>
+                    <br>
+                    # बैकअप को रिमोट में पुश करें<br>
+                    git push origin backup-2024-04-07
+                </div>
+            </li>
+            <li><strong>टैग बैकअप:</strong>
+                <div class="command-box">
+                    # वर्जन टैग बनाएं<br>
+                    git tag v1.0.0-backup<br>
+                    <br>
+                    # टैग को रिमोट में पुश करें<br>
+                    git push origin v1.0.0-backup
+                </div>
+            </li>
+        </ol>
+        
+        <h4>बैकअप शेड्यूल:</h4>
+        <ul>
+            <li>हर दिन काम खत्म करने से पहले</li>
+            <li>मेजर चेंजेस के बाद</li>
+            <li>रिलीज से पहले</li>
+        </ul>
+    </div>
+
+    <h3>13.5 कॉन्फ्लिक्ट्स को तुरंत रिजॉल्व करें</h3>
+    <div class="example">
+        <h4>कॉन्फ्लिक्ट रिजॉल्यूशन स्टेप्स:</h4>
+        <ol>
+            <li><strong>कॉन्फ्लिक्ट को पहचानें:</strong>
+                <div class="command-box">
+                    git status
+                </div>
+            </li>
+            <li><strong>कॉन्फ्लिक्ट वाली फाइल्स को एडिट करें:</strong>
+                <div class="command-box">
+                    # कॉन्फ्लिक्ट मार्कर्स को देखें<br>
+                    <<<<<<< HEAD<br>
+                    your changes<br>
+                    =======<br>
+                    their changes<br>
+                    >>>>>>> branch-name
+                </div>
+            </li>
+            <li><strong>चेंजेस को स्टेज करें:</strong>
+                <div class="command-box">
+                    git add conflicted-file.txt
+                </div>
+            </li>
+            <li><strong>कमिट करें:</strong>
+                <div class="command-box">
+                    git commit -m "Resolve merge conflicts in login form"
+                </div>
+            </li>
+        </ol>
+        
+        <h4>कॉन्फ्लिक्ट रिजॉल्यूशन टिप्स:</h4>
+        <ul>
+            <li>कॉन्फ्लिक्ट आने पर तुरंत एक्शन लें</li>
+            <li>टीम के साथ कम्युनिकेट करें</li>
+            <li>दोनों पक्षों के चेंजेस को समझें</li>
+            <li>टेस्ट करें कि सब कुछ ठीक काम कर रहा है</li>
+        </ul>
+    </div>
+
+    <div class="note">
+        <h3>याद रखें:</h3>
+        <p>ये बेस्ट प्रैक्टिसेज आपके और आपकी टीम के काम को सुरक्षित और व्यवस्थित रखने में मदद करेंगे। इन्हें नियमित रूप से फॉलो करें और टीम के साथ शेयर करें।</p>
+    </div>
 </body>
 </html> 
