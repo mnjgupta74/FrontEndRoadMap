@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Guards - हिंदी में समझें</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Angular Guards - हिंदी में समझें</h1>
+
+        <div class="section">
+            <h2>1. Guards क्या होते हैं?</h2>
+            <p>Guards Angular में एक प्रकार के सुरक्षा कवच होते हैं जो यह निर्धारित करते हैं कि:</p>
+            <ul>
+                <li>क्या कोई यूजर किसी रूट पर जा सकता है?</li>
+                <li>क्या कोई यूजर किसी रूट से बाहर जा सकता है?</li>
+                <li>क्या कोई रूट लोड किया जा सकता है?</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. Guards के प्रकार</h2>
+            <ol>
+                <li><strong>CanActivate</strong>: रूट पर जाने से पहले चेक करता है</li>
+                <li><strong>CanDeactivate</strong>: रूट से बाहर जाने से पहले चेक करता है</li>
+                <li><strong>CanLoad</strong>: लेजी लोडिंग से पहले चेक करता है</li>
+                <li><strong>Resolve</strong>: रूट एक्टिवेट होने से पहले डेटा लोड करता है</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>3. CanActivate Guard उदाहरण</h2>
+            <div class="example">
+                <h3>Auth Guard Implementation</h3>
+                <pre><code>// auth.guard.ts
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+import { AuthService } from './auth.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanActivate {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  canActivate(): boolean {
+    // अगर यूजर लॉगिन है
+    if (this.authService.isLoggedIn()) {
+      return true;
+    }
+    
+    // अगर यूजर लॉगिन नहीं है, तो लॉगिन पेज पर भेजें
+    this.router.navigate(['/login']);
+    return false;
+  }
+}</code></pre>
+
+                <h3>रूट्स में उपयोग</h3>
+                <pre><code>// app-routing.module.ts
+const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { 
+    path: 'dashboard', 
+    component: DashboardComponent,
+    canActivate: [AuthGuard]  // सुरक्षित रूट
+  }
+];</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. CanDeactivate Guard उदाहरण</h2>
+            <div class="example">
+                <h3>Unsaved Changes Guard</h3>
+                <pre><code>// unsaved-changes.guard.ts
+import { Injectable } from '@angular/core';
+import { CanDeactivate } from '@angular/router';
+import { Observable } from 'rxjs';
+
+export interface CanComponentDeactivate {
+  canDeactivate: () => Observable&lt;boolean&gt; | Promise&lt;boolean&gt; | boolean;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UnsavedChangesGuard implements CanDeactivate&lt;CanComponentDeactivate&gt; {
+  canDeactivate(component: CanComponentDeactivate): Observable&lt;boolean&gt; | Promise&lt;boolean&gt; | boolean {
+    return component.canDeactivate ? component.canDeactivate() : true;
+  }
+}</code></pre>
+
+                <h3>कंपोनेंट में उपयोग</h3>
+                <pre><code>// edit-profile.component.ts
+export class EditProfileComponent implements CanComponentDeactivate {
+  // फॉर्म में बदलाव हुए हैं या नहीं
+  hasUnsavedChanges = false;
+
+  canDeactivate(): boolean {
+    if (this.hasUnsavedChanges) {
+      return confirm('क्या आप वाकई इस पेज से बाहर जाना चाहते हैं? सभी बदलाव खो जाएंगे।');
+    }
+    return true;
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. CanLoad Guard उदाहरण</h2>
+            <div class="example">
+                <h3>Feature Module Loading Guard</h3>
+                <pre><code>// admin.guard.ts
+import { Injectable } from '@angular/core';
+import { CanLoad, Route, Router } from '@angular/router';
+import { AuthService } from './auth.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AdminGuard implements CanLoad {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  canLoad(route: Route): boolean {
+    // चेक करें कि यूजर एडमिन है या नहीं
+    if (this.authService.isAdmin()) {
+      return true;
+    }
+    
+    // अगर एडमिन नहीं है तो होम पेज पर भेजें
+    this.router.navigate(['/home']);
+    return false;
+  }
+}</code></pre>
+
+                <h3>लेजी लोडिंग में उपयोग</h3>
+                <pre><code>// app-routing.module.ts
+const routes: Routes = [
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
+    canLoad: [AdminGuard]
+  }
+];</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. Resolve Guard उदाहरण</h2>
+            <div class="example">
+                <h3>User Data Resolver</h3>
+                <pre><code>// user.resolver.ts
+import { Injectable } from '@angular/core';
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+import { UserService } from './user.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserResolver implements Resolve&lt;any&gt; {
+  constructor(private userService: UserService) {}
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable&lt;any&gt; {
+    // रूट एक्टिवेट होने से पहले यूजर डेटा लोड करें
+    return this.userService.getUser(route.params['id']);
+  }
+}</code></pre>
+
+                <h3>रूट्स में उपयोग</h3>
+                <pre><code>// app-routing.module.ts
+const routes: Routes = [
+  {
+    path: 'user/:id',
+    component: UserProfileComponent,
+    resolve: {
+      userData: UserResolver
+    }
+  }
+];</code></pre>
+
+                <h3>कंपोनेंट में डेटा का उपयोग</h3>
+                <pre><code>// user-profile.component.ts
+export class UserProfileComponent implements OnInit {
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    // रिजॉल्वर से डेटा प्राप्त करें
+    this.route.data.subscribe(data => {
+      this.user = data.userData;
+    });
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>महत्वपूर्ण बिंदु:</strong>
+            <ul>
+                <li>Guards सुरक्षा और यूजर एक्सपीरियंस के लिए महत्वपूर्ण हैं</li>
+                <li>हर प्रकार के Guard का अपना विशेष उपयोग है</li>
+                <li>Guards के बिना अनधिकृत एक्सेस हो सकता है</li>
+                <li>Guards डेटा लोडिंग को ऑप्टिमाइज करते हैं</li>
+                <li>Guards यूजर को अनचाहे बदलावों से बचाते हैं</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html> 

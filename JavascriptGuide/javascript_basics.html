@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript बेसिक्स</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JavaScript बेसिक्स</h1>
+
+        <div class="section">
+            <h2>1. JavaScript क्या है?</h2>
+            <p>JavaScript एक प्रोग्रामिंग भाषा है जो वेब डेवलपमेंट के लिए बहुत महत्वपूर्ण है। यह एक डायनामिक और फ्लेक्सिबल भाषा है जो:</p>
+            <ul>
+                <li>वेब पेजेज को इंटरैक्टिव बनाती है</li>
+                <li>यूजर इनपुट को हैंडल करती है</li>
+                <li>डेटा को मैनिपुलेट करती है</li>
+                <li>API कॉल्स करती है</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. वेरिएबल्स और डेटा टाइप्स</h2>
+            <h3>वेरिएबल्स डिक्लेरेशन:</h3>
+            <pre><code>// let का उपयोग
+let name = "John";
+
+// const का उपयोग
+const age = 25;
+
+// var का उपयोग (पुराना तरीका)
+var isStudent = true;</code></pre>
+
+            <h3>डेटा टाइप्स:</h3>
+            <ul>
+                <li><strong>String:</strong> टेक्स्ट डेटा</li>
+                <li><strong>Number:</strong> नंबरिक डेटा</li>
+                <li><strong>Boolean:</strong> true/false</li>
+                <li><strong>Array:</strong> लिस्ट ऑफ वैल्यूज</li>
+                <li><strong>Object:</strong> की-वैल्यू पेयर्स</li>
+                <li><strong>null:</strong> खाली वैल्यू</li>
+                <li><strong>undefined:</strong> अनडिफाइंड वैल्यू</li>
+            </ul>
+
+            <div class="example">
+                <h4>उदाहरण:</h4>
+                <pre><code>// String
+let message = "Hello World";
+
+// Number
+let number = 42;
+
+// Boolean
+let isActive = true;
+
+// Array
+let fruits = ["Apple", "Banana", "Orange"];
+
+// Object
+let person = {
+    name: "John",
+    age: 30,
+    isStudent: false
+};</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. ऑपरेटर्स</h2>
+            <h3>मुख्य ऑपरेटर्स:</h3>
+            <ul>
+                <li><strong>अरिथमेटिक:</strong> +, -, *, /, %</li>
+                <li><strong>कम्पेरिजन:</strong> ==, ===, !=, !==, >, <, >=, <=</li>
+                <li><strong>लॉजिकल:</strong> &&, ||, !</li>
+                <li><strong>असाइनमेंट:</strong> =, +=, -=, *=, /=</li>
+            </ul>
+
+            <div class="example">
+                <h4>उदाहरण:</h4>
+                <pre><code>// अरिथमेटिक ऑपरेटर्स
+let a = 10;
+let b = 5;
+console.log(a + b); // 15
+console.log(a - b); // 5
+console.log(a * b); // 50
+console.log(a / b); // 2
+
+// कम्पेरिजन ऑपरेटर्स
+console.log(a > b);  // true
+console.log(a === b); // false
+
+// लॉजिकल ऑपरेटर्स
+console.log(true && false); // false
+console.log(true || false); // true</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. कंट्रोल स्ट्रक्चर्स</h2>
+            <h3>if-else स्टेटमेंट:</h3>
+            <pre><code>if (condition) {
+    // कोड
+} else if (anotherCondition) {
+    // कोड
+} else {
+    // कोड
+}</code></pre>
+
+            <h3>लूप्स:</h3>
+            <pre><code>// for लूप
+for (let i = 0; i < 5; i++) {
+    console.log(i);
+}
+
+// while लूप
+while (condition) {
+    // कोड
+}
+
+// do-while लूप
+do {
+    // कोड
+} while (condition);</code></pre>
+
+            <div class="example">
+                <h4>उदाहरण:</h4>
+                <pre><code>// if-else उदाहरण
+let age = 18;
+if (age >= 18) {
+    console.log("वोट कर सकते हैं");
+} else {
+    console.log("वोट नहीं कर सकते");
+}
+
+// for लूप उदाहरण
+for (let i = 1; i <= 5; i++) {
+    console.log(`संख्या: ${i}`);
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. फंक्शंस</h2>
+            <h3>फंक्शन डिक्लेरेशन:</h3>
+            <pre><code>// बेसिक फंक्शन
+function add(a, b) {
+    return a + b;
+}
+
+// एरो फंक्शन
+const multiply = (a, b) => a * b;
+
+// एनॉनिमस फंक्शन
+const divide = function(a, b) {
+    return a / b;
+};</code></pre>
+
+            <div class="example">
+                <h4>उदाहरण:</h4>
+                <pre><code>// फंक्शन उदाहरण
+function greet(name) {
+    return `नमस्ते ${name}!`;
+}
+
+// एरो फंक्शन उदाहरण
+const square = (num) => num * num;
+
+console.log(greet("राहुल")); // नमस्ते राहुल!
+console.log(square(5)); // 25</code></pre>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>नोट:</strong> यह एक बेसिक ट्यूटोरियल है। आगे के टॉपिक्स जैसे DOM मैनिपुलेशन, एरर हैंडलिंग, प्रॉमिसेज, और एसिंक्रोनस प्रोग्रामिंग के लिए अगले पेजेज देखें।
+        </div>
+    </div>
+</body>
+</html> 

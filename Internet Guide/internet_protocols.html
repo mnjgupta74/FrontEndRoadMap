@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>इंटरनेट प्रोटोकॉल्स - विस्तृत मार्गदर्शिका</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #2d3748;
+            border-bottom: 2px solid #4299e1;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 1.8rem;
+            color: #2b6cb0;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 4px solid #4299e1;
+        }
+        h3 {
+            font-size: 1.4rem;
+            color: #3182ce;
+            margin-top: 25px;
+        }
+        p, li {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        code {
+            background: #edf2f7;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            font-size: 0.9em;
+        }
+        .example-box {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .info-box {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .protocol-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .protocol-card h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        .port {
+            display: inline-block;
+            background: #4299e1;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>इंटरनेट प्रोटोकॉल्स (Internet Protocols)</h1>
+        
+        <div class="info-box">
+            <p><strong>प्रोटोकॉल क्या है?</strong> इंटरनेट प्रोटोकॉल्स डेटा आदान-प्रदान के लिए नियमों और मानकों का एक सेट है। ये नियम बताते हैं कि नेटवर्क पर डिवाइसेस आपस में कैसे संवाद करें।</p>
+        </div>
+
+        <section>
+            <h2>1. TCP/IP (Transmission Control Protocol/Internet Protocol)</h2>
+            <p>TCP/IP इंटरनेट का मूल प्रोटोकॉल है। यह आधुनिक इंटरनेट की रीढ़ है और निम्नलिखित लेयर्स से बना है:</p>
+            
+            <ul>
+                <li><strong>एप्लिकेशन लेयर:</strong> HTTP, FTP, SMTP, DNS आदि</li>
+                <li><strong>ट्रांसपोर्ट लेयर:</strong> TCP, UDP</li>
+                <li><strong>इंटरनेट लेयर:</strong> IP, ICMP</li>
+                <li><strong>नेटवर्क इंटरफेस लेयर:</strong> Ethernet, Wi-Fi आदि</li>
+            </ul>
+
+            <div class="example-box">
+                <h3>उदाहरण - TCP/IP कैसे काम करता है:</h3>
+                <p>जब आप वेबसाइट खोलते हैं:</p>
+                <ol>
+                    <li><strong>एप्लिकेशन लेयर:</strong> आपका ब्राउज़र HTTP रिक्वेस्ट तैयार करता है</li>
+                    <li><strong>ट्रांसपोर्ट लेयर:</strong> TCP डेटा को सेगमेंट्स में विभाजित करता है और सीक्वेंस नंबर जोड़ता है</li>
+                    <li><strong>इंटरनेट लेयर:</strong> IP प्रत्येक सेगमेंट को पैकेट्स में बदलता है और स्रोत/गंतव्य IP एड्रेस जोड़ता है</li>
+                    <li><strong>नेटवर्क इंटरफेस लेयर:</strong> पैकेट्स को फिजिकल नेटवर्क पर भेजता है</li>
+                    <li>सर्वर पर, डेटा इन्हीं लेयर्स से विपरीत क्रम में गुजरता है</li>
+                </ol>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. HTTP और HTTPS (HyperText Transfer Protocol)</h2>
+            
+            <div class="protocol-card">
+                <h3>HTTP <span class="port">पोर्ट 80</span></h3>
+                <p>HTTP वेब पेजेस और रिसोर्सेज (इमेजेस, CSS, JavaScript) को ट्रांसफर करने के लिए उपयोग किया जाने वाला प्रोटोकॉल है।</p>
+                
+                <div class="example-box">
+                    <h3>उदाहरण - HTTP रिक्वेस्ट और रिस्पांस:</h3>
+                    <p><strong>HTTP रिक्वेस्ट:</strong></p>
+                    <code>
+                        GET /index.html HTTP/1.1<br>
+                        Host: www.example.com<br>
+                        User-Agent: Mozilla/5.0<br>
+                        Accept: text/html
+                    </code>
+                    <p><strong>HTTP रिस्पांस:</strong></p>
+                    <code>
+                        HTTP/1.1 200 OK<br>
+                        Date: Mon, 23 May 2023 22:38:34 GMT<br>
+                        Content-Type: text/html<br>
+                        Content-Length: 138<br>
+                        <br>
+                        &lt;html&gt;<br>
+                        &lt;body&gt;<br>
+                        &lt;h1&gt;Hello, World!&lt;/h1&gt;<br>
+                        &lt;/body&gt;<br>
+                        &lt;/html&gt;
+                    </code>
+                </div>
+            </div>
+
+            <div class="protocol-card">
+                <h3>HTTPS <span class="port">पोर्ट 443</span></h3>
+                <p>HTTPS, HTTP का सुरक्षित संस्करण है। यह SSL/TLS का उपयोग करके डेटा को एन्क्रिप्ट करता है।</p>
+                
+                <div class="example-box">
+                    <h3>उदाहरण - HTTPS कैसे काम करता है:</h3>
+                    <ol>
+                        <li>जब आप <code>https://bank.com</code> खोलते हैं, आपका ब्राउज़र और बैंक का सर्वर SSL/TLS हैंडशेक करते हैं</li>
+                        <li>सर्वर अपना SSL सर्टिफिकेट भेजता है</li>
+                        <li>ब्राउज़र सर्टिफिकेट को वेरिफाई करता है और एक सिमेट्रिक की (session key) जनरेट करता है</li>
+                        <li>ब्राउज़र सर्वर के पब्लिक की से session key को एन्क्रिप्ट करके सर्वर को भेजता है</li>
+                        <li>सर्वर अपनी प्राइवेट की से इसे डिक्रिप्ट करता है</li>
+                        <li>अब दोनों के पास एक शेयर्ड सिक्रेट है, जिससे एन्क्रिप्टेड कम्युनिकेशन होता है</li>
+                    </ol>
+                    <p>इस तरह, अगर कोई आपके डेटा को इंटरसेप्ट करता है, तो वह एन्क्रिप्शन के कारण उसे पढ़ नहीं सकता।</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>3. FTP (File Transfer Protocol)</h2>
+            
+            <div class="protocol-card">
+                <h3>FTP <span class="port">पोर्ट 21 (कंट्रोल), 20 (डेटा)</span></h3>
+                <p>FTP सर्वर और क्लाइंट के बीच फाइल्स ट्रांसफर करने के लिए उपयोग किया जाता है।</p>
+                
+                <div class="example-box">
+                    <h3>उदाहरण - FTP द्वारा फाइल अपलोड/डाउनलोड:</h3>
+                    <p><strong>FTP कमांड्स:</strong></p>
+                    <code>
+                        USER username<br>
+                        PASS password<br>
+                        PWD (वर्तमान डायरेक्टरी दिखाना)<br>
+                        LIST (फाइल्स की लिस्ट देखना)<br>
+                        RETR filename (फाइल डाउनलोड करना)<br>
+                        STOR filename (फाइल अपलोड करना)
+                    </code>
+                    <p><strong>प्रैक्टिकल उदाहरण:</strong></p>
+                    <p>वेब डेवलपर अक्सर FTP का उपयोग करके वेबसाइट फाइल्स (HTML, CSS, JavaScript) को वेब होस्टिंग सर्वर पर अपलोड करते हैं। FileZilla जैसे FTP क्लाइंट्स इस प्रक्रिया को आसान बनाते हैं।</p>
+                </div>
+            </div>
+            
+            <div class="protocol-card">
+                <h3>SFTP (Secure File Transfer Protocol) <span class="port">पोर्ट 22</span></h3>
+                <p>SFTP, FTP का सुरक्षित संस्करण है जो SSH (Secure Shell) का उपयोग करता है।</p>
+                
+                <div class="info-box">
+                    <p>SFTP में सभी फाइल ट्रांसफर एन्क्रिप्टेड होते हैं, जबकि FTP में डेटा प्लेन टेक्स्ट में भेजा जाता है।</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>4. SMTP, POP3, और IMAP (ईमेल प्रोटोकॉल्स)</h2>
+            
+            <div class="protocol-card">
+                <h3>SMTP (Simple Mail Transfer Protocol) <span class="port">पोर्ट 25</span></h3>
+                <p>SMTP ईमेल भेजने के लिए उपयोग किया जाता है।</p>
+                
+                <div class="example-box">
+                    <h3>उदाहरण - SMTP द्वारा ईमेल भेजना:</h3>
+                    <code>
+                        MAIL FROM: &lt;sender@example.com&gt;<br>
+                        RCPT TO: &lt;recipient@example.com&gt;<br>
+                        DATA<br>
+                        Subject: Hello<br>
+                        <br>
+                        This is a test email.<br>
+                        .<br>
+                        QUIT
+                    </code>
+                    <p>जब आप जीमेल पर Send बटन दबाते हैं, तो आपका ईमेल क्लाइंट SMTP सर्वर से कनेक्ट करता है और उपरोक्त जैसे कमांड्स का उपयोग करके मेसेज भेजता है।</p>
+                </div>
+            </div>
+            
+            <div class="protocol-card">
+                <h3>POP3 (Post Office Protocol) <span class="port">पोर्ट 110</span></h3>
+                <p>POP3 ईमेल डाउनलोड करने के लिए उपयोग किया जाता है। यह मेसेज को सर्वर से डाउनलोड करके डिलीट कर देता है।</p>
+                
+                <div class="example-box">
+                    <h3>उदाहरण - POP3 द्वारा ईमेल प्राप्त करना:</h3>
+                    <code>
+                        USER username<br>
+                        PASS password<br>
+                        STAT (मेसेज की संख्या और साइज)<br>
+                        LIST (मेसेज की सूची)<br>
+                        RETR 1 (पहला मेसेज डाउनलोड करना)<br>
+                        DELE 1 (पहला मेसेज डिलीट करना)<br>
+                        QUIT
+                    </code>
+                </div>
+            </div>
+            
+            <div class="protocol-card">
+                <h3>IMAP (Internet Message Access Protocol) <span class="port">पोर्ट 143</span></h3>
+                <p>IMAP भी ईमेल प्राप्त करने के लिए है, लेकिन यह मेसेज को सर्वर पर रखता है और मल्टीपल डिवाइसेस से एक्सेस की अनुमति देता है।</p>
+                
+                <div class="example-box">
+                    <h3>उदाहरण - IMAP vs POP3:</h3>
+                    <p><strong>POP3 सिनेरियो:</strong> आप ऑफिस के कंप्यूटर से ईमेल चेक करते हैं और POP3 द्वारा सभी मेसेज डाउनलोड करते हैं। घर पहुंचकर लैपटॉप से चेक करते हैं, लेकिन वहां कोई मेसेज नहीं दिखता क्योंकि वे सर्वर से डिलीट हो चुके हैं।</p>
+                    <p><strong>IMAP सिनेरियो:</strong> आप ऑफिस में ईमेल चेक करते हैं, कुछ मेसेज पढ़ते हैं और फोल्डर में ऑर्गेनाइज करते हैं। घर पहुंचकर लैपटॉप से चेक करते हैं, और सभी मेसेज और फोल्डर्स वैसे ही दिखते हैं, क्योंकि IMAP सभी चेंजेस को सर्वर पर सिंक रखता है।</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>5. DNS (Domain Name System)</h2>
+            
+            <div class="protocol-card">
+                <h3>DNS <span class="port">पोर्ट 53</span></h3>
+                <p>DNS डोमेन नेम्स (जैसे google.com) को IP एड्रेस में बदलता है।</p>
+                
+                <div class="example-box">
+                    <h3>उदाहरण - DNS लुकअप प्रक्रिया:</h3>
+                    <ol>
+                        <li>आप ब्राउज़र में <code>www.example.com</code> टाइप करते हैं</li>
+                        <li>आपका कंप्यूटर लोकल DNS रिज़ॉल्वर को क्वेरी भेजता है</li>
+                        <li>DNS रिज़ॉल्वर रूट DNS सर्वर से पूछता है</li>
+                        <li>रूट सर्वर कहता है: ".com DNS सर्वर्स से पूछो"</li>
+                        <li>.com DNS सर्वर कहता है: "example.com के नेमसर्वर्स से पूछो"</li>
+                        <li>example.com का DNS सर्वर फाइनल आंसर देता है: "www.example.com का IP 93.184.216.34 है"</li>
+                        <li>अब आपका ब्राउज़र 93.184.216.34 से कनेक्ट करता है</li>
+                    </ol>
+                    <p><strong>प्रैक्टिकल उदाहरण:</strong> आप कमांड प्रॉम्प्ट या टर्मिनल में <code>nslookup google.com</code> टाइप करके किसी भी डोमेन का IP एड्रेस पता कर सकते हैं।</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>6. अन्य महत्वपूर्ण प्रोटोकॉल्स</h2>
+            
+            <div class="protocol-card">
+                <h3>DHCP (Dynamic Host Configuration Protocol) <span class="port">पोर्ट 67/68</span></h3>
+                <p>DHCP नेटवर्क पर डिवाइसेस को IP एड्रेस असाइन करता है।</p>
+                
+                <div class="example-box">
+                    <h3>उदाहरण:</h3>
+                    <p>जब आप अपने लैपटॉप को Wi-Fi से कनेक्ट करते हैं, DHCP निम्नलिखित प्रक्रिया करता है:</p>
+                    <ol>
+                        <li><strong>DISCOVER:</strong> आपका लैपटॉप ब्रॉडकास्ट रिक्वेस्ट भेजता है "क्या कोई DHCP सर्वर है?"</li>
+                        <li><strong>OFFER:</strong> राउटर का DHCP सर्वर जवाब देता है "हां, मैं तुम्हें IP 192.168.1.5 दे सकता हूं"</li>
+                        <li><strong>REQUEST:</strong> लैपटॉप कहता है "हां, मुझे 192.168.1.5 दीजिए"</li>
+                        <li><strong>ACK:</strong> DHCP सर्वर IP एड्रेस और अन्य सेटिंग्स (गेटवे, DNS सर्वर) को कन्फर्म करता है</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="protocol-card">
+                <h3>SSH (Secure Shell) <span class="port">पोर्ट 22</span></h3>
+                <p>SSH एक सुरक्षित प्रोटोकॉल है जो रिमोट लॉगिन और कमांड एक्जीक्यूशन के लिए उपयोग किया जाता है।</p>
+                
+                <div class="example-box">
+                    <h3>उदाहरण:</h3>
+                    <p>वेब डेवलपर्स और सिस्टम एडमिनिस्ट्रेटर्स अक्सर SSH का उपयोग करके रिमोट सर्वर पर लॉगिन करते हैं:</p>
+                    <code>
+                        ssh username@server.example.com
+                    </code>
+                    <p>इस तरह वे कमांड लाइन से सर्वर की फाइल्स और सेटिंग्स को मैनेज कर सकते हैं।</p>
+                </div>
+            </div>
+            
+            <div class="protocol-card">
+                <h3>WebSocket <span class="port">पोर्ट 80/443</span></h3>
+                <p>WebSocket क्लाइंट और सर्वर के बीच रियल-टाइम, बिड्रिक्शनल कम्युनिकेशन प्रोवाइड करता है।</p>
+                
+                <div class="example-box">
+                    <h3>उदाहरण:</h3>
+                    <p>जब आप WhatsApp Web या किसी लाइव चैट एप्लिकेशन का उपयोग करते हैं, तो WebSocket आपके ब्राउज़र और सर्वर के बीच एक ओपन कनेक्शन मेंटेन करता है। इससे बिना पेज रिफ्रेश किए मेसेज रियल-टाइम में अपडेट होते हैं।</p>
+                    <p>जावास्क्रिप्ट में WebSocket कनेक्शन का उदाहरण:</p>
+                    <code>
+                        const socket = new WebSocket('ws://example.com/socket');<br>
+                        <br>
+                        socket.onopen = () => {<br>
+                        &nbsp;&nbsp;console.log('Connected!');<br>
+                        &nbsp;&nbsp;socket.send('Hello Server!');<br>
+                        };<br>
+                        <br>
+                        socket.onmessage = (event) => {<br>
+                        &nbsp;&nbsp;console.log('Message from server:', event.data);<br>
+                        };
+                    </code>
+                </div>
+            </div>
+        </section>
+
+        <div class="info-box">
+            <h3>निष्कर्ष:</h3>
+            <p>इंटरनेट प्रोटोकॉल्स डिजिटल कम्युनिकेशन की भाषा हैं। ये अलग-अलग उद्देश्यों के लिए अलग-अलग तरीके से काम करते हैं, लेकिन सभी का लक्ष्य एक ही है: विभिन्न डिवाइसेस के बीच डेटा का सुरक्षित और विश्वसनीय आदान-प्रदान।</p>
+            <p>वेब डेवलपमेंट में करियर बनाने के लिए, इन प्रोटोकॉल्स की बेसिक समझ होना महत्वपूर्ण है, विशेष रूप से HTTP, HTTPS, और WebSocket.</p>
+        </div>
+    </div>
+</body>
+</html> 

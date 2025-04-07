@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular सिक्योरिटी फीचर्स</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #f8d7da;
+            padding: 10px;
+            border-left: 4px solid #dc3545;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Angular में सिक्योरिटी फीचर्स</h1>
+
+        <div class="section">
+            <h2>1. टेम्पलेट इंजेक्शन अटैक से सुरक्षा (XSS प्रोटेक्शन)</h2>
+            <p>Angular अपने टेम्पलेट इंटरपोलेशन के माध्यम से क्रॉस-साइट स्क्रिप्टिंग (XSS) अटैक से सुरक्षा प्रदान करता है।</p>
+            
+            <div class="example">
+                <h3>उदाहरण: एस्केपिंग (Escaping)</h3>
+                <pre><code>// Component में
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-xss-example',
+  template: `
+    &lt;div&gt;{{ userInput }}&lt;/div&gt;
+  `
+})
+export class XssExampleComponent {
+  // यहां कोई भी स्क्रिप्ट टैग text के रूप में रेंडर होगा, execute नहीं होगा
+  userInput = '&lt;script&gt;alert("हैक किया गया!")&lt;/script&gt;';
+}</code></pre>
+            </div>
+            
+            <div class="warning">
+                <strong>सावधानी:</strong> innerHTML का उपयोग करने से XSS सुरक्षा बायपास हो सकती है:
+                <pre><code>&lt;div [innerHTML]="userInput"&gt;&lt;/div&gt; // खतरनाक हो सकता है!</code></pre>
+            </div>
+            
+            <h3>सुरक्षित विकल्प: DomSanitizer</h3>
+            <pre><code>// Component में
+import { Component } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
+@Component({
+  selector: 'app-safe-html',
+  template: `
+    &lt;div [innerHTML]="safeUserInput"&gt;&lt;/div&gt;
+  `
+})
+export class SafeHtmlComponent {
+  userInput = '&lt;strong&gt;मैं बोल्ड टेक्स्ट हूँ&lt;/strong&gt; &lt;script&gt;alert("हैक")&lt;/script&gt;';
+  safeUserInput: SafeHtml;
+  
+  constructor(private sanitizer: DomSanitizer) {
+    // स्क्रिप्ट टैग्स हटा दिए जाएंगे, लेकिन बोल्ड टेक्स्ट रेंडर होगा
+    this.safeUserInput = this.sanitizer.bypassSecurityTrustHtml(this.userInput);
+  }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>2. कंटेंट सिक्योरिटी पॉलिसी (CSP)</h2>
+            <p>Angular CSP के साथ संगत है, जो XSS अटैक को और अधिक रोकने में मदद करता है।</p>
+            
+            <div class="example">
+                <h3>CSP हेडर सेट करना</h3>
+                <p>आपके सर्वर से निम्न हेडर भेजें:</p>
+                <pre><code>Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-cdn.com;</code></pre>
+            </div>
+            
+            <h3>Angular में CSP को सपोर्ट करना</h3>
+            <p>Angular.json में इनलाइन स्टाइल्स को डिसेबल करें:</p>
+            <pre><code>{
+  "projects": {
+    "your-app": {
+      "architect": {
+        "build": {
+          "options": {
+            "inlineStyleLanguage": false
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>3. CSRF (Cross-Site Request Forgery) सुरक्षा</h2>
+            <p>CSRF अटैक से सुरक्षा के लिए Angular का HttpClient कुकी-आधारित सेशन नहीं उपयोग करता, जिससे CSRF से सुरक्षा मिलती है।</p>
+            
+            <div class="example">
+                <h3>CSRF सुरक्षा के लिए इंटरसेप्टर</h3>
+                <pre><code>// csrf.interceptor.ts
+import { Injectable } from '@angular/core';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable()
+export class CsrfInterceptor implements HttpInterceptor {
+  constructor() {}
+
+  intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+    // नॉन-GET मेथड्स के लिए CSRF टोकन जोड़ें
+    if (request.method !== 'GET') {
+      // बैकएंड से प्राप्त CSRF टोकन
+      const csrfToken = localStorage.getItem('CSRF_TOKEN');
+      
+      if (csrfToken) {
+        request = request.clone({
+          setHeaders: {
+            'X-CSRF-TOKEN': csrfToken
+          }
+        });
+      }
+    }
+    
+    return next.handle(request);
+  }
+}</code></pre>
+            </div>
+            
+            <h3>CSRF इंटरसेप्टर को रजिस्टर करना</h3>
+            <pre><code>// app.module.ts
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CsrfInterceptor } from './csrf.interceptor';
+
+@NgModule({
+  imports: [HttpClientModule],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CsrfInterceptor,
+      multi: true
+    }
+  ]
+})
+export class AppModule { }</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>4. ऑथेंटिकेशन और ऑथराइजेशन</h2>
+            <p>JWT (JSON Web Tokens) का उपयोग करके ऑथेंटिकेशन और ऑथराइजेशन:</p>
+            
+            <div class="example">
+                <h3>ऑथेंटिकेशन सर्विस</h3>
+                <pre><code>// auth.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private readonly TOKEN_KEY = 'auth_token';
+  
+  constructor(private http: HttpClient) { }
+  
+  login(username: string, password: string): Observable&lt;any&gt; {
+    return this.http.post&lt;{token: string}&gt;('/api/login', { username, password })
+      .pipe(
+        tap(response => {
+          if (response.token) {
+            localStorage.setItem(this.TOKEN_KEY, response.token);
+          }
+        })
+      );
+  }
+  
+  logout(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+  }
+  
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+  
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+}</code></pre>
+            </div>
+            
+            <h3>Route Guards का उपयोग (ऑथराइजेशन)</h3>
+            <pre><code>// auth.guard.ts
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+import { AuthService } from './auth.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
+  
+  canActivate(): boolean {
+    if (this.authService.isLoggedIn()) {
+      return true;
+    }
+    
+    // यूजर लॉग इन नहीं है, लॉगिन पेज पर रीडायरेक्ट करें
+    this.router.navigate(['/login']);
+    return false;
+  }
+}</code></pre>
+
+            <h3>राउट्स में गार्ड्स का उपयोग</h3>
+            <pre><code>// app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth.guard';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+
+const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { 
+    path: 'dashboard', 
+    component: DashboardComponent, 
+    canActivate: [AuthGuard]  // सुरक्षित रूट
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>5. JWT डिकोडिंग और रोल-बेस्ड एक्सेस</h2>
+            <p>JWT टोकन से यूजर की रोल निकालकर रोल-बेस्ड एक्सेस कंट्रोल लागू करना:</p>
+            
+            <div class="example">
+                <h3>JWT डिकोडिंग सर्विस</h3>
+                <pre><code>// jwt.service.ts
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class JwtService {
+  
+  decodeToken(token: string): any {
+    if (!token) return null;
+    
+    try {
+      // बेस64 डिकोड (JWT का पेलोड भाग)
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  hasRole(token: string, role: string): boolean {
+    const decodedToken = this.decodeToken(token);
+    if (!decodedToken) return false;
+    
+    // 'roles' फील्ड JWT पेलोड में होना चाहिए
+    return decodedToken.roles && decodedToken.roles.includes(role);
+  }
+}</code></pre>
+            </div>
+            
+            <h3>रोल-बेस्ड गार्ड</h3>
+            <pre><code>// role.guard.ts
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
+import { AuthService } from './auth.service';
+import { JwtService } from './jwt.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RoleGuard implements CanActivate {
+  constructor(
+    private authService: AuthService,
+    private jwtService: JwtService,
+    private router: Router
+  ) {}
+  
+  canActivate(route: ActivatedRouteSnapshot): boolean {
+    // राउट से अपेक्षित रोल प्राप्त करें
+    const expectedRole = route.data['role'];
+    const token = this.authService.getToken();
+    
+    if (!token || !this.jwtService.hasRole(token, expectedRole)) {
+      this.router.navigate(['/unauthorized']);
+      return false;
+    }
+    
+    return true;
+  }
+}</code></pre>
+
+            <h3>राउट्स में रोल गार्ड्स का उपयोग</h3>
+            <pre><code>// app-routing.module.ts
+const routes: Routes = [
+  // ...
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [RoleGuard],
+    data: { role: 'ADMIN' }
+  }
+  // ...
+];</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>6. HTTP सिक्योरिटी हेडर्स</h2>
+            <p>अतिरिक्त सुरक्षा के लिए HTTP हेडर्स को सेट करना:</p>
+            
+            <div class="example">
+                <h3>सिक्योरिटी हेडर्स इंटरसेप्टर</h3>
+                <pre><code>// security-headers.interceptor.ts
+import { Injectable } from '@angular/core';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable()
+export class SecurityHeadersInterceptor implements HttpInterceptor {
+  
+  intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+    // सिक्योरिटी हेडर्स जोड़ें
+    const secureReq = request.clone({
+      setHeaders: {
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'SAMEORIGIN',
+        'X-XSS-Protection': '1; mode=block'
+      }
+    });
+    
+    return next.handle(secureReq);
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. रूट नेविगेशन सिक्योरिटी</h2>
+            <p>Angular Router में सिक्योरिटी फीचर्स:</p>
+            
+            <h3>URL सैनिटाइजेशन</h3>
+            <p>Angular राउटर अटोमैटिकली URL को सैनिटाइज करता है।</p>
+            
+            <h3>Location Strategy</h3>
+            <pre><code>// app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
+// रूट्स कॉन्फिगरेशन...
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+  providers: [
+    // URL छुपाने के लिए हैश स्ट्रैटेजी का उपयोग
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
+  ]
+})
+export class AppRoutingModule { }</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>8. फॉर्म वैलिडेशन सिक्योरिटी</h2>
+            <p>फॉर्म इनपुट वैलिडेशन सिक्योरिटी का पहला लाइन ऑफ़ डिफेंस है:</p>
+            
+            <div class="example">
+                <h3>रिएक्टिव फॉर्म वैलिडेशन</h3>
+                <pre><code>// login.component.ts
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html'
+})
+export class LoginComponent implements OnInit {
+  loginForm: FormGroup;
+  
+  constructor(private fb: FormBuilder) { }
+  
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      email: ['', [
+        Validators.required,
+        Validators.email,
+        // ईमेल की सुरक्षित वैलिडेशन के लिए रेगेक्स पैटर्न
+        Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        // पासवर्ड में अक्षर, संख्या और विशेष वर्ण होने चाहिए
+        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$')
+      ]]
+    });
+  }
+  
+  onSubmit(): void {
+    if (this.loginForm.valid) {
+      // फॉर्म वैलिड है, लॉगिन प्रोसेस आगे बढ़ाएं
+    }
+  }
+}</code></pre>
+                
+                <h3>टेम्पलेट फाइल:</h3>
+                <pre><code>&lt;form [formGroup]="loginForm" (ngSubmit)="onSubmit()"&gt;
+  &lt;div&gt;
+    &lt;label for="email"&gt;ईमेल:&lt;/label&gt;
+    &lt;input type="email" id="email" formControlName="email"&gt;
+    &lt;div *ngIf="loginForm.get('email').invalid && (loginForm.get('email').dirty || loginForm.get('email').touched)"&gt;
+      &lt;div *ngIf="loginForm.get('email').errors?.required"&gt;ईमेल आवश्यक है&lt;/div&gt;
+      &lt;div *ngIf="loginForm.get('email').errors?.email || loginForm.get('email').errors?.pattern"&gt;
+        कृपया वैध ईमेल दर्ज करें
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;div&gt;
+    &lt;label for="password"&gt;पासवर्ड:&lt;/label&gt;
+    &lt;input type="password" id="password" formControlName="password"&gt;
+    &lt;div *ngIf="loginForm.get('password').invalid && (loginForm.get('password').dirty || loginForm.get('password').touched)"&gt;
+      &lt;div *ngIf="loginForm.get('password').errors?.required"&gt;पासवर्ड आवश्यक है&lt;/div&gt;
+      &lt;div *ngIf="loginForm.get('password').errors?.minLength"&gt;
+        पासवर्ड कम से कम 8 अक्षर का होना चाहिए
+      &lt;/div&gt;
+      &lt;div *ngIf="loginForm.get('password').errors?.pattern"&gt;
+        पासवर्ड में कम से कम एक अपरकेस, एक लोअरकेस, एक नंबर और एक स्पेशल कैरेक्टर होना चाहिए
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;button type="submit" [disabled]="loginForm.invalid"&gt;लॉगिन&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>9. सैनिटाइजेशन पाइप्स</h2>
+            <p>कस्टम सैनिटाइजेशन पाइप्स बनाकर डेटा को सैनिटाइज करना:</p>
+            
+            <div class="example">
+                <h3>HTML सैनिटाइजेशन पाइप</h3>
+                <pre><code>// html-sanitizer.pipe.ts
+import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
+@Pipe({
+  name: 'htmlSanitizer'
+})
+export class HtmlSanitizerPipe implements PipeTransform {
+  
+  constructor(private sanitizer: DomSanitizer) {}
+  
+  transform(value: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(value);
+  }
+}</code></pre>
+                
+                <h3>पाइप का उपयोग:</h3>
+                <pre><code>&lt;div [innerHTML]="richTextContent | htmlSanitizer"&gt;&lt;/div&gt;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>10. सिक्योर स्टोरेज</h2>
+            <p>लोकलस्टोरेज/सेशनस्टोरेज में सेंसिटिव डेटा को एन्क्रिप्ट करना:</p>
+            
+            <div class="example">
+                <h3>स्टोरेज सर्विस</h3>
+                <pre><code>// secure-storage.service.ts
+import { Injectable } from '@angular/core';
+import * as CryptoJS from 'crypto-js';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SecureStorageService {
+  // एन्क्रिप्शन के लिए सीक्रेट की 
+  private readonly SECRET_KEY = 'your-secret-key-should-be-stored-in-env-variables';
+  
+  constructor() { }
+  
+  setItem(key: string, value: any): void {
+    const encryptedValue = this.encrypt(JSON.stringify(value));
+    localStorage.setItem(key, encryptedValue);
+  }
+  
+  getItem(key: string): any {
+    const encryptedValue = localStorage.getItem(key);
+    if (!encryptedValue) return null;
+    
+    try {
+      const decryptedValue = this.decrypt(encryptedValue);
+      return JSON.parse(decryptedValue);
+    } catch (e) {
+      return null;
+    }
+  }
+  
+  removeItem(key: string): void {
+    localStorage.removeItem(key);
+  }
+  
+  clear(): void {
+    localStorage.clear();
+  }
+  
+  private encrypt(value: string): string {
+    return CryptoJS.AES.encrypt(value, this.SECRET_KEY).toString();
+  }
+  
+  private decrypt(value: string): string {
+    const bytes = CryptoJS.AES.decrypt(value, this.SECRET_KEY);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  }
+}</code></pre>
+                
+                <h3>सिक्योर स्टोरेज सर्विस का उपयोग:</h3>
+                <pre><code>// user.service.ts
+import { Injectable } from '@angular/core';
+import { SecureStorageService } from './secure-storage.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  
+  constructor(private secureStorage: SecureStorageService) { }
+  
+  saveUserProfile(userProfile: any): void {
+    // यूजर डेटा को सिक्योर तरीके से स्टोर करें
+    this.secureStorage.setItem('user_profile', userProfile);
+  }
+  
+  getUserProfile(): any {
+    // एन्क्रिप्टेड यूजर डेटा प्राप्त करें
+    return this.secureStorage.getItem('user_profile');
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>नोट:</strong> 
+            <p>याद रखें कि क्लाइंट-साइड सिक्योरिटी एक महत्वपूर्ण लेयर है, लेकिन उस पर पूरी तरह निर्भर नहीं रहना चाहिए। हमेशा सर्वर-साइड पर भी सिक्योरिटी चेक्स इम्प्लीमेंट करें।</p>
+            <p>किसी भी वेब एप्लिकेशन के लिए इन सुरक्षा उपायों को लागू करके, आप अधिकांश सामान्य सुरक्षा खतरों से अपने एप्लिकेशन को सुरक्षित रख सकते हैं।</p>
+        </div>
+    </div>
+</body>
+</html> 

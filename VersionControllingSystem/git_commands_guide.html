@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Commands Guide for Beginners</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .command-box {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .example {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 10px 0;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #f8d7da;
+            padding: 10px;
+            border-left: 4px solid #dc3545;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Git Commands Guide for Beginners</h1>
+    <p>This guide will help you understand Git commands and their usage in a team environment.</p>
+
+    <h2>1. Initial Setup</h2>
+    <h3>1.1 Configure Git</h3>
+    <div class="command-box">git config --global user.name "Your Name"</div>
+    <div class="command-box">git config --global user.email "your.email@example.com"</div>
+    <div class="note">These commands set up your identity for all Git repositories on your system.</div>
+
+    <h2>2. Starting a New Project</h2>
+    <h3>2.1 Initialize a New Repository</h3>
+    <div class="command-box">git init</div>
+    <div class="example">
+        <p>Example:</p>
+        <p>mkdir my-project</p>
+        <p>cd my-project</p>
+        <p>git init</p>
+    </div>
+
+    <h3>2.2 Clone an Existing Repository</h3>
+    <div class="command-box">git clone [repository-url]</div>
+    <div class="example">
+        <p>Example:</p>
+        <p>git clone https://github.com/username/project-name.git</p>
+    </div>
+
+    <h2>3. Basic Workflow</h2>
+    <h3>3.1 Check Status</h3>
+    <div class="command-box">git status</div>
+    <div class="note">Always check status before making changes to see what files are modified.</div>
+
+    <h3>3.2 Add Files to Staging</h3>
+    <div class="command-box">git add [file-name]</div>
+    <div class="command-box">git add .</div>
+    <div class="example">
+        <p>Example:</p>
+        <p>git add index.html</p>
+        <p>git add . (to add all changed files)</p>
+    </div>
+
+    <h3>3.3 Commit Changes</h3>
+    <div class="command-box">git commit -m "Your commit message"</div>
+    <div class="note">Write clear, descriptive commit messages that explain what changes were made.</div>
+
+    <h2>4. Working with Branches</h2>
+    <h3>4.1 Create a New Branch</h3>
+    <div class="command-box">git branch [branch-name]</div>
+    <div class="command-box">git checkout -b [branch-name]</div>
+    <div class="example">
+        <p>Example:</p>
+        <p>git checkout -b feature/login-page</p>
+    </div>
+
+    <h3>4.2 Switch Between Branches</h3>
+    <div class="command-box">git checkout [branch-name]</div>
+    <div class="warning">Always commit or stash your changes before switching branches.</div>
+
+    <h3>4.3 List All Branches</h3>
+    <div class="command-box">git branch</div>
+    <div class="command-box">git branch -a</div>
+
+    <h2>5. Team Collaboration</h2>
+    <h3>5.1 Push Changes to Remote</h3>
+    <div class="command-box">git push origin [branch-name]</div>
+    <div class="example">
+        <p>Example:</p>
+        <p>git push origin feature/login-page</p>
+    </div>
+
+    <h3>5.2 Pull Latest Changes</h3>
+    <div class="command-box">git pull origin [branch-name]</div>
+    <div class="note">Always pull latest changes before starting work on a new feature.</div>
+
+    <h3>5.3 Resolve Merge Conflicts</h3>
+    <div class="warning">When conflicts occur:</div>
+    <ol>
+        <li>Open the conflicted files</li>
+        <li>Look for conflict markers (<<<<<<<, =======, >>>>>>>)</li>
+        <li>Choose which changes to keep</li>
+        <li>Remove conflict markers</li>
+        <li>Add and commit the resolved files</li>
+    </ol>
+
+    <h2>6. Common Issues and Solutions</h2>
+    <h3>6.1 Undo Local Changes</h3>
+    <div class="command-box">git checkout -- [file-name]</div>
+    <div class="note">This will discard changes in the working directory.</div>
+
+    <h3>6.2 Stash Changes</h3>
+    <div class="command-box">git stash</div>
+    <div class="command-box">git stash pop</div>
+    <div class="example">
+        <p>Example:</p>
+        <p>git stash (to save changes temporarily)</p>
+        <p>git stash pop (to restore saved changes)</p>
+    </div>
+
+    <h3>6.3 View Commit History</h3>
+    <div class="command-box">git log</div>
+    <div class="command-box">git log --oneline</div>
+
+    <h2>7. Best Practices</h2>
+    <ul>
+        <li>Always create a new branch for each feature or bug fix</li>
+        <li>Write clear, descriptive commit messages</li>
+        <li>Pull latest changes before starting work</li>
+        <li>Test your changes before pushing</li>
+        <li>Keep your branches up to date with the main branch</li>
+        <li>Delete branches after merging them</li>
+    </ul>
+
+    <h2>8. Common Team Workflow</h2>
+    <ol>
+        <li>Pull latest changes: <span class="command-box">git pull origin main</span></li>
+        <li>Create new branch: <span class="command-box">git checkout -b feature/your-feature</span></li>
+        <li>Make changes and commit: <span class="command-box">git add .</span> and <span class="command-box">git commit -m "message"</span></li>
+        <li>Push changes: <span class="command-box">git push origin feature/your-feature</span></li>
+        <li>Create Pull Request on GitHub/GitLab</li>
+        <li>After approval, merge to main branch</li>
+    </ol>
+
+    <div class="note">
+        <h3>Remember:</h3>
+        <p>Git is a powerful tool that helps teams work together efficiently. Take time to understand these commands and practice them regularly. When in doubt, always check the status of your repository before making changes.</p>
+    </div>
+
+    <h2>9. टीम प्रोजेक्ट में Git का उपयोग (Team Project Guide in Hindi)</h2>
+    
+    <div class="note">
+        <p>यह गाइड विशेष रूप से टीम प्रोजेक्ट्स के लिए है, जहां कई डेवलपर्स एक साथ काम कर रहे हैं।</p>
+    </div>
+
+    <h3>9.1 प्रोजेक्ट सेटअप</h3>
+    <div class="command-box">
+        git config --global user.name "आपका नाम"<br>
+        git config --global user.email "आपका.ईमेल@example.com"
+    </div>
+    <div class="note">सबसे पहले अपनी पहचान सेट करें। यह जरूरी है ताकि टीम को पता चले कि कौन से चेंजेस किसने किए।</div>
+
+    <h3>9.2 डेली वर्कफ्लो</h3>
+    <div class="example">
+        <h4>सुबह का काम:</h4>
+        <div class="command-box">
+            git checkout main<br>
+            git pull origin main
+        </div>
+        <p>हर दिन की शुरुआत मेन ब्रांच को अपडेट करके करें</p>
+        
+        <h4>नए फीचर पर काम शुरू करना:</h4>
+        <div class="command-box">
+            git checkout -b feature/your-feature-name
+        </div>
+        <p>उदाहरण: git checkout -b feature/login-page</p>
+    </div>
+
+    <h3>9.3 कोड चेंजेस का प्रबंधन</h3>
+    <div class="example">
+        <p>छोटे-छोटे कमिट्स करें:</p>
+        <div class="command-box">
+            git add .<br>
+            git commit -m "लॉगिन फॉर्म वैलिडेशन जोड़ा"<br>
+            git push origin feature/your-feature-name
+        </div>
+    </div>
+
+    <h3>9.4 टीम के साथ सिंक रहना</h3>
+    <div class="example">
+        <div class="command-box">
+            git checkout main<br>
+            git pull origin main<br>
+            git checkout feature/your-feature-name<br>
+            git merge main
+        </div>
+        <p>रेगुलर इंटरवल पर मेन ब्रांच से अपडेट लेते रहें</p>
+    </div>
+
+    <h3>9.5 महत्वपूर्ण टिप्स</h3>
+    <ul>
+        <li>हमेशा नई फीचर के लिए नई ब्रांच बनाएं</li>
+        <li>कमिट मैसेज हिंदी या अंग्रेजी में स्पष्ट लिखें</li>
+        <li>पुश करने से पहले लोकल टेस्टिंग करें</li>
+        <li>टीम के साथ रेगुलर कम्युनिकेशन रखें</li>
+        <li>कॉन्फ्लिक्ट्स को तुरंत रिजॉल्व करें</li>
+    </ul>
+
+    <h3>9.6 कॉन्फ्लिक्ट रिजॉल्यूशन</h3>
+    <div class="warning">
+        <p>कॉन्फ्लिक्ट आने पर:</p>
+        <ol>
+            <li>कॉन्फ्लिक्ट वाली फाइल्स चेक करें</li>
+            <li>टीम से डिस्कस करें</li>
+            <li>सही कोड रखें और कॉन्फ्लिक्ट मार्कर्स हटाएं</li>
+            <li>चेंजेस को कमिट करें</li>
+        </ol>
+    </div>
+
+    <h3>9.7 सुरक्षा टिप्स</h3>
+    <div class="warning">
+        <ul>
+            <li>कभी भी सीधे मेन ब्रांच पर काम न करें</li>
+            <li>पासवर्ड या API कीज़ कभी कमिट न करें</li>
+            <li>रेगुलर बैकअप लेते रहें</li>
+            <li>अनजान कमांड्स का उपयोग न करें</li>
+        </ul>
+    </div>
+
+    <div class="note">
+        <h3>याद रखें:</h3>
+        <p>टीम प्रोजेक्ट में Git का सफल उपयोग कम्युनिकेशन, ऑर्गनाइजेशन और डिसिप्लिन पर निर्भर करता है। रेगुलर प्रैक्टिस से आप और आपकी टीम बेहतर तरीके से काम कर सकेंगे।</p>
+    </div>
+
+    <h2>10. प्रैक्टिकल डेमो (Real-world Example)</h2>
+    
+    <div class="note">
+        <p>यहाँ एक वास्तविक उदाहरण दिया गया है जो दिखाता है कि टीम प्रोजेक्ट में Git का उपयोग कैसे किया जाता है।</p>
+    </div>
+
+    <h3>10.1 Git Identity सेटअप</h3>
+    <div class="command-box">
+        $ git config --global user.name "Manoj Gupta"<br>
+        $ git config --global user.email "mnjgupta74@gmail.com"
+    </div>
+
+    <h3>10.2 प्रोजेक्ट स्टेटस चेक करना</h3>
+    <div class="example">
+        <div class="command-box">
+            $ git status<br>
+            On branch learning1
+        </div>
+    </div>
+
+    <h3>10.3 मेन ब्रांच अपडेट करना</h3>
+    <div class="example">
+        <div class="command-box">
+            $ git checkout main<br>
+            Switched to branch 'main'<br>
+            <br>
+            $ git pull origin main<br>
+            remote: Enumerating objects: 4, done.<br>
+            remote: Counting objects: 100% (4/4), done.<br>
+            Merge made by the 'ort' strategy.
+        </div>
+    </div>
+
+    <h3>10.4 नई फीचर ब्रांच बनाना</h3>
+    <div class="example">
+        <div class="command-box">
+            $ git checkout -b feature/login-page<br>
+            Switched to a new branch 'feature/login-page'
+        </div>
+        <p>इस तरह हम नई फीचर ब्रांच बना सकते हैं</p>
+    </div>
+
+    <h3>10.5 चेंजेस कमिट करना</h3>
+    <div class="example">
+        <div class="command-box">
+            $ git add .<br>
+            $ git commit -m "Added login page feature with form validation"<br>
+            [feature/login-page be39757] Added login page feature with form validation<br>
+            1 file changed, 85 insertions(+)
+        </div>
+        <p>कमिट मैसेज स्पष्ट और डिस्क्रिप्टिव होना चाहिए</p>
+    </div>
+
+    <h3>10.6 चेंजेस पुश करना</h3>
+    <div class="example">
+        <div class="command-box">
+            $ git push origin feature/login-page<br>
+            Delta compression using up to 8 threads<br>
+            Compressing objects: 100% (37/37), done.
+        </div>
+        <p>इस तरह हम अपने चेंजेस को रिमोट रिपॉजिटरी में पुश कर सकते हैं</p>
+    </div>
+
+    <div class="note">
+        <h3>महत्वपूर्ण बिंदु:</h3>
+        <ul>
+            <li>हर कमांड का आउटपुट ध्यान से पढ़ें</li>
+            <li>एरर मैसेज आने पर तुरंत टीम से डिस्कस करें</li>
+            <li>रेगुलर इंटरवल पर चेंजेस कमिट और पुश करें</li>
+            <li>कमिट मैसेज में क्या चेंज किया है वो स्पष्ट लिखें</li>
+        </ul>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>इंटरनेट रोडमैप: विस्तृत मार्गदर्शिका</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #2d3748;
+            border-bottom: 2px solid #4299e1;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 1.8rem;
+            color: #2b6cb0;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 4px solid #4299e1;
+        }
+        h3 {
+            font-size: 1.4rem;
+            color: #3182ce;
+            margin-top: 25px;
+        }
+        p, li {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        code {
+            background: #edf2f7;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            font-size: 0.9em;
+        }
+        .example-box {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .info-box {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .roadmap-step {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 30px;
+        }
+        .roadmap-step:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #4299e1;
+        }
+        .roadmap-step:after {
+            content: "";
+            position: absolute;
+            left: 7px;
+            top: 25px;
+            width: 2px;
+            height: calc(100% - 15px);
+            background: #4299e1;
+        }
+        .roadmap-step:last-child:after {
+            display: none;
+        }
+        .workflow-diagram {
+            margin: 40px 0;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .diagram-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .diagram-step {
+            flex: 1;
+            text-align: center;
+            min-width: 150px;
+            margin: 10px;
+        }
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            background: #4299e1;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-weight: bold;
+        }
+        .step-content {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .step-content h3 {
+            margin: 0 0 10px 0;
+            color: #2b6cb0;
+        }
+        .step-content p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .diagram-arrow {
+            color: #4299e1;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+        @media (max-width: 768px) {
+            .diagram-container {
+                flex-direction: column;
+            }
+            .diagram-arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>इंटरनेट क्या है? (What is Internet?)</h1>
+        
+        <section class="workflow-diagram">
+            <h2>इंटरनेट का कार्य प्रवाह (Internet Workflow)</h2>
+            <div class="diagram-container">
+                <div class="diagram-step">
+                    <div class="step-circle">1</div>
+                    <div class="step-content">
+                        <h3>यूजर का डिवाइस</h3>
+                        <p>कंप्यूटर/मोबाइल</p>
+                    </div>
+                </div>
+                <div class="diagram-arrow">→</div>
+                <div class="diagram-step">
+                    <div class="step-circle">2</div>
+                    <div class="step-content">
+                        <h3>ISP</h3>
+                        <p>इंटरनेट सर्विस प्रोवाइडर</p>
+                    </div>
+                </div>
+                <div class="diagram-arrow">→</div>
+                <div class="diagram-step">
+                    <div class="step-circle">3</div>
+                    <div class="step-content">
+                        <h3>DNS सर्वर</h3>
+                        <p>डोमेन नेम को IP में बदलता है</p>
+                    </div>
+                </div>
+                <div class="diagram-arrow">→</div>
+                <div class="diagram-step">
+                    <div class="step-circle">4</div>
+                    <div class="step-content">
+                        <h3>वेब सर्वर</h3>
+                        <p>डेटा स्टोर और प्रोसेस करता है</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="roadmap-step">
+            <h2>1. इंटरनेट का परिचय</h2>
+            <p>इंटरनेट एक वैश्विक कंप्यूटर नेटवर्क्स का नेटवर्क है जो अरबों उपकरणों को जोड़ता है। यह दुनिया भर में सूचना और संचार के लिए मानक प्लेटफॉर्म है।</p>
+            
+            <div class="info-box">
+                <p>इंटरनेट को "नेटवर्क्स का नेटवर्क" भी कहा जाता है।</p>
+            </div>
+
+            <div class="example-box">
+                <h3>उदाहरण:</h3>
+                <p>जब आप Google.com खोलते हैं, तो आपका उपकरण पूरी दुनिया में स्थित Google के सर्वर्स से कनेक्ट होता है।</p>
+            </div>
+        </section>
+
+        <section class="roadmap-step">
+            <h2>2. इंटरनेट का इतिहास</h2>
+            <p>इंटरनेट का विकास 1960 के दशक में ARPANET से शुरू हुआ था। यह शुरू में अमेरिकी सेना के लिए बनाया गया था।</p>
+
+            <ul>
+                <li><strong>1969:</strong> ARPANET - पहला नेटवर्क</li>
+                <li><strong>1989:</strong> WWW का आविष्कार - टिम बर्नर्स-ली द्वारा</li>
+                <li><strong>1993:</strong> पहला ग्राफिकल वेब ब्राउज़र</li>
+            </ul>
+        </section>
+
+        <section class="roadmap-step">
+            <h2>3. इंटरनेट कैसे काम करता है?</h2>
+            <p>इंटरनेट पैकेट स्विचिंग और TCP/IP प्रोटोकॉल पर आधारित है। डेटा छोटे-छोटे पैकेट्स में विभाजित होकर यात्रा करता है।</p>
+
+            <div class="example-box">
+                <h3>उदाहरण - डेटा पैकेट की यात्रा:</h3>
+                <p>जब आप YouTube वीडियो देखते हैं:</p>
+                <ol>
+                    <li>आपके कंप्यूटर से ISP के माध्यम से रिक्वेस्ट जाती है</li>
+                    <li>इंटरनेट बैकबोन के माध्यम से Google के सर्वर तक पहुंचती है</li>
+                    <li>Google का सर्वर वीडियो डेटा भेजता है</li>
+                    <li>वीडियो डेटा पैकेट्स में विभाजित होकर वापस आपके कंप्यूटर तक पहुंचता है</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="roadmap-step">
+            <h2>4. इंटरनेट प्रोटोकॉल्स</h2>
+            <p>प्रोटोकॉल्स इंटरनेट पर डेटा आदान-प्रदान के नियम हैं:</p>
+            <ul>
+                <li><strong>TCP/IP:</strong> मूल प्रोटोकॉल</li>
+                <li><strong>HTTP/HTTPS:</strong> वेब पेज ट्रांसफर</li>
+                <li><strong>DNS:</strong> डोमेन नेम रिजोल्यूशन</li>
+            </ul>
+
+            <div class="example-box">
+                <p>HTTPS में, यूजर और सर्वर के बीच डेटा एन्क्रिप्ट होता है, जिससे बैंकिंग जैसी सेवाएं सुरक्षित रहती हैं।</p>
+            </div>
+        </section>
+
+        <section class="roadmap-step">
+            <h2>5. DNS - इंटरनेट का फोन बुक</h2>
+            <p>DNS (Domain Name System) डोमेन नेम्स (जैसे google.com) को IP एड्रेस में बदलता है।</p>
+
+            <div class="example-box">
+                <h3>उदाहरण:</h3>
+                <p>जब आप "www.example.com" टाइप करते हैं, DNS इसे "93.184.216.34" जैसे IP एड्रेस में बदलता है।</p>
+            </div>
+        </section>
+
+        <section class="roadmap-step">
+            <h2>6. भविष्य की तकनीकें</h2>
+            <p>इंटरनेट तेजी से विकसित हो रहा है:</p>
+            <ul>
+                <li><strong>5G/6G:</strong> अल्ट्रा-फास्ट मोबाइल इंटरनेट</li>
+                <li><strong>IoT:</strong> कनेक्टेड डिवाइसेस का नेटवर्क</li>
+                <li><strong>AI:</strong> स्मार्ट इंटरनेट सर्विसेज</li>
+                <li><strong>Web 3.0:</strong> ब्लॉकचेन और डिसेंट्रलाइज्ड वेब</li>
+            </ul>
+        </section>
+
+        <div class="info-box">
+            <h3>आगे की पढ़ाई:</h3>
+            <p>अगर आप वेब डेवलपमेंट सीखना चाहते हैं, तो HTML, CSS और JavaScript की बेसिक्स से शुरू करें। फिर फ्रंट-एंड और बैक-एंड टेक्नोलॉजीज में आगे बढ़ें।</p>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Session Management - विस्तृत गाइड</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #f8d7da;
+            padding: 10px;
+            border-left: 4px solid #dc3545;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Angular Session Management - विस्तृत गाइड</h1>
+
+        <div class="section">
+            <h2>1. Session Management क्या है?</h2>
+            <p>Session Management एक प्रक्रिया है जो यूजर के एप्लिकेशन इंटरैक्शन को मैनेज करती है। यह निम्नलिखित कार्य करती है:</p>
+            <ul>
+                <li>यूजर की लॉगिन स्टेट को ट्रैक करना</li>
+                <li>सिक्योरिटी टोकन्स को स्टोर करना</li>
+                <li>सेशन टाइमआउट को हैंडल करना</li>
+                <li>यूजर डेटा को सुरक्षित रखना</li>
+                <li>मल्टी-टैब सपोर्ट प्रदान करना</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. Session Storage vs LocalStorage</h2>
+            <div class="example">
+                <h3>मुख्य अंतर</h3>
+                <table style="width:100%; border-collapse: collapse;">
+                    <tr>
+                        <th style="border: 1px solid #ddd; padding: 8px;">SessionStorage</th>
+                        <th style="border: 1px solid #ddd; padding: 8px;">LocalStorage</th>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;">टैब बंद होने पर डेटा डिलीट हो जाता है</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">ब्राउज़र बंद होने पर भी डेटा रहता है</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;">हर टैब का अपना अलग स्टोरेज</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">सभी टैब्स में एक ही डेटा</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;">सिक्योरिटी के लिए बेहतर</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">परमानेंट डेटा के लिए बेहतर</td>
+                    </tr>
+                </table>
+
+                <h3>उपयोग के उदाहरण</h3>
+                <pre><code>// storage.service.ts
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class StorageService {
+  // SessionStorage उदाहरण - टेम्पररी डेटा
+  saveFormData(data: any) {
+    sessionStorage.setItem('formData', JSON.stringify(data));
+  }
+
+  getFormData() {
+    return JSON.parse(sessionStorage.getItem('formData'));
+  }
+
+  // LocalStorage उदाहरण - परमानेंट डेटा
+  saveUserPreferences(preferences: any) {
+    localStorage.setItem('userPreferences', JSON.stringify(preferences));
+  }
+
+  getUserPreferences() {
+    return JSON.parse(localStorage.getItem('userPreferences'));
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. Session Service का विस्तृत उदाहरण</h2>
+            <div class="example">
+                <h3>बेसिक Session Service</h3>
+                <pre><code>// session.service.ts
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SessionService {
+  private isLoggedIn = new BehaviorSubject&lt;boolean&gt;(false);
+  private userData = new BehaviorSubject&lt;any&gt;(null);
+  
+  isLoggedIn$ = this.isLoggedIn.asObservable();
+  userData$ = this.userData.asObservable();
+
+  constructor() {
+    this.checkLoginStatus();
+  }
+
+  private checkLoginStatus() {
+    const token = sessionStorage.getItem('auth_token');
+    const userData = sessionStorage.getItem('user_data');
+    
+    if (token && userData) {
+      this.isLoggedIn.next(true);
+      this.userData.next(JSON.parse(userData));
+    }
+  }
+
+  login(token: string, userData: any) {
+    // सेंसिटिव डेटा को SessionStorage में सेव करें
+    sessionStorage.setItem('auth_token', token);
+    sessionStorage.setItem('user_data', JSON.stringify(userData));
+    
+    this.isLoggedIn.next(true);
+    this.userData.next(userData);
+  }
+
+  logout() {
+    sessionStorage.removeItem('auth_token');
+    sessionStorage.removeItem('user_data');
+    
+    this.isLoggedIn.next(false);
+    this.userData.next(null);
+  }
+
+  getToken(): string | null {
+    return sessionStorage.getItem('auth_token');
+  }
+
+  getUserData(): any {
+    const userData = sessionStorage.getItem('user_data');
+    return userData ? JSON.parse(userData) : null;
+  }
+
+  isAuthenticated(): boolean {
+    return this.isLoggedIn.value;
+  }
+}</code></pre>
+
+                <h3>कंपोनेंट में उपयोग</h3>
+                <pre><code>// login.component.ts
+import { Component } from '@angular/core';
+import { SessionService } from './session.service';
+
+@Component({
+  selector: 'app-login',
+  template: `
+    &lt;div *ngIf="!isLoggedIn"&gt;
+      &lt;form (ngSubmit)="onLogin()"&gt;
+        &lt;input type="text" [(ngModel)]="username" name="username"&gt;
+        &lt;input type="password" [(ngModel)]="password" name="password"&gt;
+        &lt;button type="submit"&gt;Login&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+    &lt;div *ngIf="isLoggedIn"&gt;
+      Welcome, {{userData?.name}}!
+    &lt;/div&gt;
+  `
+})
+export class LoginComponent {
+  username: string;
+  password: string;
+  isLoggedIn = false;
+  userData: any;
+
+  constructor(private sessionService: SessionService) {
+    this.sessionService.isLoggedIn$.subscribe(loggedIn => {
+      this.isLoggedIn = loggedIn;
+    });
+    
+    this.sessionService.userData$.subscribe(data => {
+      this.userData = data;
+    });
+  }
+
+  onLogin() {
+    // API कॉल करें और टोकन प्राप्त करें
+    const token = 'sample-token';
+    const userData = { name: this.username, role: 'user' };
+    
+    this.sessionService.login(token, userData);
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. Session Timeout Management</h2>
+            <div class="example">
+                <h3>टाइमआउट सर्विस</h3>
+                <pre><code>// session-timeout.service.ts
+import { Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable, Subject, timer } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SessionTimeoutService implements OnDestroy {
+  private timeoutInMinutes = 30;
+  private timer$: Observable&lt;number&gt;;
+  private destroy$ = new Subject&lt;void&gt;();
+  private warningTime = 5; // मिनट में
+
+  constructor(private router: Router) {}
+
+  startTimer() {
+    this.timer$ = timer(this.timeoutInMinutes * 60 * 1000);
+    this.timer$
+      .pipe(
+        takeUntil(this.destroy$),
+        tap(() => this.showTimeoutWarning())
+      )
+      .subscribe(() => {
+        this.handleTimeout();
+      });
+  }
+
+  resetTimer() {
+    this.destroy$.next();
+    this.startTimer();
+  }
+
+  private showTimeoutWarning() {
+    // यूजर को वॉर्निंग दिखाएं
+    const warningTime = this.warningTime * 60 * 1000;
+    setTimeout(() => {
+      if (confirm('Your session will expire in 5 minutes. Do you want to continue?')) {
+        this.resetTimer();
+      } else {
+        this.handleTimeout();
+      }
+    }, warningTime);
+  }
+
+  private handleTimeout() {
+    sessionStorage.removeItem('auth_token');
+    sessionStorage.removeItem('user_data');
+    this.router.navigate(['/login']);
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. Session Security</h2>
+            <div class="example">
+                <h3>सिक्योर स्टोरेज सर्विस</h3>
+                <pre><code>// secure-storage.service.ts
+import { Injectable } from '@angular/core';
+import { CryptoService } from './crypto.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SecureStorageService {
+  constructor(private crypto: CryptoService) {}
+
+  // सेंसिटिव डेटा को एन्क्रिप्ट करके सेव करें
+  setSecureItem(key: string, value: any): void {
+    const encryptedValue = this.crypto.encrypt(JSON.stringify(value));
+    sessionStorage.setItem(key, encryptedValue);
+  }
+
+  // डिक्रिप्टेड डेटा प्राप्त करें
+  getSecureItem(key: string): any {
+    const encryptedValue = sessionStorage.getItem(key);
+    if (!encryptedValue) return null;
+    
+    const decryptedValue = this.crypto.decrypt(encryptedValue);
+    return JSON.parse(decryptedValue);
+  }
+
+  // सेंसिटिव डेटा क्लियर करें
+  clearSecureStorage(): void {
+    const sensitiveKeys = ['auth_token', 'user_data', 'payment_info'];
+    sensitiveKeys.forEach(key => sessionStorage.removeItem(key));
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. SessionStorage vs LocalStorage - कब क्या उपयोग करें?</h2>
+            <div class="example">
+                <h3>SessionStorage का उपयोग कब करें?</h3>
+                <p>SessionStorage का उपयोग निम्नलिखित स्थितियों में करना चाहिए:</p>
+                <ul>
+                    <li><strong>लॉगिन स्टेट:</strong> जब यूजर ब्राउज़र टैब बंद करता है तो लॉगिन स्टेट खत्म हो जाना चाहिए</li>
+                    <li><strong>सेंसिटिव डेटा:</strong> जैसे ऑथेंटिकेशन टोकन, यूजर क्रेडेंशियल्स</li>
+                    <li><strong>टेम्पररी डेटा:</strong> जो सिर्फ एक सत्र के लिए जरूरी है</li>
+                    <li><strong>फॉर्म डेटा:</strong> जब यूजर फॉर्म भर रहा है और पेज रिफ्रेश हो सकता है</li>
+                </ul>
+
+                <h3>उदाहरण - SessionStorage का उपयोग</h3>
+                <pre><code>// auth.service.ts
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  // लॉगिन करें
+  login(token: string, userData: any) {
+    // सेंसिटिव डेटा को SessionStorage में सेव करें
+    sessionStorage.setItem('auth_token', token);
+    sessionStorage.setItem('user_data', JSON.stringify(userData));
+  }
+
+  // फॉर्म डेटा सेव करें
+  saveFormProgress(formData: any) {
+    sessionStorage.setItem('form_progress', JSON.stringify(formData));
+  }
+
+  // फॉर्म डेटा प्राप्त करें
+  getFormProgress() {
+    return JSON.parse(sessionStorage.getItem('form_progress'));
+  }
+}</code></pre>
+
+                <h3>LocalStorage का उपयोग कब करें?</h3>
+                <p>LocalStorage का उपयोग निम्नलिखित स्थितियों में करना चाहिए:</p>
+                <ul>
+                    <li><strong>यूजर प्रेफरेंस:</strong> जैसे थीम, लैंग्वेज सेटिंग्स</li>
+                    <li><strong>कैश डेटा:</strong> जो बार-बार बदलता नहीं है</li>
+                    <li><strong>ऑफलाइन डेटा:</strong> जो ऑफलाइन एक्सेस के लिए जरूरी है</li>
+                    <li><strong>परमानेंट सेटिंग्स:</strong> जो यूजर के ब्राउज़र बंद करने पर भी रहनी चाहिए</li>
+                </ul>
+
+                <h3>उदाहरण - LocalStorage का उपयोग</h3>
+                <pre><code>// settings.service.ts
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class SettingsService {
+  // यूजर प्रेफरेंस सेव करें
+  saveUserPreferences(preferences: any) {
+    localStorage.setItem('user_preferences', JSON.stringify(preferences));
+  }
+
+  // थीम सेटिंग सेव करें
+  saveTheme(theme: string) {
+    localStorage.setItem('app_theme', theme);
+  }
+
+  // ऑफलाइन डेटा सेव करें
+  saveOfflineData(data: any) {
+    localStorage.setItem('offline_data', JSON.stringify(data));
+  }
+}</code></pre>
+
+                <h3>सुरक्षा संबंधी सावधानियां</h3>
+                <div class="warning">
+                    <strong>महत्वपूर्ण सावधानियां:</strong>
+                    <ul>
+                        <li>कभी भी पासवर्ड को किसी भी स्टोरेज में न रखें</li>
+                        <li>सेंसिटिव डेटा को हमेशा SessionStorage में रखें</li>
+                        <li>LocalStorage में रखे डेटा को एन्क्रिप्ट करें</li>
+                        <li>स्टोरेज क्लीयर करते समय सभी सेंसिटिव डेटा को हटाएं</li>
+                        <li>XSS अटैक्स से बचने के लिए डेटा को वैलिडेट करें</li>
+                    </ul>
+                </div>
+
+                <h3>प्रैक्टिकल उदाहरण</h3>
+                <pre><code>// storage.service.ts
+import { Injectable } from '@angular/core';
+import { CryptoService } from './crypto.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class StorageService {
+  constructor(private crypto: CryptoService) {}
+
+  // सेंसिटिव डेटा सेव करें (SessionStorage)
+  saveSensitiveData(key: string, value: any) {
+    const encryptedValue = this.crypto.encrypt(JSON.stringify(value));
+    sessionStorage.setItem(key, encryptedValue);
+  }
+
+  // यूजर प्रेफरेंस सेव करें (LocalStorage)
+  saveUserPreference(key: string, value: any) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  // ऑफलाइन डेटा सेव करें (LocalStorage)
+  saveOfflineData(key: string, value: any) {
+    const encryptedValue = this.crypto.encrypt(JSON.stringify(value));
+    localStorage.setItem(key, encryptedValue);
+  }
+
+  // स्टोरेज क्लीयर करें
+  clearStorage() {
+    // सेंसिटिव डेटा हटाएं
+    sessionStorage.clear();
+    
+    // सिर्फ सेंसिटिव डेटा हटाएं, यूजर प्रेफरेंस नहीं
+    const sensitiveKeys = ['auth_token', 'user_data', 'payment_info'];
+    sensitiveKeys.forEach(key => localStorage.removeItem(key));
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>महत्वपूर्ण बिंदु:</strong>
+            <ul>
+                <li>सेंसिटिव डेटा हमेशा SessionStorage में रखें</li>
+                <li>यूजर प्रेफरेंस LocalStorage में रखें</li>
+                <li>टोकन को एन्क्रिप्ट करके स्टोर करें</li>
+                <li>टाइमआउट वॉर्निंग दिखाएं</li>
+                <li>मल्टी-टैब सपोर्ट के लिए BehaviorSubject का उपयोग करें</li>
+            </ul>
+        </div>
+
+        <div class="warning">
+            <strong>सावधानियां:</strong>
+            <ul>
+                <li>कभी भी पासवर्ड को स्टोरेज में न रखें</li>
+                <li>सेंसिटिव डेटा को एन्क्रिप्ट करके ही स्टोर करें</li>
+                <li>टोकन को हमेशा SessionStorage में रखें</li>
+                <li>यूजर को टाइमआउट के बारे में सूचित करें</li>
+                <li>स्टोरेज क्लीयर करते समय सभी सेंसिटिव डेटा को हटाएं</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>वर्जन कंट्रोल सिस्टम</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .command {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>वर्जन कंट्रोल सिस्टम (Version Control System)</h1>
+
+        <div class="section">
+            <h2>1. वर्जन कंट्रोल सिस्टम क्या है?</h2>
+            <p>वर्जन कंट्रोल सिस्टम (VCS) एक ऐसा सिस्टम है जो फाइलों में किए गए बदलावों को ट्रैक करता है और उन्हें मैनेज करता है। यह सॉफ्टवेयर डेवलपमेंट में बहुत महत्वपूर्ण है।</p>
+            
+            <h3>मुख्य विशेषताएं:</h3>
+            <ul>
+                <li>बदलावों का इतिहास रखना</li>
+                <li>पुराने वर्जन को रिस्टोर करना</li>
+                <li>टीम के साथ कोड शेयर करना</li>
+                <li>कॉन्फ्लिक्ट रेजोल्यूशन</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. वर्जन कंट्रोल सिस्टम कैसे काम करता है?</h2>
+            
+            <h3>बेसिक वर्कफ्लो:</h3>
+            <ol>
+                <li><strong>रिपॉजिटरी बनाना:</strong> प्रोजेक्ट का मुख्य स्टोरेज</li>
+                <li><strong>चेकआउट:</strong> लोकल कॉपी बनाना</li>
+                <li><strong>कमिट:</strong> बदलावों को सेव करना</li>
+                <li><strong>पुश:</strong> बदलावों को सर्वर पर अपलोड करना</li>
+                <li><strong>पुल:</strong> दूसरों के बदलावों को डाउनलोड करना</li>
+            </ol>
+
+            <h3>उदाहरण:</h3>
+            <div class="command">
+                <p>रिपॉजिटरी बनाना:</p>
+                <pre><code>git init</code></pre>
+                
+                <p>फाइलों को ट्रैक करना:</p>
+                <pre><code>git add index.html</code></pre>
+                
+                <p>बदलावों को सेव करना:</p>
+                <pre><code>git commit -m "पहला कमिट"</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. वर्जन कंट्रोल सिस्टम के प्रकार</h2>
+            
+            <h3>1. लोकल वर्जन कंट्रोल</h3>
+            <ul>
+                <li>सिर्फ लोकल कंप्यूटर पर काम करता है</li>
+                <li>सिंम्पल और आसान</li>
+                <li>टीम वर्क के लिए उपयुक्त नहीं</li>
+            </ul>
+
+            <h3>2. सेंट्रलाइज्ड वर्जन कंट्रोल</h3>
+            <ul>
+                <li>सेंट्रल सर्वर पर सभी फाइलें स्टोर होती हैं</li>
+                <li>टीम वर्क के लिए उपयुक्त</li>
+                <li>सर्वर फेल होने पर सभी डेटा खो सकता है</li>
+            </ul>
+
+            <h3>3. डिस्ट्रिब्यूटेड वर्जन कंट्रोल</h3>
+            <ul>
+                <li>हर डेवलपर के पास पूरी रिपॉजिटरी की कॉपी होती है</li>
+                <li>सर्वर फेल होने पर भी डेटा सुरक्षित रहता है</li>
+                <li>ऑफलाइन काम कर सकते हैं</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Git - एक लोकप्रिय वर्जन कंट्रोल सिस्टम</h2>
+            
+            <h3>Git के मुख्य कॉन्सेप्ट्स:</h3>
+            <ul>
+                <li><strong>रिपॉजिटरी:</strong> प्रोजेक्ट का स्टोरेज</li>
+                <li><strong>ब्रांच:</strong> अलग-अलग वर्जन</li>
+                <li><strong>कमिट:</strong> बदलावों का स्नैपशॉट</li>
+                <li><strong>मर्ज:</strong> ब्रांचेज को जोड़ना</li>
+            </ul>
+
+            <h3>Git कमांड्स के उदाहरण:</h3>
+            <div class="command">
+                <p>नई ब्रांच बनाना:</p>
+                <pre><code>git branch new-feature
+git checkout new-feature</code></pre>
+                
+                <p>बदलावों को स्टेज करना:</p>
+                <pre><code>git add .
+git commit -m "नई फीचर जोड़ा"</code></pre>
+                
+                <p>बदलावों को पुश करना:</p>
+                <pre><code>git push origin new-feature</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. वर्जन कंट्रोल सिस्टम का उपयोग कहाँ करें?</h2>
+            
+            <h3>उपयोग के क्षेत्र:</h3>
+            <ul>
+                <li><strong>सॉफ्टवेयर डेवलपमेंट:</strong> कोड मैनेजमेंट</li>
+                <li><strong>वेब डेवलपमेंट:</strong> वेबसाइट फाइल्स</li>
+                <li><strong>डॉक्यूमेंटेशन:</strong> टेक्निकल डॉक्यूमेंट्स</li>
+                <li><strong>डिजाइन:</strong> डिजाइन फाइल्स</li>
+            </ul>
+
+            <h3>उदाहरण प्रोजेक्ट:</h3>
+            <div class="command">
+                <p>वेबसाइट प्रोजेक्ट में Git का उपयोग:</p>
+                <pre><code># प्रोजेक्ट शुरू करना
+git init
+git add .
+git commit -m "प्रारंभिक कमिट"
+
+# नई फीचर बनाना
+git checkout -b new-feature
+# फाइलों में बदलाव करें
+git add .
+git commit -m "नई फीचर जोड़ा"
+
+# मुख्य ब्रांच में मर्ज करना
+git checkout main
+git merge new-feature</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. वर्जन कंट्रोल सिस्टम के फायदे</h2>
+            
+            <h3>मुख्य फायदे:</h3>
+            <ul>
+                <li><strong>बैकअप और रिकवरी:</strong> डेटा लॉस से बचाव</li>
+                <li><strong>टीम वर्क:</strong> मल्टीपल डेवलपर्स के साथ काम</li>
+                <li><strong>ट्रैकिंग:</strong> बदलावों का इतिहास</li>
+                <li><strong>ब्रांचिंग:</strong> अलग-अलग फीचर्स पर काम</li>
+                <li><strong>कॉन्फ्लिक्ट रेजोल्यूशन:</strong> बदलावों को मैनेज करना</li>
+            </ul>
+
+            <div class="note">
+                <strong>महत्वपूर्ण नोट:</strong>
+                <ul>
+                    <li>रेगुलर कमिट करें</li>
+                    <li>स्पष्ट कमिट मैसेज लिखें</li>
+                    <li>ब्रांचिंग स्ट्रैटेजी फॉलो करें</li>
+                    <li>कॉन्फ्लिक्ट्स को जल्दी रेजोल्व करें</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. वर्जन कंट्रोल सिस्टम के लिए बेस्ट प्रैक्टिस</h2>
+            
+            <h3>काम करने का सही तरीका:</h3>
+            <ol>
+                <li><strong>रेगुलर कमिट:</strong> छोटे-छोटे बदलावों को कमिट करें</li>
+                <li><strong>स्पष्ट मैसेज:</strong> कमिट मैसेज में बदलाव का विवरण दें</li>
+                <li><strong>ब्रांचिंग:</strong> नए फीचर्स के लिए अलग ब्रांच बनाएं</li>
+                <li><strong>रीव्यू:</strong> कोड रीव्यू करें</li>
+                <li><strong>टेस्टिंग:</strong> कमिट से पहले टेस्ट करें</li>
+            </ol>
+
+            <h3>उदाहरण वर्कफ्लो:</h3>
+            <div class="command">
+                <pre><code># नई फीचर शुरू करना
+git checkout -b feature/login-page
+
+# बदलाव करना और कमिट करना
+git add .
+git commit -m "लॉगिन पेज का बेसिक स्ट्रक्चर जोड़ा"
+
+# मुख्य ब्रांच से अपडेट लेना
+git checkout main
+git pull
+git checkout feature/login-page
+git merge main
+
+# फीचर को मुख्य ब्रांच में मर्ज करना
+git checkout main
+git merge feature/login-page
+git push</code></pre>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

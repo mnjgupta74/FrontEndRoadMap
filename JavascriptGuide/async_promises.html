@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>एसिंक्रोनस प्रोग्रामिंग और प्रॉमिसेज</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>एसिंक्रोनस प्रोग्रामिंग और प्रॉमिसेज</h1>
+
+        <div class="section">
+            <h2>1. एसिंक्रोनस प्रोग्रामिंग क्या है?</h2>
+            <p>एसिंक्रोनस प्रोग्रामिंग एक प्रोग्रामिंग पैटर्न है जो:</p>
+            <ul>
+                <li>लंबे समय लेने वाले कार्यों को बैकग्राउंड में चलाता है</li>
+                <li>प्रोग्राम को ब्लॉक नहीं करता</li>
+                <li>यूजर एक्सपीरियंस को बेहतर बनाता है</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. कॉलबैक्स</h2>
+            <p>कॉलबैक्स एसिंक्रोनस प्रोग्रामिंग का पुराना तरीका है।</p>
+            <pre><code>// कॉलबैक उदाहरण
+function fetchData(callback) {
+    setTimeout(() => {
+        const data = { name: "John", age: 30 };
+        callback(data);
+    }, 1000);
+}
+
+fetchData((data) => {
+    console.log(data);
+});</code></pre>
+
+            <div class="note">
+                <strong>कॉलबैक हेल:</strong> कॉलबैक्स का नेस्टिंग बहुत जटिल हो सकता है और कोड को पढ़ना मुश्किल हो जाता है।
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. प्रॉमिसेज</h2>
+            <p>प्रॉमिसेज एसिंक्रोनस प्रोग्रामिंग का मॉडर्न तरीका है।</p>
+            <h3>प्रॉमिस बेसिक्स:</h3>
+            <pre><code>// प्रॉमिस बनाना
+const myPromise = new Promise((resolve, reject) => {
+    // एसिंक्रोनस कार्य
+    setTimeout(() => {
+        const success = true;
+        if (success) {
+            resolve("सफल!");
+        } else {
+            reject("असफल!");
+        }
+    }, 1000);
+});
+
+// प्रॉमिस का उपयोग
+myPromise
+    .then((result) => console.log(result))
+    .catch((error) => console.error(error));</code></pre>
+
+            <div class="example">
+                <h4>प्रैक्टिकल उदाहरण:</h4>
+                <pre><code>// API कॉल का प्रॉमिस
+function fetchUserData(userId) {
+    return new Promise((resolve, reject) => {
+        fetch(`https://api.example.com/users/${userId}`)
+            .then(response => response.json())
+            .then(data => resolve(data))
+            .catch(error => reject(error));
+    });
+}
+
+// प्रॉमिस का उपयोग
+fetchUserData(123)
+    .then(user => console.log(user))
+    .catch(error => console.error(error));</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. async/await</h2>
+            <p>async/await प्रॉमिसेज का एक सिंटैक्टिक शुगर है जो कोड को और भी पठनीय बनाता है।</p>
+            <pre><code>// async/await उदाहरण
+async function getUserData(userId) {
+    try {
+        const response = await fetch(`https://api.example.com/users/${userId}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+// async/await का उपयोग
+async function displayUser() {
+    try {
+        const user = await getUserData(123);
+        console.log(user);
+    } catch (error) {
+        console.error(error);
+    }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>5. प्रॉमिस मेथड्स</h2>
+            <h3>मुख्य प्रॉमिस मेथड्स:</h3>
+            <ul>
+                <li><strong>Promise.all():</strong> सभी प्रॉमिसेज को पैरेलल में चलाता है</li>
+                <li><strong>Promise.race():</strong> पहले पूरा होने वाले प्रॉमिस को रिटर्न करता है</li>
+                <li><strong>Promise.allSettled():</strong> सभी प्रॉमिसेज के रिजल्ट रिटर्न करता है</li>
+            </ul>
+
+            <div class="example">
+                <h4>उदाहरण:</h4>
+                <pre><code>// Promise.all का उदाहरण
+const promises = [
+    fetchUserData(1),
+    fetchUserData(2),
+    fetchUserData(3)
+];
+
+Promise.all(promises)
+    .then(users => console.log(users))
+    .catch(error => console.error(error));
+
+// Promise.race का उदाहरण
+Promise.race([
+    fetchUserData(1),
+    fetchUserData(2)
+])
+    .then(user => console.log('पहला यूजर:', user));</code></pre>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>नोट:</strong> एसिंक्रोनस प्रोग्रामिंग और प्रॉमिसेज मॉडर्न JavaScript में बहुत महत्वपूर्ण हैं। इनका उपयोग API कॉल्स, फाइल अपलोड्स, और अन्य एसिंक्रोनस कार्यों के लिए किया जाता है।
+        </div>
+    </div>
+</body>
+</html> 

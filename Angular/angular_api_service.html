@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular API Service with Auth Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .flow-diagram {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .flow-diagram img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Angular API Service with Auth Integration</h1>
+
+        <div class="section">
+            <h2>1. How Everything Works Together</h2>
+            <p>In an Angular application, we typically have three main components working together for API calls:</p>
+            <ol>
+                <li><strong>AuthService</strong>: Manages user authentication and token storage</li>
+                <li><strong>AuthInterceptor</strong>: Automatically adds auth tokens to requests</li>
+                <li><strong>ApiService</strong>: Handles all API calls in a centralized way</li>
+            </ol>
+            
+            <div class="flow-diagram">
+                <p>Flow of an API Request:</p>
+                <pre>
+Component → ApiService → AuthInterceptor → Backend API
+    ↑            ↑            ↑
+    └────────────┴────────────┘
+    AuthService provides token
+                </pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. AuthService (Token Management)</h2>
+            <pre><code>// auth.service.ts
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private readonly TOKEN_KEY = 'auth_token';
+  
+  // Store token after login
+  setToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  }
+  
+  // Get token for requests
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+  
+  // Remove token on logout
+  removeToken(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+  }
+  
+  // Check if user is logged in
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>3. AuthInterceptor (Automatic Token Addition)</h2>
+            <pre><code>// auth.interceptor.ts
+import { Injectable } from '@angular/core';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor
+} from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  constructor(private authService: AuthService) {}
+
+  intercept(request: HttpRequest&lt;any&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;any&gt;&gt; {
+    // Get token from AuthService
+    const token = this.authService.getToken();
+    
+    // If token exists, add it to the request
+    if (token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
+    
+    // Continue with the modified request
+    return next.handle(request);
+  }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>4. ApiService (Centralized API Calls)</h2>
+            <pre><code>// api.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { environment } from '../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiService {
+  private baseUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) { }
+
+  // Generic GET method
+  get&lt;T&gt;(endpoint: string, params?: HttpParams): Observable&lt;T&gt; {
+    return this.http.get&lt;T&gt;(`${this.baseUrl}${endpoint}`, { params })
+      .pipe(catchError(this.handleError));
+  }
+
+  // Generic POST method
+  post&lt;T&gt;(endpoint: string, body: any): Observable&lt;T&gt; {
+    return this.http.post&lt;T&gt;(`${this.baseUrl}${endpoint}`, body)
+      .pipe(catchError(this.handleError));
+  }
+
+  // Error handling
+  private handleError(error: any) {
+    console.error('API Error:', error);
+    return throwError(() => error);
+  }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>5. Practical Example: Login Flow</h2>
+            <div class="example">
+                <h3>Login Component</h3>
+                <pre><code>// login.component.ts
+import { Component } from '@angular/core';
+import { ApiService } from './api.service';
+import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  template: `
+    &lt;form (ngSubmit)="onLogin()"&gt;
+      &lt;input type="text" [(ngModel)]="username" name="username"&gt;
+      &lt;input type="password" [(ngModel)]="password" name="password"&gt;
+      &lt;button type="submit"&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+  `
+})
+export class LoginComponent {
+  username: string = '';
+  password: string = '';
+
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  onLogin() {
+    // 1. Call login API
+    this.apiService.post('/login', {
+      username: this.username,
+      password: this.password
+    }).subscribe({
+      next: (response: any) => {
+        // 2. Store token using AuthService
+        this.authService.setToken(response.token);
+        
+        // 3. Redirect to dashboard
+        this.router.navigate(['/dashboard']);
+      },
+      error: (error) => {
+        console.error('Login failed:', error);
+      }
+    });
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. How It All Works Together</h2>
+            <ol>
+                <li><strong>User Logs In:</strong>
+                    <ul>
+                        <li>Login component calls ApiService</li>
+                        <li>ApiService makes POST request to login endpoint</li>
+                        <li>On success, AuthService stores the token</li>
+                    </ul>
+                </li>
+                <li><strong>Making Authenticated Requests:</strong>
+                    <ul>
+                        <li>Component calls ApiService for data</li>
+                        <li>AuthInterceptor automatically adds token to request</li>
+                        <li>Request goes to backend with authentication</li>
+                    </ul>
+                </li>
+                <li><strong>Handling Errors:</strong>
+                    <ul>
+                        <li>ApiService catches and processes errors</li>
+                        <li>AuthInterceptor can handle 401 errors (unauthorized)</li>
+                        <li>Components receive clean error messages</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>7. Setting Up in App Module</h2>
+            <pre><code>// app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppComponent } from './app.component';
+import { AuthInterceptor } from './auth.interceptor';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    HttpClientModule
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }</code></pre>
+        </div>
+
+        <div class="note">
+            <strong>Key Points:</strong>
+            <ul>
+                <li>AuthService manages the authentication state and token storage</li>
+                <li>AuthInterceptor automatically adds tokens to all requests</li>
+                <li>ApiService provides a clean interface for making API calls</li>
+                <li>Components only need to worry about their specific functionality</li>
+                <li>Error handling is centralized and consistent</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html> 

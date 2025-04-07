@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular AuthService Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Angular AuthService Guide</h1>
+
+        <div class="section">
+            <h2>1. Introduction to AuthService</h2>
+            <p>AuthService is a crucial service in Angular applications that handles authentication-related functionality. It manages user authentication state, token storage, and authentication operations.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Basic AuthService Implementation</h2>
+            <pre><code>// auth.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private readonly TOKEN_KEY = 'auth_token';
+  
+  constructor(private http: HttpClient) { }
+  
+  // Login method
+  login(username: string, password: string): Observable&lt;any&gt; {
+    return this.http.post&lt;{token: string}&gt;('/api/login', { username, password })
+      .pipe(
+        tap(response => {
+          if (response.token) {
+            localStorage.setItem(this.TOKEN_KEY, response.token);
+          }
+        })
+      );
+  }
+  
+  // Logout method
+  logout(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+  }
+  
+  // Get token method
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+  
+  // Check if user is logged in
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>3. Using AuthService in Components</h2>
+            <div class="example">
+                <h3>Login Component Example</h3>
+                <pre><code>// login.component.ts
+import { Component } from '@angular/core';
+import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  template: `
+    &lt;form (ngSubmit)="onSubmit()"&gt;
+      &lt;input type="text" [(ngModel)]="username" name="username" required&gt;
+      &lt;input type="password" [(ngModel)]="password" name="password" required&gt;
+      &lt;button type="submit"&gt;Login&lt;/button&gt;
+    &lt;/form&gt;
+  `
+})
+export class LoginComponent {
+  username: string = '';
+  password: string = '';
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  onSubmit() {
+    this.authService.login(this.username, this.password)
+      .subscribe({
+        next: () => {
+          // Login successful, redirect to dashboard
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          // Handle login error
+          console.error('Login failed:', error);
+        }
+      });
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. Route Protection with AuthGuard</h2>
+            <div class="example">
+                <h3>AuthGuard Implementation</h3>
+                <pre><code>// auth.guard.ts
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+import { AuthService } from './auth.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanActivate {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+  
+  canActivate(): boolean {
+    if (this.authService.isLoggedIn()) {
+      return true;
+    }
+    
+    // User is not logged in, redirect to login page
+    this.router.navigate(['/login']);
+    return false;
+  }
+}</code></pre>
+
+                <h3>Using AuthGuard in Routes</h3>
+                <pre><code>// app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth.guard';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+
+const routes: Routes = [
+  { path: 'login', component: LoginComponent },
+  { 
+    path: 'dashboard', 
+    component: DashboardComponent, 
+    canActivate: [AuthGuard]  // Protected route
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. HTTP Interceptor for Authentication</h2>
+            <div class="example">
+                <h3>Auth Interceptor Implementation</h3>
+                <pre><code>// auth.interceptor.ts
+import { Injectable } from '@angular/core';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor
+} from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+  constructor(private authService: AuthService) {}
+
+  intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+    const token = this.authService.getToken();
+    
+    if (token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
+    
+    return next.handle(request);
+  }
+}</code></pre>
+
+                <h3>Registering the Interceptor</h3>
+                <pre><code>// app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppComponent } from './app.component';
+import { AuthInterceptor } from './auth.interceptor';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    HttpClientModule
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. Best Practices</h2>
+            <ul>
+                <li>Always use HTTPS for authentication requests</li>
+                <li>Implement proper error handling</li>
+                <li>Use secure storage mechanisms for tokens</li>
+                <li>Implement token refresh mechanisms</li>
+                <li>Add proper validation for user input</li>
+                <li>Use route guards to protect sensitive routes</li>
+                <li>Implement proper session timeout handling</li>
+                <li>Use proper password hashing on the server side</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. Security Considerations</h2>
+            <ul>
+                <li>Never store sensitive information in localStorage</li>
+                <li>Implement CSRF protection</li>
+                <li>Use secure HTTP headers</li>
+                <li>Implement rate limiting for login attempts</li>
+                <li>Use proper password policies</li>
+                <li>Implement two-factor authentication when necessary</li>
+                <li>Regularly rotate and update security tokens</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>Note:</strong> 
+            <p>Remember that client-side security is just one layer of protection. Always implement proper server-side security measures as well.</p>
+            <p>Regularly update your authentication mechanisms and stay informed about the latest security best practices.</p>
+        </div>
+    </div>
+</body>
+</html> 

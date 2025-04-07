@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Dynamic Routes - हिंदी में समझें</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Angular Dynamic Routes - हिंदी में समझें</h1>
+
+        <div class="section">
+            <h2>1. Dynamic Routes क्या होते हैं?</h2>
+            <p>Dynamic Routes वे रूट्स होते हैं जो रनटाइम पर बदल सकते हैं। ये उपयोगी होते हैं जब:</p>
+            <ul>
+                <li>URL में डायनामिक पैरामीटर्स होते हैं</li>
+                <li>रूट्स डेटाबेस या API से लोड होते हैं</li>
+                <li>यूजर की रोल के आधार पर रूट्स बदलते हैं</li>
+                <li>कंडीशनल नेविगेशन की जरूरत होती है</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. डायनामिक पैरामीटर्स के साथ रूट्स</h2>
+            <div class="example">
+                <h3>रूट कॉन्फिगरेशन</h3>
+                <pre><code>// app-routing.module.ts
+const routes: Routes = [
+  { path: 'products/:id', component: ProductDetailComponent },
+  { path: 'user/:username', component: UserProfileComponent },
+  { path: 'category/:categoryId/product/:productId', component: ProductComponent }
+];</code></pre>
+
+                <h3>कंपोनेंट में पैरामीटर्स का उपयोग</h3>
+                <pre><code>// product-detail.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  selector: 'app-product-detail',
+  template: `
+    &lt;h2&gt;प्रोडक्ट ID: {{ productId }}&lt;/h2&gt;
+    &lt;div *ngIf="product"&gt;
+      &lt;h3&gt;{{ product.name }}&lt;/h3&gt;
+      &lt;p&gt;{{ product.description }}&lt;/p&gt;
+    &lt;/div&gt;
+  `
+})
+export class ProductDetailComponent implements OnInit {
+  productId: string;
+  product: any;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    // पैरामीटर्स को सब्सक्राइब करें
+    this.route.params.subscribe(params => {
+      this.productId = params['id'];
+      this.loadProductDetails();
+    });
+  }
+
+  loadProductDetails() {
+    // API से प्रोडक्ट डिटेल्स लोड करें
+    // ...
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. डायनामिक रूट जनरेशन</h2>
+            <div class="example">
+                <h3>रनटाइम पर रूट्स जनरेट करना</h3>
+                <pre><code>// dynamic-routes.service.ts
+import { Injectable } from '@angular/core';
+import { Router, Routes } from '@angular/router';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DynamicRoutesService {
+  constructor(private router: Router) {}
+
+  addDynamicRoutes(routes: Routes) {
+    // नए रूट्स को मौजूदा कॉन्फिगरेशन में जोड़ें
+    this.router.resetConfig([
+      ...this.router.config,
+      ...routes
+    ]);
+  }
+}</code></pre>
+
+                <h3>रूट्स को डायनामिकली जोड़ना</h3>
+                <pre><code>// app.component.ts
+import { Component, OnInit } from '@angular/core';
+import { DynamicRoutesService } from './dynamic-routes.service';
+
+@Component({
+  selector: 'app-root',
+  template: '&lt;router-outlet&gt;&lt;/router-outlet&gt;'
+})
+export class AppComponent implements OnInit {
+  constructor(private dynamicRoutes: DynamicRoutesService) {}
+
+  ngOnInit() {
+    // API से रूट्स लोड करें
+    this.loadDynamicRoutes();
+  }
+
+  loadDynamicRoutes() {
+    // मान लें कि API से ये रूट्स मिले
+    const dynamicRoutes = [
+      { path: 'feature1', component: Feature1Component },
+      { path: 'feature2', component: Feature2Component }
+    ];
+
+    // रूट्स को जोड़ें
+    this.dynamicRoutes.addDynamicRoutes(dynamicRoutes);
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. कंडीशनल रूटिंग</h2>
+            <div class="example">
+                <h3>यूजर रोल के आधार पर रूट्स</h3>
+                <pre><code>// auth.service.ts
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  getUserRole(): string {
+    // यूजर की रोल चेक करें
+    return localStorage.getItem('userRole') || 'user';
+  }
+}</code></pre>
+
+                <h3>रोल-बेस्ड रूट कॉन्फिगरेशन</h3>
+                <pre><code>// app-routing.module.ts
+import { AuthService } from './auth.service';
+
+const routes: Routes = [
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: () => {
+          const role = inject(AuthService).getUserRole();
+          return role === 'admin' ? 'admin-panel' : 'user-panel';
+        }
+      },
+      { path: 'admin-panel', component: AdminPanelComponent },
+      { path: 'user-panel', component: UserPanelComponent }
+    ]
+  }
+];</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. डायनामिक रूट रिजॉल्वर्स</h2>
+            <div class="example">
+                <h3>डायनामिक डेटा रिजॉल्वर</h3>
+                <pre><code>// product.resolver.ts
+import { Injectable } from '@angular/core';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ProductService } from './product.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProductResolver implements Resolve&lt;any&gt; {
+  constructor(private productService: ProductService) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable&lt;any&gt; {
+    const productId = route.paramMap.get('id');
+    return this.productService.getProduct(productId);
+  }
+}</code></pre>
+
+                <h3>रूट्स में रिजॉल्वर का उपयोग</h3>
+                <pre><code>// app-routing.module.ts
+const routes: Routes = [
+  {
+    path: 'product/:id',
+    component: ProductDetailComponent,
+    resolve: {
+      product: ProductResolver
+    }
+  }
+];</code></pre>
+
+                <h3>कंपोनेंट में रिजॉल्वर डेटा का उपयोग</h3>
+                <pre><code>// product-detail.component.ts
+export class ProductDetailComponent implements OnInit {
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.route.data.subscribe(data => {
+      this.product = data.product;
+    });
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>महत्वपूर्ण बिंदु:</strong>
+            <ul>
+                <li>डायनामिक रूट्स फ्लेक्सिबल और स्केलेबल एप्लिकेशन बनाते हैं</li>
+                <li>पैरामीटर्स के साथ रूट्स डायनामिक कंटेंट को हैंडल करते हैं</li>
+                <li>रनटाइम रूट जनरेशन एप्लिकेशन को मॉड्यूलर बनाता है</li>
+                <li>कंडीशनल रूटिंग यूजर रोल्स को हैंडल करती है</li>
+                <li>रिजॉल्वर्स डेटा लोडिंग को ऑप्टिमाइज करते हैं</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html> 

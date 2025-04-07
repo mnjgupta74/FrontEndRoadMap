@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM मैनिपुलेशन और एवेंट्स</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .demo-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 10px 0;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DOM मैनिपुलेशन और एवेंट्स</h1>
+
+        <div class="section">
+            <h2>1. DOM क्या है?</h2>
+            <p>DOM (Document Object Model) HTML दस्तावेज़ का एक प्रोग्रामिंग इंटरफेस है। यह वेब पेज को एक ट्री स्ट्रक्चर के रूप में रिप्रेजेंट करता है जिसमें:</p>
+            <ul>
+                <li>एलिमेंट्स नोड्स बनते हैं</li>
+                <li>टेक्स्ट टेक्स्ट नोड्स बनते हैं</li>
+                <li>एट्रिब्यूट्स एट्रिब्यूट नोड्स बनते हैं</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. DOM एलिमेंट्स को सेलेक्ट करना</h2>
+            <h3>मुख्य सेलेक्टर मेथड्स:</h3>
+            <pre><code>// ID से सेलेक्ट करना
+const element = document.getElementById('myId');
+
+// क्लास से सेलेक्ट करना
+const elements = document.getElementsByClassName('myClass');
+
+// टैग नेम से सेलेक्ट करना
+const elements = document.getElementsByTagName('div');
+
+// CSS सेलेक्टर से सेलेक्ट करना
+const element = document.querySelector('.myClass');
+const elements = document.querySelectorAll('.myClass');</code></pre>
+
+            <div class="example">
+                <h4>उदाहरण:</h4>
+                <pre><code>// HTML
+&lt;div id="demo" class="box"&gt;Hello World&lt;/div&gt;
+
+// JavaScript
+const demoElement = document.getElementById('demo');
+const boxElements = document.getElementsByClassName('box');
+const allDivs = document.getElementsByTagName('div');
+const firstBox = document.querySelector('.box');</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. DOM मैनिपुलेशन</h2>
+            <h3>एलिमेंट्स को मॉडिफाई करना:</h3>
+            <pre><code>// कंटेंट बदलना
+element.textContent = 'नया टेक्स्ट';
+element.innerHTML = '&lt;strong&gt;बोल्ड टेक्स्ट&lt;/strong&gt;';
+
+// एट्रिब्यूट्स बदलना
+element.setAttribute('class', 'newClass');
+element.classList.add('newClass');
+element.classList.remove('oldClass');
+
+// स्टाइल बदलना
+element.style.color = 'red';
+element.style.backgroundColor = 'blue';</code></pre>
+
+            <div class="example">
+                <h4>उदाहरण:</h4>
+                <div class="demo-box" id="demoBox">
+                    <p>यह एक डेमो बॉक्स है</p>
+                </div>
+                <pre><code>const box = document.getElementById('demoBox');
+box.style.backgroundColor = '#f0f0f0';
+box.querySelector('p').textContent = 'टेक्स्ट बदल गया!';</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. एवेंट हैंडलिंग</h2>
+            <h3>एवेंट्स को लिसन करना:</h3>
+            <pre><code>// बेसिक एवेंट लिसनर
+element.addEventListener('click', function(event) {
+    console.log('क्लिक हुआ!');
+});
+
+// एरो फंक्शन के साथ
+element.addEventListener('mouseover', (event) => {
+    console.log('माउस ऊपर आया!');
+});
+
+// एवेंट को रिमूव करना
+const handler = function() {
+    console.log('एक बार ही चलेगा!');
+};
+element.addEventListener('click', handler);
+element.removeEventListener('click', handler);</code></pre>
+
+            <div class="example">
+                <h4>उदाहरण:</h4>
+                <div class="demo-box" id="eventDemo">
+                    <button>क्लिक करें</button>
+                    <p>क्लिक काउंट: <span id="clickCount">0</span></p>
+                </div>
+                <pre><code>const button = document.querySelector('#eventDemo button');
+const countSpan = document.getElementById('clickCount');
+let count = 0;
+
+button.addEventListener('click', () => {
+    count++;
+    countSpan.textContent = count;
+});</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. कॉमन एवेंट्स</h2>
+            <ul>
+                <li><strong>माउस एवेंट्स:</strong>
+                    <ul>
+                        <li>click</li>
+                        <li>dblclick</li>
+                        <li>mouseover</li>
+                        <li>mouseout</li>
+                        <li>mousemove</li>
+                    </ul>
+                </li>
+                <li><strong>कीबोर्ड एवेंट्स:</strong>
+                    <ul>
+                        <li>keydown</li>
+                        <li>keyup</li>
+                        <li>keypress</li>
+                    </ul>
+                </li>
+                <li><strong>फॉर्म एवेंट्स:</strong>
+                    <ul>
+                        <li>submit</li>
+                        <li>change</li>
+                        <li>focus</li>
+                        <li>blur</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>नोट:</strong> DOM मैनिपुलेशन और एवेंट हैंडलिंग JavaScript में बहुत महत्वपूर्ण हैं। इनका उपयोग वेब पेजेज को इंटरैक्टिव बनाने के लिए किया जाता है।
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO और सिक्योरिटी बेसिक्स</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SEO और सिक्योरिटी बेसिक्स</h1>
+
+        <div class="section">
+            <h2>1. मेटा टैग्स (Meta Tags)</h2>
+            <p>मेटा टैग्स वेबसाइट की जानकारी को सर्च इंजन और ब्राउज़र को बताने के लिए उपयोग किए जाते हैं।</p>
+            <h3>मुख्य मेटा टैग्स:</h3>
+            <pre><code>&lt;meta charset="UTF-8"&gt;
+&lt;meta name="description" content="वेबसाइट का विवरण"&gt;
+&lt;meta name="keywords" content="कीवर्ड्स"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;meta name="robots" content="index, follow"&gt;</code></pre>
+            <div class="note">
+                <strong>नोट:</strong> मेटा टैग्स का उपयोग SEO के लिए बहुत महत्वपूर्ण है। इन्हें हर पेज में सही तरीके से उपयोग करना चाहिए।
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>2. इमेज ऑप्टिमाइजेशन (Image Optimization)</h2>
+            <p>इमेज ऑप्टिमाइजेशन वेबसाइट की लोडिंग स्पीड को बेहतर बनाने के लिए महत्वपूर्ण है।</p>
+            <h3>मुख्य तकनीकें:</h3>
+            <ul>
+                <li>इमेज का सही फॉर्मेट चुनें (JPG, PNG, WebP)</li>
+                <li>इमेज का साइज़ कम करें</li>
+                <li>लाजी लोडिंग का उपयोग करें</li>
+                <li>alt टैग का उपयोग करें</li>
+            </ul>
+            <pre><code>&lt;img src="image.jpg" alt="विवरण" loading="lazy"&gt;</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>3. साइट स्ट्रक्चर (Site Structure)</h2>
+            <p>अच्छी साइट स्ट्रक्चर SEO और यूजर एक्सपीरियंस के लिए महत्वपूर्ण है।</p>
+            <h3>मुख्य बिंदु:</h3>
+            <ul>
+                <li>स्पष्ट URL स्ट्रक्चर</li>
+                <li>लॉजिकल नेविगेशन</li>
+                <li>साइटमैप का उपयोग</li>
+                <li>मोबाइल-फ्रेंडली डिज़ाइन</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. robots.txt</h2>
+            <p>robots.txt फाइल सर्च इंजन क्रॉलर्स को बताती है कि किन पेजेज को क्रॉल करना है और किन्हें नहीं।</p>
+            
+            <h3>robots.txt क्या है?</h3>
+            <ul>
+                <li>यह एक साधारण टेक्स्ट फाइल है जो वेबसाइट के रूट डायरेक्टरी में रखी जाती है</li>
+                <li>इसका नाम हमेशा "robots.txt" होना चाहिए</li>
+                <li>यह सर्च इंजन बॉट्स को निर्देश देती है कि वेबसाइट के किन हिस्सों को क्रॉल करना है और किन्हें नहीं</li>
+            </ul>
+
+            <h3>क्रॉल (Crawl) क्या है?</h3>
+            <p>क्रॉल एक ऐसी प्रक्रिया है जिसमें सर्च इंजन बॉट्स (जैसे Googlebot) वेबसाइट के पेजेज को स्कैन करते हैं।</p>
+            <ul>
+                <li><strong>क्रॉलिंग का मतलब:</strong> वेबसाइट के पेजेज को ढूंढना और उन्हें स्कैन करना</li>
+                <li><strong>कैसे काम करता है:</strong> 
+                    <ul>
+                        <li>सर्च इंजन बॉट्स वेबसाइट के लिंक्स को फॉलो करते हैं</li>
+                        <li>हर पेज का कंटेंट पढ़ते हैं</li>
+                        <li>नए पेजेज को खोजते हैं</li>
+                        <li>पेजेज को इंडेक्स करते हैं</li>
+                    </ul>
+                </li>
+                <li><strong>उदाहरण:</strong> जब Googlebot आपकी वेबसाइट पर आता है, तो वह आपके होमपेज से शुरू करके सभी लिंक्स को फॉलो करता है और हर पेज को स्कैन करता है</li>
+            </ul>
+
+            <h3>robots.txt का महत्व:</h3>
+            <ul>
+                <li><strong>सर्च इंजन ऑप्टिमाइजेशन:</strong> सर्च इंजन को महत्वपूर्ण पेजेज पर फोकस करने में मदद करता है</li>
+                <li><strong>सर्वर लोड कम करना:</strong> अनावश्यक पेजेज को क्रॉल करने से बचाता है</li>
+                <li><strong>प्राइवेसी:</strong> संवेदनशील जानकारी को सर्च इंजन से छिपाता है</li>
+                <li><strong>बैंडविड्थ बचत:</strong> अनावश्यक क्रॉलिंग से बैंडविड्थ की बचत होती है</li>
+            </ul>
+
+            <h3>robots.txt के मुख्य निर्देश:</h3>
+            <pre><code>User-agent: *          # सभी सर्च इंजन बॉट्स के लिए
+Allow: /              # सभी पेजेज को क्रॉल करने की अनुमति
+Disallow: /admin/     # /admin/ फोल्डर को क्रॉल न करें
+Disallow: /private/   # /private/ फोल्डर को क्रॉल न करें
+Sitemap: https://example.com/sitemap.xml  # साइटमैप का लोकेशन</code></pre>
+
+            <h3>robots.txt न होने पर क्या होता है?</h3>
+            <ul>
+                <li>सर्च इंजन आपकी पूरी वेबसाइट को क्रॉल कर सकते हैं</li>
+                <li>संवेदनशील जानकारी सर्च इंजन में इंडेक्स हो सकती है</li>
+                <li>सर्वर पर अनावश्यक लोड पड़ सकता है</li>
+                <li>बैंडविड्थ का अधिक उपयोग हो सकता है</li>
+            </ul>
+
+            <h3>कहाँ काम आती है?</h3>
+            <ul>
+                <li><strong>वेबसाइट डेवलपमेंट:</strong> टेस्टिंग और स्टेजिंग एनवायरनमेंट को छिपाने के लिए</li>
+                <li><strong>ई-कॉमर्स:</strong> प्राइवेट प्रोडक्ट पेजेज को छिपाने के लिए</li>
+                <li><strong>कंटेंट मैनेजमेंट:</strong> एडमिन पैनल और बैकएंड को छिपाने के लिए</li>
+                <li><strong>सिक्योरिटी:</strong> संवेदनशील फाइल्स और डायरेक्टरीज को छिपाने के लिए</li>
+            </ul>
+
+            <div class="note">
+                <strong>महत्वपूर्ण नोट:</strong>
+                <ul>
+                    <li>robots.txt एक सुरक्षा टूल नहीं है - यह सिर्फ एक निर्देश है</li>
+                    <li>संवेदनशील जानकारी को सुरक्षित रखने के लिए अन्य सिक्योरिटी उपाय भी करने चाहिए</li>
+                    <li>सभी सर्च इंजन robots.txt के निर्देशों का पालन नहीं करते हैं</li>
+                    <li>नियमित रूप से robots.txt फाइल को अपडेट करना चाहिए</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. सिक्योरिटी (Security)</h2>
+            <p>वेबसाइट सिक्योरिटी बहुत महत्वपूर्ण है। यहाँ कुछ महत्वपूर्ण सिक्योरिटी उपाय हैं:</p>
+            
+            <h3>1. HTTPS का उपयोग</h3>
+            <ul>
+                <li><strong>क्या है:</strong> सिक्योर कम्युनिकेशन प्रोटोकॉल</li>
+                <li><strong>कैसे काम करता है:</strong>
+                    <ul>
+                        <li>डेटा को एन्क्रिप्ट करता है</li>
+                        <li>SSL/TLS सर्टिफिकेट का उपयोग करता है</li>
+                        <li>यूजर और सर्वर के बीच सुरक्षित कनेक्शन बनाता है</li>
+                    </ul>
+                </li>
+                <li><strong>उदाहरण:</strong>
+                    <pre><code>// HTTP URL
+http://example.com/login
+
+// HTTPS URL
+https://example.com/login</code></pre>
+                </li>
+                <li><strong>कहाँ उपयोग करें:</strong>
+                    <ul>
+                        <li>लॉगिन पेजेज पर</li>
+                        <li>पेमेंट गेटवे पर</li>
+                        <li>यूजर डेटा ट्रांसफर में</li>
+                    </ul>
+                </li>
+                <li><strong>न होने पर क्या होगा:</strong>
+                    <ul>
+                        <li>डेटा चोरी हो सकता है</li>
+                        <li>मैन-इन-द-मिडिल अटैक हो सकता है</li>
+                        <li>सर्च इंजन रैंकिंग प्रभावित होगी</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>2. सिक्योर पासवर्ड पॉलिसी</h3>
+            <ul>
+                <li><strong>क्या है:</strong> पासवर्ड से संबंधित सुरक्षा नियम</li>
+                <li><strong>मुख्य नियम:</strong>
+                    <ul>
+                        <li>मिनिमम 8 कैरेक्टर्स</li>
+                        <li>अपरकेस और लोअरकेस लेटर्स</li>
+                        <li>नंबर्स और स्पेशल कैरेक्टर्स</li>
+                        <li>रेगुलर पासवर्ड चेंज</li>
+                    </ul>
+                </li>
+                <li><strong>उदाहरण:</strong>
+                    <pre><code>// कमजोर पासवर्ड
+password123
+
+// स्ट्रॉन्ग पासवर्ड
+P@ssw0rd!2024</code></pre>
+                </li>
+                <li><strong>कहाँ उपयोग करें:</strong>
+                    <ul>
+                        <li>यूजर रजिस्ट्रेशन में</li>
+                        <li>पासवर्ड रीसेट में</li>
+                        <li>एडमिन पैनल में</li>
+                    </ul>
+                </li>
+                <li><strong>न होने पर क्या होगा:</strong>
+                    <ul>
+                        <li>अकाउंट हैक हो सकते हैं</li>
+                        <li>ब्रूट फोर्स अटैक हो सकते हैं</li>
+                        <li>डेटा चोरी हो सकता है</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>3. XSS (Cross-Site Scripting) प्रोटेक्शन</h3>
+            <ul>
+                <li><strong>क्या है:</strong> मैलिसियस स्क्रिप्ट इंजेक्शन से बचाव</li>
+                <li><strong>कैसे काम करता है:</strong>
+                    <ul>
+                        <li>इनपुट वैलिडेशन</li>
+                        <li>डेटा एस्केपिंग</li>
+                        <li>सिक्योरिटी हेडर्स का उपयोग</li>
+                    </ul>
+                </li>
+                <li><strong>उदाहरण:</strong>
+                    <pre><code>// असुरक्षित कोड
+document.write(userInput);
+
+// सुरक्षित कोड
+document.write(escapeHtml(userInput));</code></pre>
+                </li>
+                <li><strong>कहाँ उपयोग करें:</strong>
+                    <ul>
+                        <li>यूजर इनपुट फील्ड्स में</li>
+                        <li>कमेंट सिस्टम में</li>
+                        <li>डायनामिक कंटेंट में</li>
+                    </ul>
+                </li>
+                <li><strong>न होने पर क्या होगा:</strong>
+                    <ul>
+                        <li>मैलिसियस स्क्रिप्ट चल सकती है</li>
+                        <li>यूजर डेटा चोरी हो सकता है</li>
+                        <li>वेबसाइट हैक हो सकती है</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>4. CSRF (Cross-Site Request Forgery) प्रोटेक्शन</h3>
+            <ul>
+                <li><strong>क्या है:</strong> अनधिकृत रिक्वेस्ट से बचाव</li>
+                <li><strong>कैसे काम करता है:</strong>
+                    <ul>
+                        <li>CSRF टोकन का उपयोग</li>
+                        <li>रिक्वेस्ट वैलिडेशन</li>
+                        <li>सिक्योर कुकी सेटिंग्स</li>
+                    </ul>
+                </li>
+                <li><strong>उदाहरण:</strong>
+                    <pre><code>// फॉर्म में CSRF टोकन
+&lt;form&gt;
+    &lt;input type="hidden" name="csrf_token" value="random_token"&gt;
+    &lt;!-- अन्य फील्ड्स --&gt;
+&lt;/form&gt;</code></pre>
+                </li>
+                <li><strong>कहाँ उपयोग करें:</strong>
+                    <ul>
+                        <li>फॉर्म सबमिशन में</li>
+                        <li>पेमेंट ट्रांजैक्शन में</li>
+                        <li>यूजर एक्शन्स में</li>
+                    </ul>
+                </li>
+                <li><strong>न होने पर क्या होगा:</strong>
+                    <ul>
+                        <li>अनधिकृत ट्रांजैक्शन हो सकते हैं</li>
+                        <li>यूजर डेटा चोरी हो सकता है</li>
+                        <li>फाइनेंशियल लॉस हो सकता है</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>5. SQL इंजेक्शन प्रोटेक्शन</h3>
+            <ul>
+                <li><strong>क्या है:</strong> डेटाबेस में मैलिसियस क्वेरी इंजेक्शन से बचाव</li>
+                <li><strong>कैसे काम करता है:</strong>
+                    <ul>
+                        <li>प्रीपेयर्ड स्टेटमेंट्स का उपयोग</li>
+                        <li>पैरामीटर वैलिडेशन</li>
+                        <li>डेटाबेस एक्सेस कंट्रोल</li>
+                    </ul>
+                </li>
+                <li><strong>उदाहरण:</strong>
+                    <pre><code>// असुरक्षित क्वेरी
+"SELECT * FROM users WHERE username = '" + userInput + "'"
+
+// सुरक्षित क्वेरी (प्रीपेयर्ड स्टेटमेंट)
+"SELECT * FROM users WHERE username = ?"</code></pre>
+                </li>
+                <li><strong>कहाँ उपयोग करें:</strong>
+                    <ul>
+                        <li>डेटाबेस क्वेरीज में</li>
+                        <li>यूजर इनपुट प्रोसेसिंग में</li>
+                        <li>डेटा फिल्टरिंग में</li>
+                    </ul>
+                </li>
+                <li><strong>न होने पर क्या होगा:</strong>
+                    <ul>
+                        <li>डेटाबेस हैक हो सकता है</li>
+                        <li>डेटा चोरी हो सकता है</li>
+                        <li>डेटाबेस करप्ट हो सकता है</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="note">
+                <strong>सिक्योरिटी बेस्ट प्रैक्टिस:</strong>
+                <ul>
+                    <li>सभी इनपुट को वैलिडेट करें</li>
+                    <li>सेंसिटिव डेटा को एन्क्रिप्ट करें</li>
+                    <li>सिक्योर पासवर्ड पॉलिसी लागू करें</li>
+                    <li>रेगुलर सिक्योरिटी अपडेट्स करें</li>
+                    <li>एरर मैसेज में सेंसिटिव जानकारी न दिखाएं</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. सिक्योरिटी ऑडिट (Security Audit)</h2>
+            <p>सिक्योरिटी ऑडिट वेबसाइट की सुरक्षा की जांच करने का प्रक्रिया है।</p>
+            <h3>मुख्य चेक पॉइंट्स:</h3>
+            <ul>
+                <li>वल्नरेबिलिटी स्कैनिंग</li>
+                <li>पेनिट्रेशन टेस्टिंग</li>
+                <li>कोड रिव्यू</li>
+                <li>सिक्योरिटी कॉन्फ़िगरेशन चेक</li>
+                <li>एक्सेस कंट्रोल रिव्यू</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. HTML बेसिक और सिक्योरिटी टर्म्स</h2>
+            
+            <h3>HTML बेसिक टर्म्स:</h3>
+            <ul>
+                <li><strong>DOCTYPE:</strong> HTML दस्तावेज़ का प्रकार बताता है</li>
+                <li><strong>HTML:</strong> वेब पेज का मुख्य कंटेनर</li>
+                <li><strong>HEAD:</strong> मेटा जानकारी और रिसोर्सेज का कंटेनर</li>
+                <li><strong>BODY:</strong> वेब पेज का मुख्य कंटेंट</li>
+                <li><strong>DIV:</strong> कंटेंट को सेक्शन में बांटने के लिए</li>
+                <li><strong>SPAN:</strong> इनलाइन कंटेंट को स्टाइल करने के लिए</li>
+            </ul>
+
+            <h3>सिक्योरिटी से संबंधित महत्वपूर्ण टर्म्स:</h3>
+            <ul>
+                <li><strong>XSS (Cross-Site Scripting):</strong>
+                    <ul>
+                        <li>हमलावर द्वारा वेबसाइट में मैलिसियस स्क्रिप्ट इंजेक्ट करने का प्रयास</li>
+                        <li>प्रोटेक्शन: इनपुट वैलिडेशन और एस्केपिंग</li>
+                    </ul>
+                </li>
+                <li><strong>CSRF (Cross-Site Request Forgery):</strong>
+                    <ul>
+                        <li>यूजर की पहचान का उपयोग करके अनधिकृत कार्य करना</li>
+                        <li>प्रोटेक्शन: CSRF टोकन का उपयोग</li>
+                    </ul>
+                </li>
+                <li><strong>SQL Injection:</strong>
+                    <ul>
+                        <li>डेटाबेस में मैलिसियस SQL क्वेरी इंजेक्ट करना</li>
+                        <li>प्रोटेक्शन: प्रीपेयर्ड स्टेटमेंट्स का उपयोग</li>
+                    </ul>
+                </li>
+                <li><strong>HTTPS:</strong>
+                    <ul>
+                        <li>सिक्योर कम्युनिकेशन प्रोटोकॉल</li>
+                        <li>डेटा एन्क्रिप्ट प्रदान करता है</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>सिक्योरिटी हेडर्स का विस्तृत विवरण:</h3>
+            <pre><code>// XSS प्रोटेक्शन
+X-XSS-Protection: 1; mode=block
+
+// क्लिकजैकिंग प्रोटेक्शन
+X-Frame-Options: DENY
+
+// MIME स्निफिंग प्रोटेक्शन
+X-Content-Type-Options: nosniff
+
+// HSTS (HTTP Strict Transport Security)
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+// रेफरर पॉलिसी
+Referrer-Policy: strict-origin-when-cross-origin</code></pre>
+
+            <div class="note">
+                <strong>सिक्योरिटी बेस्ट प्रैक्टिस:</strong>
+                <ul>
+                    <li>सभी इनपुट को वैलिडेट करें</li>
+                    <li>सेंसिटिव डेटा को एन्क्रिप्ट करें</li>
+                    <li>सिक्योर पासवर्ड पॉलिसी लागू करें</li>
+                    <li>रेगुलर सिक्योरिटी अपडेट्स करें</li>
+                    <li>एरर मैसेज में सेंसिटिव जानकारी न दिखाएं</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>8. वेबसाइट सिक्योरिटी के लिए आवश्यक उपाय</h2>
+            
+            <h3>1. SSL/HTTPS सर्टिफिकेट</h3>
+            <ul>
+                <li><strong>कहाँ लगाना है:</strong> वेबसाइट के सर्वर पर</li>
+                <li><strong>क्यों जरूरी है:</strong> 
+                    <ul>
+                        <li>डेटा एन्क्रिप्ट के लिए</li>
+                        <li>यूजर और सर्वर के बीच सुरक्षित कनेक्शन</li>
+                        <li>सर्च इंजन रैंकिंग के लिए महत्वपूर्ण</li>
+                    </ul>
+                </li>
+                <li><strong>कैसे लगाएं:</strong> 
+                    <ul>
+                        <li>Let's Encrypt से मुफ्त SSL सर्टिफिकेट प्राप्त करें</li>
+                        <li>सर्वर कॉन्फ़िगरेशन में SSL सर्टिफिकेट इंस्टॉल करें</li>
+                        <li>HTTP से HTTPS पर रीडायरेक्ट सेट करें</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>2. फायरवॉल</h3>
+            <ul>
+                <li><strong>कहाँ लगाना है:</strong> सर्वर लेवल पर</li>
+                <li><strong>क्यों जरूरी है:</strong>
+                    <ul>
+                        <li>अनधिकृत एक्सेस को रोकने के लिए</li>
+                        <li>DDoS अटैक से बचाव</li>
+                        <li>मैलवेयर से सुरक्षा</li>
+                    </ul>
+                </li>
+                <li><strong>कैसे लगाएं:</strong>
+                    <ul>
+                        <li>Cloudflare जैसी सर्विस का उपयोग करें</li>
+                        <li>सर्वर पर सॉफ्टवेयर फायरवॉल इंस्टॉल करें</li>
+                        <li>फायरवॉल रूल्स कॉन्फ़िगर करें</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>3. सिक्योरिटी हेडर्स</h3>
+            <ul>
+                <li><strong>कहाँ लगाना है:</strong> वेबसाइट के .htaccess फाइल या सर्वर कॉन्फ़िगरेशन में</li>
+                <li><strong>क्यों जरूरी है:</strong>
+                    <ul>
+                        <li>XSS अटैक से बचाव</li>
+                        <li>क्लिकजैकिंग से सुरक्षा</li>
+                        <li>MIME स्निफिंग से बचाव</li>
+                    </ul>
+                </li>
+                <li><strong>कैसे लगाएं:</strong>
+                    <pre><code># .htaccess फाइल में
+Header set X-XSS-Protection "1; mode=block"
+Header set X-Frame-Options "DENY"
+Header set X-Content-Type-Options "nosniff"
+Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"</code></pre>
+                </li>
+            </ul>
+
+            <h3>4. पासवर्ड सिक्योरिटी</h3>
+            <ul>
+                <li><strong>कहाँ लागू करना है:</strong> यूजर लॉगिन सिस्टम में</li>
+                <li><strong>क्यों जरूरी है:</strong>
+                    <ul>
+                        <li>अकाउंट हैकिंग से बचाव</li>
+                        <li>स्ट्रॉन्ग पासवर्ड पॉलिसी</li>
+                        <li>ब्रूट फोर्स अटैक से सुरक्षा</li>
+                    </ul>
+                </li>
+                <li><strong>कैसे लागू करें:</strong>
+                    <ul>
+                        <li>पासवर्ड में मिनिमम लंबाई सेट करें</li>
+                        <li>स्पेशल कैरेक्टर्स की आवश्यकता रखें</li>
+                        <li>पासवर्ड हैशिंग का उपयोग करें</li>
+                        <li>लॉगिन अटेम्प्ट्स को लिमिट करें</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>5. डेटाबेस सिक्योरिटी</h3>
+            <ul>
+                <li><strong>कहाँ लागू करना है:</strong> डेटाबेस कनेक्शन और क्वेरी में</li>
+                <li><strong>क्यों जरूरी है:</strong>
+                    <ul>
+                        <li>SQL इंजेक्शन से बचाव</li>
+                        <li>डेटा लीक से सुरक्षा</li>
+                        <li>डेटाबेस एक्सेस कंट्रोल</li>
+                    </ul>
+                </li>
+                <li><strong>कैसे लागू करें:</strong>
+                    <ul>
+                        <li>प्रीपेयर्ड स्टेटमेंट्स का उपयोग करें</li>
+                        <li>डेटाबेस यूजर परमिशन्स को रिस्ट्रिक्ट करें</li>
+                        <li>सेंसिटिव डेटा को एन्क्रिप्ट करें</li>
+                        <li>रेगुलर बैकअप लें</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="note">
+                <strong>अतिरिक्त सिक्योरिटी टिप्स:</strong>
+                <ul>
+                    <li>रेगुलर सिक्योरिटी अपडेट्स करें</li>
+                    <li>सिक्योरिटी ऑडिट करवाएं</li>
+                    <li>एरर लॉगिंग सेट करें</li>
+                    <li>फाइल अपलोड्स को वैलिडेट करें</li>
+                    <li>सिक्योर कुकी सेटिंग्स का उपयोग करें</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

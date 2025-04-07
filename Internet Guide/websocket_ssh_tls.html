@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket और SSH/TLS की जानकारी</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .code-block {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .note {
+            background-color: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebSocket और SSH/TLS की जानकारी</h1>
+
+    <div class="container">
+        <h2>1. WebSocket क्या है?</h2>
+        <p>WebSocket एक तरह का कनेक्शन है जो वेबसाइट और सर्वर के बीच तुरंत मैसेज भेजने और पाने की सुविधा देता है। यह एक ही कनेक्शन पर दोनों तरफ से बात करने की सुविधा देता है।</p>
+
+        <h3>इसकी खास बातें:</h3>
+        <ul>
+            <li>दोनों तरफ से बात कर सकते हैं</li>
+            <li>बहुत तेज काम करता है</li>
+            <li>एक ही कनेक्शन पर चलता है</li>
+            <li>सभी नए ब्राउज़र इसे सपोर्ट करते हैं</li>
+        </ul>
+
+        <h3>कोड का उदाहरण:</h3>
+        <div class="code-block">
+            <pre>
+// सर्वर की तरफ (Node.js में)
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ port: 8080 });
+
+wss.on('connection', function connection(ws) {
+    ws.on('message', function incoming(message) {
+        console.log('मैसेज मिला:', message);
+        // मैसेज वापस भेजें
+        ws.send(`सर्वर ने मैसेज पा लिया: ${message}`);
+    });
+});
+
+// ब्राउज़र की तरफ
+const ws = new WebSocket('ws://localhost:8080');
+
+ws.onopen = function() {
+    console.log('सर्वर से जुड़ गया');
+    ws.send('हैलो सर्वर!');
+};
+
+ws.onmessage = function(event) {
+    console.log('मैसेज मिला:', event.data);
+};
+
+ws.onerror = function(error) {
+    console.error('कुछ गड़बड़ हुई:', error);
+};
+
+ws.onclose = function() {
+    console.log('सर्वर से कनेक्शन टूट गया');
+};
+            </pre>
+        </div>
+
+        <div class="note">
+            <strong>ध्यान दें:</strong> WebSocket पहले HTTP की तरह शुरू होता है और फिर अपने आप WebSocket में बदल जाता है।
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>2. SSH क्या है?</h2>
+        <p>SSH एक सुरक्षित तरीका है जिससे आप दूर से किसी कंप्यूटर या सर्वर को कंट्रोल कर सकते हैं। यह आपकी बातचीत को गुप्त रखता है ताकि कोई और इसे न पढ़ सके।</p>
+
+        <h3>इसकी खास बातें:</h3>
+        <ul>
+            <li>सुरक्षित कनेक्शन</li>
+            <li>पासवर्ड या की से लॉगिन</li>
+            <li>डेटा सुरक्षित रहता है</li>
+            <li>पोर्ट फॉरवर्डिंग की सुविधा</li>
+        </ul>
+
+        <h3>SSH कमांड्स के उदाहरण:</h3>
+        <div class="code-block">
+            <pre>
+# सामान्य SSH कनेक्शन
+ssh username@hostname
+
+# अलग पोर्ट से कनेक्ट करने के लिए
+ssh -p 2222 username@hostname
+
+# की से लॉगिन करने के लिए
+ssh -i /path/to/private_key username@hostname
+
+# पोर्ट फॉरवर्डिंग के लिए
+ssh -L 8080:localhost:80 username@hostname
+            </pre>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>3. TLS क्या है?</h2>
+        <p>TLS एक सुरक्षा प्रोटोकॉल है जो इंटरनेट पर आपकी बातचीत को सुरक्षित बनाता है। यह वेबसाइट्स (HTTPS), ईमेल और दूसरी सुरक्षित बातचीत के लिए इस्तेमाल होता है।</p>
+
+        <h3>इसकी खास बातें:</h3>
+        <ul>
+            <li>डेटा एन्क्रिप्ट होता है</li>
+            <li>सुरक्षित लॉगिन</li>
+            <li>डेटा सही-सही पहुंचता है</li>
+            <li>बेहतर सुरक्षा</li>
+        </ul>
+
+        <h3>TLS कैसे काम करता है:</h3>
+        <ol>
+            <li>क्लाइंट सर्वर से बात शुरू करता है</li>
+            <li>सर्वर अपनी पहचान बताता है</li>
+            <li>सर्वर अपना सर्टिफिकेट भेजता है</li>
+            <li>क्लाइंट सर्टिफिकेट चेक करता है</li>
+            <li>दोनों सुरक्षित कुंजी बनाते हैं</li>
+            <li>सुरक्षित बातचीत शुरू होती है</li>
+        </ol>
+
+        <h3>HTTPS सर्वर का उदाहरण (Node.js में):</h3>
+        <div class="code-block">
+            <pre>
+const https = require('https');
+const fs = require('fs');
+
+const options = {
+    key: fs.readFileSync('private-key.pem'),
+    cert: fs.readFileSync('certificate.pem')
+};
+
+const server = https.createServer(options, (req, res) => {
+    res.writeHead(200);
+    res.end('सुरक्षित कनेक्शन बन गया!');
+});
+
+server.listen(443, () => {
+    console.log('HTTPS सर्वर 443 पोर्ट पर चल रहा है');
+});
+            </pre>
+        </div>
+
+        <div class="note">
+            <strong>ध्यान दें:</strong> असली वेबसाइट्स के लिए TLS सर्टिफिकेट Let's Encrypt जैसी जगह से लेना पड़ता है।
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>तीनों की तुलना</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">प्रोटोकॉल</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">किस लिए इस्तेमाल होता है</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">कैसा कनेक्शन</th>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">WebSocket</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">चैट जैसे ऐप्स के लिए</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">लगातार, दो तरफा</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">SSH</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">दूर से सर्वर कंट्रोल</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">सुरक्षित रिमोट कनेक्शन</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">TLS</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">सुरक्षित डेटा भेजने के लिए</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">एन्क्रिप्टेड कनेक्शन</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html> 

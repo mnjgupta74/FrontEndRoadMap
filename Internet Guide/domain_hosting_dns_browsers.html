@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Names, Hosting, DNS and Browsers Explained</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .note {
+            background-color: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Domain Names, Hosting, DNS and Browsers</h1>
+
+    <div class="container">
+        <h2>1. Domain Name क्या है?</h2>
+        <p>Domain Name एक इंटरनेट पर वेबसाइट का पता होता है, जिसे याद रखना आसान होता है। यह आईपी एड्रेस (जैसे 192.168.1.1) की जगह इस्तेमाल किया जाता है क्योंकि नंबर्स याद रखना मुश्किल होता है।</p>
+
+        <h3>Domain Name के उदाहरण:</h3>
+        <ul>
+            <li>google.com</li>
+            <li>facebook.com</li>
+            <li>wikipedia.org</li>
+        </ul>
+
+        <h3>Domain Name के हिस्से:</h3>
+        <p>एक Domain Name के अलग-अलग हिस्से होते हैं:</p>
+        <ul>
+            <li><strong>Top-Level Domain (TLD):</strong> डोमेन नाम का आखिरी हिस्सा (.com, .org, .net, .in)</li>
+            <li><strong>Second-Level Domain:</strong> TLD से पहले का हिस्सा (google, facebook, wikipedia)</li>
+            <li><strong>Subdomain:</strong> मुख्य डोमेन से पहले का हिस्सा (mail.google.com में "mail" एक subdomain है)</li>
+        </ul>
+
+        <div class="note">
+            <strong>ध्यान दें:</strong> Domain Name खरीदना पड़ता है और इसके लिए हर साल फीस देनी पड़ती है। इसे कंपनियां जैसे GoDaddy, Namecheap से खरीद सकते हैं।
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>2. Hosting क्या है?</h2>
+        <p>Hosting एक सेवा है जहां आपकी वेबसाइट के सभी फाइल्स, डेटा और कोड रखे जाते हैं। ये एक कंप्यूटर (सर्वर) पर रहते हैं जो 24/7 इंटरनेट से जुड़ा रहता है, ताकि दुनिया में कोई भी, कभी भी आपकी वेबसाइट देख सके।</p>
+
+        <h3>Hosting के प्रकार:</h3>
+        <ul>
+            <li><strong>Shared Hosting:</strong> एक सर्वर पर कई वेबसाइट्स होती हैं (सबसे सस्ता)</li>
+            <li><strong>VPS (Virtual Private Server):</strong> एक सर्वर को कई छोटे वर्चुअल सर्वर में बांटा जाता है</li>
+            <li><strong>Dedicated Hosting:</strong> पूरा सर्वर सिर्फ आपकी वेबसाइट के लिए (सबसे महंगा)</li>
+            <li><strong>Cloud Hosting:</strong> कई सर्वर मिलकर आपकी वेबसाइट होस्ट करते हैं</li>
+        </ul>
+
+        <h3>Popular Hosting Companies:</h3>
+        <ul>
+            <li>Bluehost</li>
+            <li>HostGator</li>
+            <li>SiteGround</li>
+            <li>GoDaddy</li>
+            <li>AWS (Amazon Web Services)</li>
+        </ul>
+
+        <div class="note">
+            <strong>ध्यान दें:</strong> डोमेन नेम और होस्टिंग अलग-अलग सेवाएं हैं। आप एक जगह से डोमेन और दूसरी जगह से होस्टिंग खरीद सकते हैं।
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>3. DNS (Domain Name System) क्या है और कैसे काम करता है?</h2>
+        <p>DNS इंटरनेट का फोन बुक है। इसका काम है डोमेन नेम (जैसे google.com) को IP एड्रेस (जैसे 142.250.192.46) में बदलना। जब आप ब्राउज़र में एक वेबसाइट का नाम टाइप करते हैं, तो DNS उस नाम को सही IP एड्रेस में बदलता है।</p>
+
+        <h3>DNS कैसे काम करता है:</h3>
+        <ol>
+            <li>आप ब्राउज़र में "google.com" टाइप करते हैं</li>
+            <li>आपका कंप्यूटर सबसे पहले अपनी मेमोरी में देखता है (DNS कैश)</li>
+            <li>अगर वहां नहीं मिलता, तो आपका ISP के DNS सर्वर को पूछता है</li>
+            <li>अगर वहां भी नहीं मिलता, तो Root DNS सर्वर से पूछा जाता है</li>
+            <li>Root DNS सर्वर TLD DNS सर्वर (.com) का पता देता है</li>
+            <li>TLD DNS सर्वर google.com के Authoritative DNS सर्वर का पता देता है</li>
+            <li>Authoritative DNS सर्वर google.com का सही IP एड्रेस देता है</li>
+            <li>अब आपका कंप्यूटर सीधे उस IP एड्रेस से कनेक्ट करता है</li>
+        </ol>
+
+        <div class="note">
+            <strong>ध्यान दें:</strong> DNS काम ज्यादातर मामलों में मिलीसेकंड में पूरा हो जाता है, इसलिए आपको यह प्रोसेस दिखाई नहीं देता।
+        </div>
+        
+        <h3>DNS कैश क्या है?</h3>
+        <p>DNS कैश एक तरह का अस्थायी स्टोरेज होता है, जिसमें पहले किए गए DNS लुकअप के रिजल्ट सेव किए जाते हैं। यानी जब आप किसी वेबसाइट पर जाते हैं, तो उस वेबसाइट का डोमेन नेम और IP एड्रेस एक समय के लिए आपके डिवाइस की मेमोरी में सेव हो जाता है।</p>
+        
+        <h4>DNS कैश के प्रकार:</h4>
+        <ol>
+            <li><strong>ब्राउज़र DNS कैश:</strong> आपके वेब ब्राउज़र (Chrome, Firefox, आदि) में होता है</li>
+            <li><strong>ऑपरेटिंग सिस्टम DNS कैश:</strong> आपके कंप्यूटर के ऑपरेटिंग सिस्टम (Windows, macOS, Linux) में होता है</li>
+            <li><strong>राउटर DNS कैश:</strong> आपके इंटरनेट राउटर में होता है</li>
+            <li><strong>ISP DNS कैश:</strong> आपके इंटरनेट सेवा प्रदाता के सर्वर पर होता है</li>
+        </ol>
+        
+        <h4>DNS कैश के फायदे:</h4>
+        <ul>
+            <li><strong>तेज इंटरनेट स्पीड:</strong> हर बार DNS लुकअप नहीं करना पड़ता, जिससे पेज लोडिंग टाइम कम होता है</li>
+            <li><strong>नेटवर्क ट्रैफिक कम:</strong> DNS सर्वर्स पर कम लोड पड़ता है</li>
+            <li><strong>इंटरनेट स्थिरता में सुधार:</strong> अगर DNS सर्वर डाउन हो जाए तो भी आप कुछ वेबसाइट्स पर जा सकते हैं</li>
+        </ul>
+        
+        <h4>DNS कैश के नुकसान:</h4>
+        <ul>
+            <li><strong>पुरानी जानकारी:</strong> अगर किसी वेबसाइट का IP एड्रेस बदल गया है लेकिन कैश में पुराना एड्रेस है, तो कनेक्शन प्रॉब्लम हो सकती है</li>
+            <li><strong>DNS पॉइज़निंग:</strong> हैकर्स पुराने कैश का फायदा उठाकर आपको गलत वेबसाइट पर रीडायरेक्ट कर सकते हैं</li>
+        </ul>
+        
+        <h4>DNS कैश को कैसे क्लियर करें:</h4>
+        
+        <p><strong>Windows में:</strong></p>
+        <div class="code-block">
+            <pre>
+1. CMD (कमांड प्रॉम्प्ट) खोलें
+2. टाइप करें: ipconfig /flushdns
+3. Enter दबाएं
+            </pre>
+        </div>
+        
+        <p><strong>macOS में:</strong></p>
+        <div class="code-block">
+            <pre>
+1. टर्मिनल खोलें
+2. टाइप करें: sudo killall -HUP mDNSResponder
+3. Enter दबाएं और पासवर्ड डालें
+            </pre>
+        </div>
+        
+        <p><strong>ब्राउज़र कैश क्लियर करना:</strong></p>
+        <div class="code-block">
+            <pre>
+Chrome: Settings > Privacy and Security > Clear browsing data > Cached images and files
+Firefox: Options > Privacy & Security > Cookies and Site Data > Clear Data
+            </pre>
+        </div>
+        
+        <h4>TTL (Time To Live) क्या है?</h4>
+        <p>हर DNS रिकॉर्ड के साथ एक TTL वैल्यू होती है, जो बताती है कि उस रिकॉर्ड को कैश में कितने समय तक रखा जा सकता है। TTL सेकंड्स में होती है, जैसे 300 (5 मिनट), 3600 (1 घंटा), 86400 (1 दिन)। TTL खत्म होने के बाद सिस्टम फ्रेश DNS लुकअप करता है।</p>
+        
+        <div class="note">
+            <strong>उदाहरण:</strong> जब आप netflix.com पर जाते हैं पहली बार, आपका कंप्यूटर DNS लुकअप करता है और रिजल्ट कैश में सेव करता है। अगर इस रिकॉर्ड का TTL 1 घंटा है, तो अगले 1 घंटे तक जब भी आप netflix.com पर जाएंगे, आपका कंप्यूटर DNS सर्वर से पूछे बिना कैश से जानकारी लेगा।
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>4. ब्राउज़र क्या है और कैसे काम करता है?</h2>
+        <p>ब्राउज़र एक सॉफ्टवेयर है जो इंटरनेट पर वेबसाइट्स को दिखाता है। जैसे Chrome, Firefox, Safari, Edge आदि। यह HTML, CSS, और JavaScript को पढ़कर उसे आपके स्क्रीन पर सुंदर तरीके से दिखाता है।</p>
+
+        <h3>ब्राउज़र कैसे काम करता है:</h3>
+        <ol>
+            <li><strong>URL Processing:</strong> आप जो URL (जैसे google.com) टाइप करते हैं, उसे ब्राउज़र समझता है</li>
+            <li><strong>DNS Lookup:</strong> ब्राउज़र DNS से उस डोमेन का IP एड्रेस मांगता है</li>
+            <li><strong>TCP Connection:</strong> ब्राउज़र उस IP एड्रेस से कनेक्ट करता है</li>
+            <li><strong>HTTP Request:</strong> ब्राउज़र सर्वर से वेबपेज मांगता है</li>
+            <li><strong>Server Response:</strong> सर्वर वेबपेज भेजता है (HTML, CSS, JS, इमेज आदि)</li>
+            <li><strong>Rendering:</strong> ब्राउज़र मिली फाइल्स को प्रोसेस करता है:
+                <ul>
+                    <li>HTML: पेज का स्ट्रक्चर बनाता है</li>
+                    <li>CSS: पेज को स्टाइल देता है</li>
+                    <li>JavaScript: पेज को इंटरैक्टिव बनाता है</li>
+                </ul>
+            </li>
+            <li><strong>Display:</strong> पूरा पेज आपके स्क्रीन पर दिखाई देता है</li>
+        </ol>
+
+        <h3>Popular Browsers:</h3>
+        <ul>
+            <li>Google Chrome</li>
+            <li>Mozilla Firefox</li>
+            <li>Safari</li>
+            <li>Microsoft Edge</li>
+            <li>Opera</li>
+        </ul>
+
+        <div class="note">
+            <strong>ध्यान दें:</strong> अलग-अलग ब्राउज़र में वेबपेज अलग-अलग दिख सकते हैं, क्योंकि हर ब्राउज़र HTML, CSS और JavaScript को थोड़ा अलग तरीके से प्रोसेस करता है।
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>5. DNS सर्वर और IP एड्रेस - विस्तृत जानकारी</h2>
+        
+        <h3>DNS सर्वर के प्रकार</h3>
+        <ol>
+            <li><strong>Root DNS सर्वर:</strong>
+                <ul>
+                    <li>पूरी दुनिया में सिर्फ 13 रूट सर्वर हैं</li>
+                    <li>ये TLD (.com, .org, .net) के DNS सर्वर का पता बताते हैं</li>
+                    <li>उदाहरण: a.root-servers.net, b.root-servers.net</li>
+                </ul>
+            </li>
+            
+            <li><strong>TLD DNS सर्वर:</strong>
+                <ul>
+                    <li>हर TLD (.com, .org, .in) का अपना DNS सर्वर होता है</li>
+                    <li>ये डोमेन के Authoritative DNS सर्वर का पता बताते हैं</li>
+                    <li>उदाहरण: a.gtld-servers.net (.com के लिए)</li>
+                </ul>
+            </li>
+            
+            <li><strong>Authoritative DNS सर्वर:</strong>
+                <ul>
+                    <li>ये वास्तविक डोमेन का IP एड्रेस रखते हैं</li>
+                    <li>हर वेबसाइट का मालिक अपना Authoritative DNS सर्वर चुनता है</li>
+                    <li>उदाहरण: ns1.google.com, ns2.google.com</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3>DNS कमांड्स और उपयोग</h3>
+        <div class="example">
+            <h4>1. nslookup कमांड</h4>
+            <p>यह कमांड DNS लुकअप के लिए उपयोग किया जाता है:</p>
+            <pre><code># डोमेन का IP एड्रेस पता करें
+nslookup google.com
+
+# विशेष DNS सर्वर से पूछें
+nslookup google.com 8.8.8.8
+
+# MX रिकॉर्ड देखें (मेल सर्वर)
+nslookup -type=mx google.com
+
+# NS रिकॉर्ड देखें (नेम सर्वर)
+nslookup -type=ns google.com</code></pre>
+
+            <h4>2. dig कमांड (Linux/Mac)</h4>
+            <p>यह कमांड DNS जानकारी के लिए अधिक विस्तृत जानकारी देता है:</p>
+            <pre><code># सामान्य DNS लुकअप
+dig google.com
+
+# विशेष DNS सर्वर से पूछें
+dig @8.8.8.8 google.com
+
+# सभी DNS रिकॉर्ड देखें
+dig google.com ANY
+
+# TTL वैल्यू देखें
+dig google.com +ttl</code></pre>
+
+            <h4>3. ping कमांड</h4>
+            <p>यह कमांड नेटवर्क कनेक्टिविटी चेक करने के लिए उपयोग किया जाता है:</p>
+            <pre><code># IP एड्रेस पिंग करें
+ping 8.8.8.8
+
+# डोमेन पिंग करें
+ping google.com
+
+# विशेष पैकेट साइज के साथ
+ping -l 1000 google.com</code></pre>
+        </div>
+
+        <h3>DNS रिकॉर्ड्स के प्रकार</h3>
+        <table style="width:100%; border-collapse: collapse;">
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">रिकॉर्ड टाइप</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">उपयोग</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">उदाहरण</th>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">A</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">IPv4 एड्रेस</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">google.com → 142.250.192.46</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">AAAA</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">IPv6 एड्रेस</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">google.com → 2404:6800:4002:80c::200e</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">MX</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">मेल सर्वर</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">google.com → aspmx.l.google.com</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">NS</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">नेम सर्वर</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">google.com → ns1.google.com</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">CNAME</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">अलियास</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">www.google.com → google.com</td>
+            </tr>
+        </table>
+
+        <h3>DNS कैश क्लीयर करने के कमांड्स</h3>
+        <div class="example">
+            <h4>Windows में:</h4>
+            <pre><code># DNS कैश क्लीयर करें
+ipconfig /flushdns
+
+# DNS कैश देखें
+ipconfig /displaydns</code></pre>
+
+            <h4>Linux में:</h4>
+            <pre><code># systemd-resolved का उपयोग करने वाले सिस्टम में
+sudo systemd-resolve --flush-caches
+
+# dnsmasq का उपयोग करने वाले सिस्टम में
+sudo service dnsmasq restart</code></pre>
+
+            <h4>Mac में:</h4>
+            <pre><code># DNS कैश क्लीयर करें
+sudo killall -HUP mDNSResponder</code></pre>
+        </div>
+
+        <div class="note">
+            <strong>महत्वपूर्ण बिंदु:</strong>
+            <ul>
+                <li>DNS सर्वर हायरार्की में काम करते हैं</li>
+                <li>हर DNS रिकॉर्ड का एक TTL (Time To Live) होता है</li>
+                <li>DNS कैश स्पीड बढ़ाता है लेकिन कभी-कभी प्रॉब्लम भी कर सकता है</li>
+                <li>अलग-अलग DNS सर्वर अलग-अलग स्पीड दे सकते हैं</li>
+                <li>Google DNS (8.8.8.8) और Cloudflare DNS (1.1.1.1) सबसे पॉपुलर हैं</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>सारांश: इंटरनेट कैसे काम करता है</h2>
+        <ol>
+            <li>आप ब्राउज़र में एक डोमेन नेम (www.example.com) टाइप करते हैं</li>
+            <li>DNS उस डोमेन नेम को IP एड्रेस में बदलता है</li>
+            <li>ब्राउज़र उस IP एड्रेस पर होस्टिंग सर्वर से कनेक्ट करता है</li>
+            <li>होस्टिंग सर्वर वेबसाइट का कंटेंट भेजता है</li>
+            <li>ब्राउज़र उस कंटेंट को आपके स्क्रीन पर दिखाता है</li>
+        </ol>
+    </div>
+</body>
+</html> 

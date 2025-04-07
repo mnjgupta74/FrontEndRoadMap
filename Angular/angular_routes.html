@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Routes और Routing - हिंदी में समझें</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Angular Routes और Routing - हिंदी में समझें</h1>
+
+        <div class="section">
+            <h2>1. Routes क्या होते हैं?</h2>
+            <p>Routes Angular में URL और कंपोनेंट्स के बीच मैपिंग होते हैं। ये बताते हैं कि:</p>
+            <ul>
+                <li>कौन सा URL किस कंपोनेंट को दिखाएगा</li>
+                <li>कैसे URL पैरामीटर्स को हैंडल किया जाएगा</li>
+                <li>कौन से गार्ड्स लागू होंगे</li>
+                <li>कैसे नेविगेशन काम करेगा</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. बेसिक रूटिंग सेटअप</h2>
+            <div class="example">
+                <h3>app-routing.module.ts</h3>
+                <pre><code>// app-routing.module.ts
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
+
+const routes: Routes = [
+  { path: '', component: HomeComponent },  // डिफॉल्ट रूट
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: '**', component: NotFoundComponent }  // 404 पेज
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }</code></pre>
+
+                <h3>app.component.html में रूटर आउटलेट</h3>
+                <pre><code>&lt;!-- app.component.html --&gt;
+&lt;nav&gt;
+  &lt;a routerLink="/"&gt;होम&lt;/a&gt;
+  &lt;a routerLink="/about"&gt;अबाउट&lt;/a&gt;
+  &lt;a routerLink="/contact"&gt;कॉन्टैक्ट&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;router-outlet&gt;&lt;/router-outlet&gt;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. नेस्टेड रूट्स (Child Routes)</h2>
+            <div class="example">
+                <h3>नेस्टेड रूट्स का उदाहरण</h3>
+                <pre><code>// app-routing.module.ts
+const routes: Routes = [
+  {
+    path: 'products',
+    component: ProductsComponent,
+    children: [
+      { path: '', component: ProductListComponent },
+      { path: ':id', component: ProductDetailComponent },
+      { path: ':id/edit', component: ProductEditComponent }
+    ]
+  }
+];</code></pre>
+
+                <h3>प्रोडक्ट्स कंपोनेंट में चाइल्ड रूट आउटलेट</h3>
+                <pre><code>&lt;!-- products.component.html --&gt;
+&lt;h2&gt;प्रोडक्ट्स&lt;/h2&gt;
+&lt;div class="sidebar"&gt;
+  &lt;!-- साइडबार कंटेंट --&gt;
+&lt;/div&gt;
+&lt;div class="content"&gt;
+  &lt;router-outlet&gt;&lt;/router-outlet&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. रूट पैरामीटर्स</h2>
+            <div class="example">
+                <h3>पैरामीटर्स के साथ रूट</h3>
+                <pre><code>// app-routing.module.ts
+const routes: Routes = [
+  { path: 'user/:id', component: UserComponent }
+];</code></pre>
+
+                <h3>कंपोनेंट में पैरामीटर्स का उपयोग</h3>
+                <pre><code>// user.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  selector: 'app-user',
+  template: '&lt;h2&gt;यूजर ID: {{ userId }}&lt;/h2&gt;'
+})
+export class UserComponent implements OnInit {
+  userId: string;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    // URL से ID प्राप्त करें
+    this.userId = this.route.snapshot.paramMap.get('id');
+    
+    // या ऑब्जर्वेबल का उपयोग करें
+    this.route.paramMap.subscribe(params => {
+      this.userId = params.get('id');
+    });
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. क्वेरी पैरामीटर्स</h2>
+            <div class="example">
+                <h3>क्वेरी पैरामीटर्स का उपयोग</h3>
+                <pre><code>// search.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  selector: 'app-search',
+  template: '&lt;h2&gt;सर्च रिजल्ट्स: {{ searchQuery }}&lt;/h2&gt;'
+})
+export class SearchComponent implements OnInit {
+  searchQuery: string;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    // क्वेरी पैरामीटर्स प्राप्त करें
+    this.route.queryParams.subscribe(params => {
+      this.searchQuery = params['q'];
+    });
+  }
+}</code></pre>
+
+                <h3>क्वेरी पैरामीटर्स के साथ नेविगेशन</h3>
+                <pre><code>// किसी कंपोनेंट में
+import { Router } from '@angular/router';
+
+constructor(private router: Router) {}
+
+search(query: string) {
+  this.router.navigate(['/search'], {
+    queryParams: { q: query }
+  });
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. रूट गार्ड्स के साथ रूट्स</h2>
+            <div class="example">
+                <h3>गार्ड्स के साथ रूट्स</h3>
+                <pre><code>// app-routing.module.ts
+const routes: Routes = [
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [AdminGuard]
+      }
+    ]
+  }
+];</code></pre>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>महत्वपूर्ण बिंदु:</strong>
+            <ul>
+                <li>रूट्स एप्लिकेशन की नेविगेशन स्ट्रक्चर को परिभाषित करते हैं</li>
+                <li>नेस्टेड रूट्स कॉम्प्लेक्स लेआउट्स को हैंडल करते हैं</li>
+                <li>रूट पैरामीटर्स डायनामिक डेटा को हैंडल करते हैं</li>
+                <li>क्वेरी पैरामीटर्स फिल्टरिंग और सर्चिंग के लिए उपयोगी हैं</li>
+                <li>रूट गार्ड्स सुरक्षा और एक्सेस कंट्रोल प्रदान करते हैं</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html> 

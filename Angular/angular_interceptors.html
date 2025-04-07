@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Interceptors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .diagram {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px dashed #aaa;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Angular Interceptors</h1>
+
+        <div class="section">
+            <h2>1. Angular Interceptors क्या है?</h2>
+            <p>Angular Interceptors HTTP रिक्वेस्ट/रिस्पॉन्स पाइपलाइन में middleware की तरह काम करते हैं। ये आपके एप्लिकेशन और सर्वर के बीच भेजे जाने वाले HTTP रिक्वेस्ट/रिस्पॉन्स को इंटरसेप्ट और मॉडिफाई कर सकते हैं।</p>
+            
+            <div class="diagram">
+                <p>[एप्लिकेशन] → [HTTP Interceptor] → [सर्वर]</p>
+                <p>[एप्लिकेशन] ← [HTTP Interceptor] ← [सर्वर]</p>
+            </div>
+            
+            <h3>मुख्य कार्य:</h3>
+            <ul>
+                <li>हर HTTP रिक्वेस्ट में हेडर्स जोड़ना (जैसे Authorization टोकन)</li>
+                <li>लॉगिंग - सभी रिक्वेस्ट/रिस्पॉन्स को लॉग करना</li>
+                <li>एरर हैंडलिंग - HTTP एरर को इंटरसेप्ट करना</li>
+                <li>रिक्वेस्ट/रिस्पॉन्स ट्रांसफॉर्मेशन - डेटा का फॉर्मेट बदलना</li>
+                <li>कैशिंग - रिस्पॉन्स को कैश करना</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. Auth Interceptor क्या है?</h2>
+            <p>Auth Interceptor एक विशेष प्रकार का HTTP Interceptor है जो प्रमाणीकरण (authentication) से संबंधित कार्य करता है:</p>
+            
+            <h3>Auth Interceptor के मुख्य कार्य:</h3>
+            <ul>
+                <li><strong>Auth Token जोड़ना:</strong> हर HTTP रिक्वेस्ट में Authorization हेडर जोड़ना</li>
+                <li><strong>Token एक्सपायरी हैंडलिंग:</strong> यदि टोकन एक्सपायर हो गया है तो रिफ्रेश करना</li>
+                <li><strong>Unauthorized एरर हैंडलिंग:</strong> 401 एरर पर यूजर को लॉगिन पेज पर रीडायरेक्ट करना</li>
+                <li><strong>सिक्योरिटी:</strong> सेंसिटिव API कॉल्स को सुरक्षित करना</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Auth Interceptor कैसे बनाएं?</h2>
+            <pre><code>// auth.interceptor.ts
+import { Injectable } from '@angular/core';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor,
+  HttpErrorResponse
+} from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
+
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+    // localStorage से टोकन प्राप्त करें
+    const token = this.authService.getToken();
+    
+    // यदि टोकन है तो रिक्वेस्ट में जोड़ें
+    if (token) {
+      request = this.addToken(request, token);
+    }
+    
+    // मॉडिफाइड रिक्वेस्ट को फॉरवर्ड करें और एरर हैंडल करें
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        // अगर 401 Unauthorized एरर है
+        if (error.status === 401) {
+          // टोकन रिफ्रेश करने का प्रयास करें
+          return this.handleUnauthorizedError(request, next);
+        }
+        
+        return throwError(error);
+      })
+    );
+  }
+
+  // रिक्वेस्ट में auth टोकन जोड़ने का फंक्शन
+  private addToken(request: HttpRequest&lt;unknown&gt;, token: string) {
+    return request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  // 401 एरर हैंडलिंग
+  private handleUnauthorizedError(request: HttpRequest&lt;unknown&gt;, next: HttpHandler) {
+    // टोकन रिफ्रेश करें
+    return this.authService.refreshToken().pipe(
+      switchMap((newToken: string) => {
+        // नए टोकन के साथ रिक्वेस्ट फिर से भेजें
+        return next.handle(this.addToken(request, newToken));
+      }),
+      catchError((error) => {
+        // रिफ्रेश भी फेल होने पर लॉगआउट करें
+        this.authService.logout();
+        this.router.navigate(['/login']);
+        return throwError(error);
+      })
+    );
+  }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>4. Auth Interceptor को रजिस्टर करना</h2>
+            <p>Interceptor को Angular एप्लिकेशन में रजिस्टर करने के लिए app.module.ts में निम्न कोड जोड़ें:</p>
+            
+            <pre><code>// app.module.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppComponent } from './app.component';
+import { AuthInterceptor } from './auth.interceptor';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    HttpClientModule
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }</code></pre>
+            
+            <div class="note">
+                <strong>नोट:</strong> multi: true का अर्थ है कि आप कई इंटरसेप्टर्स का उपयोग कर सकते हैं, और वे रजिस्ट्रेशन के क्रम में एक्जिक्यूट होंगे।
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. Auth Interceptor का प्रैक्टिकल उदाहरण</h2>
+            
+            <div class="example">
+                <h3>उदाहरण 1: API कॉल करना</h3>
+                <pre><code>// user.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  private apiUrl = 'https://api.example.com/users';
+
+  constructor(private http: HttpClient) { }
+
+  getUsers(): Observable&lt;any&gt; {
+    // Interceptor स्वचालित रूप से Authorization हेडर जोड़ देगा
+    return this.http.get(this.apiUrl);
+  }
+}</code></pre>
+            </div>
+            
+            <div class="example">
+                <h3>उदाहरण 2: एरर हैंडलिंग के साथ इंटरसेप्टर</h3>
+                <pre><code>// error.interceptor.ts
+import { Injectable } from '@angular/core';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { NotificationService } from './notification.service';
+
+@Injectable()
+export class ErrorInterceptor implements HttpInterceptor {
+
+  constructor(private notificationService: NotificationService) {}
+
+  intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'अज्ञात त्रुटि हुई है!';
+        
+        // HTTP एरर कोड के अनुसार मैसेज दिखाएं
+        if (error.status === 400) {
+          errorMessage = 'गलत अनुरोध! कृपया अपनी जानकारी की जांच करें।';
+        } else if (error.status === 401) {
+          errorMessage = 'अनधिकृत एक्सेस! कृपया फिर से लॉगिन करें।';
+        } else if (error.status === 403) {
+          errorMessage = 'आपको इस रिसोर्स का एक्सेस नहीं है!';
+        } else if (error.status === 404) {
+          errorMessage = 'अनुरोधित संसाधन नहीं मिला!';
+        } else if (error.status === 500) {
+          errorMessage = 'सर्वर त्रुटि! कृपया बाद में पुनः प्रयास करें।';
+        }
+        
+        // एरर मैसेज दिखाएं
+        this.notificationService.showError(errorMessage);
+        
+        return throwError(error);
+      })
+    );
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. Auth Interceptor के लाभ</h2>
+            <ul>
+                <li><strong>कोड डुप्लिकेशन कम:</strong> हर API कॉल में मैन्युअली टोकन जोड़ने की आवश्यकता नहीं</li>
+                <li><strong>एरर हैंडलिंग केंद्रीकृत:</strong> सभी HTTP एरर एक जगह से हैंडल होते हैं</li>
+                <li><strong>सिक्योरिटी इम्प्रूवमेंट:</strong> सभी API कॉल सुरक्षित होते हैं</li>
+                <li><strong>कॉड क्लीनलीनेस:</strong> बिजनेस लॉजिक और HTTP क्लाइंट कोड अलग रहता है</li>
+                <li><strong>मेंटेनेंस आसान:</strong> एक जगह बदलाव करके सभी HTTP रिक्वेस्ट अपडेट हो जाती हैं</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>इंटरसेप्टर्स के अन्य उपयोग:</strong> 
+            <ul>
+                <li>लोडिंग इंडिकेटर दिखाना</li>
+                <li>नेटवर्क कनेक्शन की जांच करना</li>
+                <li>रिक्वेस्ट थ्रॉटलिंग</li>
+                <li>एनालिटिक्स ट्रैकिंग</li>
+                <li>API वर्शनिंग</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. इंटरसेप्टर्स के अन्य महत्वपूर्ण उपयोग</h2>
+            
+            <h3>7.1 लोडिंग इंडिकेटर इंटरसेप्टर</h3>
+            <p>यह इंटरसेप्टर HTTP रिक्वेस्ट शुरू होने पर लोडिंग इंडिकेटर दिखाता है और रिस्पॉन्स मिलने पर उसे हटा देता है।</p>
+            
+            <div class="example">
+                <pre><code>// loading.interceptor.ts
+import { Injectable } from '@angular/core';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { LoadingService } from './loading.service';
+
+@Injectable()
+export class LoadingInterceptor implements HttpInterceptor {
+
+  constructor(private loadingService: LoadingService) {}
+
+  intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+    // लोडिंग इंडिकेटर शुरू करें
+    this.loadingService.show();
+    
+    // रिक्वेस्ट आगे भेजें और finalize ऑपरेटर का उपयोग करें 
+    // जो एरर या सक्सेस दोनों स्थितियों में चलेगा
+    return next.handle(request).pipe(
+      finalize(() => {
+        // लोडिंग इंडिकेटर बंद करें
+        this.loadingService.hide();
+      })
+    );
+  }
+}</code></pre>
+            </div>
+            
+            <div class="note">
+                <p><strong>लाभ:</strong> यूजर एक्सपीरियंस बेहतर होता है क्योंकि यूजर को पता चलता है कि डेटा लोड हो रहा है।</p>
+            </div>
+            
+            <h3>7.2 नेटवर्क कनेक्शन इंटरसेप्टर</h3>
+            <p>यह इंटरसेप्टर नेटवर्क कनेक्शन चेक करता है और ऑफलाइन होने पर उचित मैसेज दिखाता है।</p>
+            
+            <div class="example">
+                <pre><code>// network.interceptor.ts
+import { Injectable } from '@angular/core';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { NotificationService } from './notification.service';
+
+@Injectable()
+export class NetworkInterceptor implements HttpInterceptor {
+
+  constructor(private notificationService: NotificationService) {}
+
+  intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+    // नेटवर्क कनेक्शन चेक करें
+    if (!navigator.onLine) {
+      // यूजर को नोटिफिकेशन दिखाएं
+      this.notificationService.showError('आप ऑफलाइन हैं। कृपया अपना इंटरनेट कनेक्शन चेक करें।');
+      
+      // रिक्वेस्ट को रोकें और एरर थ्रो करें
+      return throwError(new Error('नेटवर्क कनेक्शन नहीं है'));
+    }
+    
+    // अगर ऑनलाइन है तो रिक्वेस्ट आगे भेजें
+    return next.handle(request);
+  }
+}</code></pre>
+            </div>
+            
+            <div class="note">
+                <p><strong>लाभ:</strong> यूजर को तुरंत पता चलता है कि समस्या उनके नेटवर्क कनेक्शन में है, जिससे बेहतर एरर हैंडलिंग होती है।</p>
+            </div>
+            
+            <h3>7.3 रिक्वेस्ट थ्रॉटलिंग इंटरसेप्टर</h3>
+            <p>यह इंटरसेप्टर समान रिक्वेस्ट्स को थ्रॉटल करता है, जिससे सर्वर पर लोड कम होता है और परफॉर्मेंस बेहतर होती है।</p>
+            
+            <div class="example">
+                <pre><code>// throttle.interceptor.ts
+import { Injectable } from '@angular/core';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable()
+export class ThrottleInterceptor implements HttpInterceptor {
+  private requestMap = new Map&lt;string, boolean&gt;();
+
+  constructor() {}
+
+  intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+    // रिक्वेस्ट के लिए यूनिक की बनाएं (URL + मेथड)
+    const key = request.url + request.method;
+    
+    // चेक करें कि यह रिक्वेस्ट पहले से प्रोसेस हो रही है या नहीं
+    if (this.requestMap.has(key)) {
+      // रिक्वेस्ट को रोकें - थ्रॉटल करें
+      return new Observable&lt;HttpEvent&lt;unknown&gt;&gt;(observer => {
+        // यह ऑब्जर्वर रिजॉल्व नहीं होगा, जो रिक्वेस्ट को इफेक्टिवली थ्रॉटल करेगा
+      });
+    }
+    
+    // रिक्वेस्ट को मैप में एड करें
+    this.requestMap.set(key, true);
+    
+    // रिक्वेस्ट को प्रोसेस करें और मैप से रिमूव करें जब पूरा हो
+    return new Observable&lt;HttpEvent&lt;unknown&gt;&gt;(observer => {
+      const subscription = next.handle(request).subscribe({
+        next: event => observer.next(event),
+        error: error => {
+          this.requestMap.delete(key);
+          observer.error(error);
+        },
+        complete: () => {
+          this.requestMap.delete(key);
+          observer.complete();
+        }
+      });
+      
+      return () => {
+        subscription.unsubscribe();
+        this.requestMap.delete(key);
+      };
+    });
+  }
+}</code></pre>
+            </div>
+            
+            <div class="note">
+                <p><strong>लाभ:</strong> डुप्लिकेट रिक्वेस्ट्स से बचकर सर्वर पर लोड कम होता है और एप्लिकेशन का परफॉर्मेंस बेहतर होता है।</p>
+            </div>
+            
+            <h3>7.4 एनालिटिक्स ट्रैकिंग इंटरसेप्टर</h3>
+            <p>यह इंटरसेप्टर यूजर के बिहेवियर और एप्लिकेशन परफॉर्मेंस को ट्रैक करने के लिए डेटा कलेक्ट करता है।</p>
+            
+            <div class="example">
+                <pre><code>// analytics.interceptor.ts
+import { Injectable } from '@angular/core';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { AnalyticsService } from './analytics.service';
+
+@Injectable()
+export class AnalyticsInterceptor implements HttpInterceptor {
+
+  constructor(private analyticsService: AnalyticsService) {}
+
+  intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+    // रिक्वेस्ट स्टार्ट टाइम
+    const startTime = Date.now();
+    
+    // रिक्वेस्ट मेट्रिक्स
+    const requestInfo = {
+      url: request.url,
+      method: request.method,
+      startTime: startTime
+    };
+    
+    // रिक्वेस्ट प्रोसेस करें और रिस्पॉन्स ट्रैक करें
+    return next.handle(request).pipe(
+      tap(
+        event => {
+          if (event instanceof HttpResponse) {
+            // रिस्पॉन्स टाइम कैलकुलेट करें
+            const endTime = Date.now();
+            const duration = endTime - startTime;
+            
+            // एनालिटिक्स में लॉग करें
+            this.analyticsService.logApiCall({
+              ...requestInfo,
+              status: event.status,
+              duration: duration,
+              success: true
+            });
+          }
+        },
+        error => {
+          // एरर केस में एनालिटिक्स में लॉग करें
+          const endTime = Date.now();
+          const duration = endTime - startTime;
+          
+          this.analyticsService.logApiCall({
+            ...requestInfo,
+            status: error.status,
+            duration: duration,
+            success: false
+          });
+        }
+      )
+    );
+  }
+}</code></pre>
+            </div>
+            
+            <div class="note">
+                <p><strong>लाभ:</strong> एप्लिकेशन परफॉर्मेंस, यूजर बिहेवियर, और सर्वर रिस्पॉन्स टाइम की जानकारी मिलती है, जिससे एप्लिकेशन को ऑप्टिमाइज किया जा सकता है।</p>
+            </div>
+            
+            <h3>7.5 API वर्शनिंग इंटरसेप्टर</h3>
+            <p>यह इंटरसेप्टर API वर्शन को मैनेज करता है और सभी रिक्वेस्ट्स में उचित API वर्शन हेडर जोड़ता है।</p>
+            
+            <div class="example">
+                <pre><code>// api-version.interceptor.ts
+import { Injectable } from '@angular/core';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ConfigService } from './config.service';
+
+@Injectable()
+export class ApiVersionInterceptor implements HttpInterceptor {
+
+  constructor(private configService: ConfigService) {}
+
+  intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+    // कॉन्फिग से API वर्शन प्राप्त करें
+    const apiVersion = this.configService.getApiVersion();
+    
+    // सिर्फ API URL पर अप्लाई करें (अन्य HTTP रिक्वेस्ट छोड़ दें)
+    if (request.url.includes(this.configService.getApiBaseUrl())) {
+      // API वर्शन हेडर जोड़ें
+      const modifiedRequest = request.clone({
+        setHeaders: {
+          'X-API-Version': apiVersion
+        }
+      });
+      
+      return next.handle(modifiedRequest);
+    }
+    
+    // अन्य रिक्वेस्ट्स को बिना बदले आगे भेजें
+    return next.handle(request);
+  }
+}</code></pre>
+            </div>
+            
+            <div class="note">
+                <p><strong>लाभ:</strong> बैकेंड एपीआई के विभिन्न वर्शन्स को सपोर्ट करना आसान हो जाता है, और एप्लिकेशन को अलग-अलग एपीआई वर्शन्स के साथ कॉन्फिगर किया जा सकता है।</p>
+            </div>
+            
+            <h3>7.6 कॅशिंग इंटरसेप्टर</h3>
+            <p>यह इंटरसेप्टर HTTP रिस्पॉन्स को कैश करता है और समान रिक्वेस्ट्स के लिए कैश से डेटा देता है, जिससे नेटवर्क कॉल्स कम होते हैं।</p>
+            
+            <div class="example">
+                <pre><code>// cache.interceptor.ts
+import { Injectable } from '@angular/core';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+@Injectable()
+export class CacheInterceptor implements HttpInterceptor {
+  private cache = new Map&lt;string, { response: HttpResponse&lt;any&gt;, timestamp: number }&gt;();
+  private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 मिनट
+
+  constructor() {}
+
+  intercept(request: HttpRequest&lt;unknown&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown&gt;&gt; {
+    // सिर्फ GET रिक्वेस्ट्स को कैश करें
+    if (request.method !== 'GET') {
+      return next.handle(request);
+    }
+    
+    // अगर रिक्वेस्ट में no-cache हेडर है तो कैश न करें
+    if (request.headers.has('no-cache')) {
+      return next.handle(request);
+    }
+    
+    // कैश कुंजी बनाएं
+    const cacheKey = request.url;
+    
+    // कैश चेक करें
+    const cachedResponse = this.cache.get(cacheKey);
+    const now = Date.now();
+    
+    // अगर वैलिड कैश उपलब्ध है तो उसे रिटर्न करें
+    if (cachedResponse && (now - cachedResponse.timestamp) < this.CACHE_DURATION) {
+      console.log(`कैश से डेटा प्राप्त: ${cacheKey}`);
+      return of(cachedResponse.response.clone());
+    }
+    
+    // कैश नहीं है, रिक्वेस्ट भेजें और रिस्पॉन्स को कैश करें
+    return next.handle(request).pipe(
+      tap(event => {
+        if (event instanceof HttpResponse) {
+          console.log(`कैश में सेव करें: ${cacheKey}`);
+          this.cache.set(cacheKey, { 
+            response: event.clone(),
+            timestamp: Date.now()
+          });
+        }
+      })
+    );
+  }
+}</code></pre>
+            </div>
+            
+            <div class="note">
+                <p><strong>लाभ:</strong> नेटवर्क कॉल्स कम करके एप्लिकेशन का परफॉर्मेंस बेहतर होता है, और यूजर को डेटा तेजी से मिलता है।</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

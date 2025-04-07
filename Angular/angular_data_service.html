@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Data Service - हिंदी में समझें</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        .example {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Angular Data Service - हिंदी में समझें</h1>
+
+        <div class="section">
+            <h2>1. Data Service क्या है?</h2>
+            <p>Data Service एक सर्विस है जो:</p>
+            <ul>
+                <li>डेटा को केंद्रीकृत रूप से मैनेज करता है</li>
+                <li>कंपोनेंट्स के बीच डेटा शेयरिंग को सुविधाजनक बनाता है</li>
+                <li>डेटा स्टोरेज और रिट्रीवल को हैंडल करता है</li>
+                <li>डेटा ट्रांसफॉर्मेशन और वैलिडेशन करता है</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>2. बेसिक Data Service</h2>
+            <div class="example">
+                <h3>User Data Service</h3>
+                <pre><code>// user-data.service.ts
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserDataService {
+  private users = new BehaviorSubject&lt;any[]&gt;([]);
+  users$ = this.users.asObservable();
+
+  constructor() {
+    // इनिशियल डेटा लोड करें
+    this.loadInitialData();
+  }
+
+  private loadInitialData() {
+    // डेटा लोड करें
+    const initialData = [
+      { id: 1, name: 'राहुल' },
+      { id: 2, name: 'प्रिया' }
+    ];
+    this.users.next(initialData);
+  }
+
+  // नया यूजर जोड़ें
+  addUser(user: any) {
+    const currentUsers = this.users.value;
+    this.users.next([...currentUsers, user]);
+  }
+
+  // यूजर अपडेट करें
+  updateUser(user: any) {
+    const currentUsers = this.users.value;
+    const index = currentUsers.findIndex(u => u.id === user.id);
+    if (index !== -1) {
+      currentUsers[index] = user;
+      this.users.next([...currentUsers]);
+    }
+  }
+
+  // यूजर डिलीट करें
+  deleteUser(id: number) {
+    const currentUsers = this.users.value;
+    this.users.next(currentUsers.filter(user => user.id !== id));
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>3. कंपोनेंट में उपयोग</h2>
+            <div class="example">
+                <h3>User List Component</h3>
+                <pre><code>// user-list.component.ts
+import { Component, OnInit } from '@angular/core';
+import { UserDataService } from './user-data.service';
+
+@Component({
+  selector: 'app-user-list',
+  template: `
+    &lt;ul&gt;
+      &lt;li *ngFor="let user of users"&gt;
+        {{ user.name }}
+        &lt;button (click)="deleteUser(user.id)"&gt;डिलीट&lt;/button&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  `
+})
+export class UserListComponent implements OnInit {
+  users: any[] = [];
+
+  constructor(private userDataService: UserDataService) {}
+
+  ngOnInit() {
+    // डेटा सब्सक्राइब करें
+    this.userDataService.users$.subscribe(users => {
+      this.users = users;
+    });
+  }
+
+  deleteUser(id: number) {
+    this.userDataService.deleteUser(id);
+  }
+}</code></pre>
+
+                <h3>User Form Component</h3>
+                <pre><code>// user-form.component.ts
+import { Component } from '@angular/core';
+import { UserDataService } from './user-data.service';
+
+@Component({
+  selector: 'app-user-form',
+  template: `
+    &lt;form (ngSubmit)="onSubmit()"&gt;
+      &lt;input [(ngModel)]="newUser.name" name="name"&gt;
+      &lt;button type="submit"&gt;सेव&lt;/button&gt;
+    &lt;/form&gt;
+  `
+})
+export class UserFormComponent {
+  newUser = { name: '' };
+
+  constructor(private userDataService: UserDataService) {}
+
+  onSubmit() {
+    this.userDataService.addUser({
+      id: Date.now(),
+      name: this.newUser.name
+    });
+    this.newUser.name = '';
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>4. API के साथ Data Service</h2>
+            <div class="example">
+                <h3>API Integrated Data Service</h3>
+                <pre><code>// api-data.service.ts
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiDataService {
+  private data = new BehaviorSubject&lt;any[]&gt;([]);
+  data$ = this.data.asObservable();
+
+  constructor(private http: HttpClient) {
+    this.loadData();
+  }
+
+  private loadData() {
+    this.http.get('https://api.example.com/data')
+      .pipe(
+        tap(response => {
+          this.data.next(response);
+        })
+      )
+      .subscribe();
+  }
+
+  addItem(item: any): Observable&lt;any&gt; {
+    return this.http.post('https://api.example.com/data', item)
+      .pipe(
+        tap(response => {
+          const currentData = this.data.value;
+          this.data.next([...currentData, response]);
+        })
+      );
+  }
+
+  updateItem(item: any): Observable&lt;any&gt; {
+    return this.http.put(`https://api.example.com/data/${item.id}`, item)
+      .pipe(
+        tap(response => {
+          const currentData = this.data.value;
+          const index = currentData.findIndex(i => i.id === item.id);
+          if (index !== -1) {
+            currentData[index] = response;
+            this.data.next([...currentData]);
+          }
+        })
+      );
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. कैशिंग के साथ Data Service</h2>
+            <div class="example">
+                <h3>कैश्ड Data Service</h3>
+                <pre><code>// cached-data.service.ts
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CachedDataService {
+  private cache = new Map&lt;string, any&gt;();
+  private data = new BehaviorSubject&lt;any&gt;(null);
+  data$ = this.data.asObservable();
+
+  getData(key: string): Observable&lt;any&gt; {
+    // कैश से डेटा चेक करें
+    if (this.cache.has(key)) {
+      return of(this.cache.get(key));
+    }
+
+    // API से डेटा लोड करें
+    return this.loadFromApi(key).pipe(
+      tap(response => {
+        // कैश में सेव करें
+        this.cache.set(key, response);
+        this.data.next(response);
+      })
+    );
+  }
+
+  private loadFromApi(key: string): Observable&lt;any&gt; {
+    // API कॉल लॉजिक
+    return of({}); // सिम्पलिफाइड
+  }
+
+  clearCache() {
+    this.cache.clear();
+  }
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>महत्वपूर्ण बिंदु:</strong>
+            <ul>
+                <li>Data Service डेटा मैनेजमेंट को केंद्रीकृत करता है</li>
+                <li>BehaviorSubject रीयल-टाइम डेटा अपडेट्स को हैंडल करता है</li>
+                <li>कैशिंग परफॉरमेंस को इम्प्रूव करती है</li>
+                <li>API इंटीग्रेशन डेटा सिंक्रोनाइजेशन को सुनिश्चित करता है</li>
+                <li>डेटा वैलिडेशन और ट्रांसफॉर्मेशन महत्वपूर्ण हैं</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html> 
